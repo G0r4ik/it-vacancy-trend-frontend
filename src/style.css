@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Hind Siliguri', sans-serif;
+  background: #ffffff;
+  font-size: 24px;
+  color: #292830;
+}
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.header {
+  background: #99c9ef;
+  width: 100%;
+}
+
+.header__inner {
+  text-align: center;
+  padding: 15px 0;
+}
+.main {
+  margin-top: 30px;
+}
+.title {
+}
+.header__logo-text {
+}
+.filter {
+}
+.filter__item {
+}
+.list {
+}
+.list__item {
+}
+.list__item-img {
+}
+.list__item-title {
+}
+.list__item-category {
+}
+.list__item-count {
+}
+.list__item-chart {
+}
+
+.category1 {
+  background: #ff00ff;
+}
+.category2 {
+  background: #ffff00;
+}
+.category3 {
+  background: #ff9900;
+}
+.category4 {
+  background: #ea4335;
+}
+.category5 {
+  background: #00ff00;
+}
+.category6 {
+  background: #00ffff;
+}
+.category7 {
+  background: #b6d7a8;
+}
+.category8 {
+  background: #46bdc6;
+}
+.category9 {
+  background: #9900ff;
+}
+.category10 {
+  background: #a4c2f4;
+}
+.category11 {
+  background: #34a853;
+}
+.category12 {
+  background: #3d85c6;
+}
+.category13 {
+  background: #ead1dc;
+}
+.category14 {
+  background: #f3f3f3;
+}
+.category15 {
+  background: #cccccc;
+}

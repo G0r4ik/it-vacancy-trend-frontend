@@ -1,0 +1,9 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "scss/selector-no-redundant-nesting-selector": true,
+    "declaration-colon-newline-after": null,
+    "value-list-comma-newline-after": null,
+    "selector-class-pattern": null
+  }
+}
