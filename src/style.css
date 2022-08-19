@@ -5,9 +5,9 @@
 }
 body {
   font-family: 'Hind Siliguri', sans-serif;
-  background: #ffffff;
+  background: #12131a;
   font-size: 24px;
-  color: #292830;
+  color: #fff;
 }
 .container {
   max-width: 1120px;
@@ -15,17 +15,100 @@ body {
 }
 
 .header {
-  background: #99c9ef;
+  background: #1c1c25;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 .header__inner {
-  text-align: center;
   padding: 15px 0;
+  display: flex;
+  /* justify-content: space-between; */
 }
+
+.header__nav {
+}
+
+.header__link {
+  text-decoration: none;
+  color: inherit;
+  padding: 0 15px;
+}
+
 .main {
   margin-top: 30px;
 }
+
+.title {
+  max-width: 1120px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.filters__inner {
+  padding: 15px;
+  background: #1c1c25;
+  border-radius: 15px;
+  margin-bottom: 45px;
+}
+
+.list__column {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.list__column-item {
+  color: #5cdba6;
+  cursor: pointer;
+}
+
+.list__column-item,
+.list-rows__item {
+  min-width: 80px;
+  width: 35%;
+  text-align: center;
+}
+
+.list__column-item_count,
+.list-rows__item_count {
+  min-width: 80px;
+  width: 10%;
+}
+
+.list__item {
+  background: #1c1c25;
+  margin: 15px 0;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 15px;
+}
+
+.select-wrapper {
+}
+
+select {
+  padding: 3px 20px 3px 6px;
+  /* border: 1px solid #e8eaed; */
+  /* border-radius: 5px; */
+  /* color: inherit; */
+  /* box-shadow: 0 1px 3px -2px #9098a9; */
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  background: none;
+  border: 0;
+  /* color: ; */
+  font-weight: 900;
+  border-bottom: 1px solid #5cdba6;
+}
+
+/* 
+
 .title {
 }
 .header__logo-text {
@@ -47,6 +130,15 @@ body {
 .list__item-count {
 }
 .list__item-chart {
+}
+
+.category {
+  display: flex;
+  width: 100%;
+}
+
+.category span {
+  width: 25%;
 }
 
 .category1 {
@@ -93,4 +185,4 @@ body {
 }
 .category15 {
   background: #cccccc;
-}
+} */
