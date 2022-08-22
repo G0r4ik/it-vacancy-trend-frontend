@@ -1,38 +1,49 @@
 <template>
-  <h2 class="title">RATING:</h2>
-
   <div>
+    <h2 class="title">RATING:</h2>
     <div class="filters">
       <div class="container">
         <div class="filters__inner">
-          <div class="filters__select-wrapper select-wrapper">
-            <select
-              name="date_of_completion"
-              id="date_of_completion"
-              v-model="selectedDate"
-            >
-              <option v-for="date of dates" :value="date" :key="date.id_date">
-                {{ date.date_of_completion }}
-              </option>
-            </select>
-            <!-- <input type="text"> -->
+          <div class="filters__selects">
+            <div class="filters__select-wrapper select-wrapper">
+              <div class="select-container">
+                <label for="date_of_completion">Дата:</label>
+                <select
+                  name="date_of_completion"
+                  id="date_of_completion"
+                  v-model="selectedDate"
+                >
+                  <option
+                    v-for="date of dates"
+                    :value="date"
+                    :key="date.id_date"
+                  >
+                    {{ date.date_of_completion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="select-container">
+              <label for="category">Категория:</label>
+              <select name="category" id="category" v-model="selectedCategory">
+                <option value="all">Все</option>
+                <option
+                  v-for="category of categories"
+                  :key="category.id_category"
+                  :class="'category' + category.id_category"
+                  :value="category"
+                >
+                  {{ category.name_category }}
+                </option>
+              </select>
+            </div>
           </div>
-
-          <select
-            name="date_of_completion"
-            id="date_of_completion"
-            v-model="selectedCategory"
-          >
-            <option value="all">Все</option>
-            <option
-              v-for="category of categories"
-              :key="category.id_category"
-              :class="'category' + category.id_category"
-              :value="category.id_category"
-            >
-              {{ category.name_category }}
-            </option>
-          </select>
+          <input
+            type="search"
+            class="filters__search-input"
+            placeholder="Введите технологию"
+            v-model="searchInput"
+          />
         </div>
       </div>
     </div>
@@ -41,71 +52,85 @@
       <div class="container">
         <div class="list__inner">
           <div class="list__column">
-            <span class="list__column-item" @click="listSort('name_tools')"
-              >Название</span
-            >
+            <span class="list__column-item" @click="listSort('name_tools')">
+              Название
+            </span>
             <span class="list__column-item" @click="listSort('id_category')"
-              >Категория</span
-            >
+              >Категория
+            </span>
             <span
               class="list__column-item list__column-item_count"
-              @click="listSort('indeed')"
-              >Indeed</span
+              @click="listSort('countIndeed')"
             >
+              Indeed
+            </span>
             <span
               class="list__column-item list__column-item_count"
-              @click="listSort('hh')"
-              >HHru</span
+              @click="listSort('countHH')"
             >
+              HHru
+            </span>
           </div>
           <ul>
             <li
               v-for="tool of copyTools"
               :key="tool.id_tools"
               class="list__item list-rows"
-              :class="'category' + tool.id_category"
+              :class="'category' + tool.category.id_category"
             >
-              <span class="list-rows__item"> {{ tool.name_tools }}</span>
-              <span class="list-rows__item">
-                {{ category(tool.id_category) }}
+              <span class="list-rows__item" @click="isOpenModalFunction(tool)">
+                {{ tool.name_tools }}</span
+              >
+              <span class="list-rows__item list-rows__item_category">
+                {{ tool.category.name_category }}
               </span>
               <span class="list-rows__item list-rows__item_count">
-                {{ indeedCount(tool.id_tools) }}
+                {{ tool.counts[selectedDate.id_date].countIndeed }}
               </span>
               <span class="list-rows__item list-rows__item_count">
-                {{ hhCount(tool.id_tools) }}
+                {{ tool.counts[selectedDate.id_date].countHH }}
               </span>
             </li>
           </ul>
         </div>
+        <div class="empty-list" v-if="!copyTools.length">Ничего нет</div>
       </div>
     </div>
+    <teleport to="body">
+      <app-tool
+        :tools="copyTools"
+        :currentTool="toolInModal"
+        :dates="dates"
+        v-if="isOpenModal"
+      ></app-tool>
+    </teleport>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import appTool from './AppTool.vue';
+
 export default {
   data() {
     return {
       categories: [],
       dates: [],
-      copyDates: [],
       tools: [],
       copyTools: [],
-      countHH: [],
-      countIndeed: [],
       selectedCategory: 'all',
       selectedDate: 1,
       directionsForSorting: 'DESC',
+      searchInput: '',
+      isOpenModal: false,
+      toolInModal: null,
+      listSortVar: null,
     };
   },
   methods: {
-    add() {
-      this.getCategories();
-      this.getDates();
-      this.getTools();
-      this.getCount();
+    isOpenModalFunction(tool) {
+      this.isOpenModal = true;
+      this.toolInModal = tool;
     },
     async getCategories() {
       let categories = await axios({
@@ -121,7 +146,6 @@ export default {
       });
       this.dates = dates.data;
       this.selectedDate = this.dates.at(-1);
-      console.log(this.selectedDate);
     },
     async getTools() {
       let tools = await axios({
@@ -131,34 +155,7 @@ export default {
       this.tools = tools.data;
       this.copyTools = tools.data;
     },
-    async getCount() {
-      let count = await axios({
-        method: 'get',
-        url: 'http://127.0.0.1:5501/getCount',
-      });
-      this.countHH = count.data[1].rows;
-      this.countIndeed = count.data[0].rows;
-    },
-    category(tool) {
-      return this.categories.find((c) => c.id_category === tool).name_category;
-    },
-    indeedCount(tool) {
-      return this.countIndeed.find((c) => {
-        return (
-          c.id_tools === tool &&
-          c.date_of_completion === this.selectedDate.id_date
-        );
-      }).id_count_in_indeed;
-    },
-    hhCount(tool) {
-      return this.countHH.find((c) => {
-        return (
-          c.id_tools === tool &&
-          c.date_of_completion === this.selectedDate.id_date
-        );
-      }).id_count_in_indeed;
-    },
-    listSort(v) {
+    listSort(v = this.listSortVar) {
       if (v === 'name_tools') {
         this.copyTools = this.copyTools.sort((a, b) =>
           this.directionsForSorting === 'DESC'
@@ -168,30 +165,19 @@ export default {
       }
       if (v === 'id_category') {
         this.copyTools = this.copyTools.sort((a, b) =>
-          this.directionsForSorting === 'DESC' ? a[v] - b[v] : b[v] - a[v]
+          this.directionsForSorting === 'DESC'
+            ? a.category.name_category.localeCompare(b.category.name_category)
+            : b.category.name_category.localeCompare(a.category.name_category)
         );
       }
-      if (v === 'hh') {
-        this.copyTools = [];
-        const ids = this.countHH
-          .sort((a, b) => {
-            return this.directionsForSorting === 'DESC'
-              ? a.id_count_in_indeed - b.id_count_in_indeed
-              : b.id_count_in_indeed - a.id_count_in_indeed;
-          })
-          .filter((el) => {
-            if (el.date_of_completion === this.selectedDate.id_date) {
-              return el.id_tools;
-            }
-          });
-        console.log(ids);
-        for (const id of ids) {
-          this.copyTools.push(
-            this.tools.find((e) => e.id_tools === id.id_tools)
-          );
-        }
-      }
-      if (v === 'indeed') {
+      if (v === 'countIndeed' || v === 'countHH') {
+        this.copyTools = this.copyTools.sort((a, b) =>
+          this.directionsForSorting === 'DESC'
+            ? a.counts[this.selectedDate.id_date][v] -
+              b.counts[this.selectedDate.id_date][v]
+            : b.counts[this.selectedDate.id_date][v] -
+              a.counts[this.selectedDate.id_date][v]
+        );
       }
 
       this.directionsForSorting =
@@ -199,25 +185,47 @@ export default {
     },
   },
 
-  computed: {},
-
-  async mounted() {
-    await this.getCount();
-    await this.getCategories();
-    await this.getDates();
-    await this.getTools();
+  mounted() {
+    this.getCategories();
+    this.getTools();
+    this.getDates();
   },
   watch: {
     selectedCategory(v) {
       this.copyTools = this.tools;
-      if (v === 'all') return;
-      this.copyTools = this.copyTools.filter((el) => el.id_category === v);
+      this.listSort();
+      if (v === 'all') {
+        this.copyTools = this.copyTools.filter((tool) => {
+          return tool.name_tools
+            .toLowerCase()
+            .includes(this.searchInput.toLowerCase());
+        });
+        return;
+      }
+      this.copyTools = this.copyTools.filter(
+        (tool) =>
+          tool.category.id_category === v.id_category &&
+          tool.name_tools.toLowerCase().includes(this.searchInput.toLowerCase())
+      );
     },
-    selectedDate(v) {
-      this.copyDates = this.copyDates.filter(
-        (el) => el.id_date === this.selectedDate.id_date && el.id_category === v
+    searchInput(v) {
+      this.copyTools = this.tools;
+      this.listSort();
+      if (this.selectedCategory === 'all') {
+        this.copyTools = this.copyTools.filter((tool) => {
+          return tool.name_tools.toLowerCase().includes(v.toLowerCase());
+        });
+        return;
+      }
+
+      this.copyTools = this.copyTools.filter(
+        (tool) =>
+          tool.category.id_category === this.selectedCategory.id_category &&
+          tool.name_tools.toLowerCase().includes(v.toLowerCase())
       );
     },
   },
+
+  components: { appTool },
 };
 </script>

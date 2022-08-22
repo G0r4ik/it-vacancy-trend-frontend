@@ -1,3 +1,4 @@
+// \! chcp 1251
 const express = require('express');
 const needle = require('needle');
 const cors = require('cors');
@@ -20,14 +21,52 @@ const pool = new Pool({
 });
 
 app.get('/getDate', (req, res) => {
-  pool.query('SELECT * FROM date_of_completion', (e, results) => {
-    res.status(200).json(results.rows);
-  });
+  pool.query('SELECT * FROM date_of_completion', (e, results) =>
+    res.send(results.rows)
+  );
 });
 
-app.get('/getTools', (req, res) => {
-  pool.query('SELECT * FROM tools', (e, results) => {
-    res.status(200).json(results.rows);
+app.get('/getTools', async (req, res) => {
+  pool.query('SELECT * FROM categories', (e, result) => {
+    if (e) return console.log(err);
+    const categories = result.rows;
+    pool.query('SELECT * FROM tools', (e, result) => {
+      let tools = result.rows;
+      tools = tools.map((tool) => {
+        const category = categories.find(
+          (category) => category.id_category === tool.id_category
+        );
+        delete tool.id_category;
+        return { ...tool, category };
+      });
+      pool.query('SELECT * FROM date_of_completion', (e, results) => {
+        const dates = results.rows;
+        pool.query(
+          'SELECT * FROM count_in_indeed;SELECT * FROM count_in_hh',
+          async (error, results) => {
+            const counts = [...results[0].rows, ...results[1].rows];
+            tools = tools.map((tool) => ({ ...tool, counts: {} }));
+            dates.map((date) => {
+              return (tools = tools.map((tool) => {
+                const count = counts.filter(
+                  (count) =>
+                    count.id_tools === tool.id_tools &&
+                    date.id_date === count.date_of_completion
+                );
+                const [countIndeed, countHH] = [
+                  count[0].id_count_in_indeed,
+                  count[1].id_count_in_indeed,
+                ];
+                tool.counts[date.id_date] = { countHH, countIndeed };
+                return { ...tool };
+              }));
+            });
+
+            res.status(200).json(tools);
+          }
+        );
+      });
+    });
   });
 });
 
@@ -59,22 +98,18 @@ async function uploadDataToTheDatabase() {
     `INSERT INTO date_of_completion(date_of_completion) VALUES('${date}')`
   );
 
-  let tools = await axios({
-    method: 'get',
-    url: 'http://127.0.0.1:5501/getTools',
-  });
-  tools = tools.data;
+  pool.query('SELECT * FROM tools', async (e, result) => {
+    let tools = result.rows;
 
-  for (let i = 0; i < tools.length; i++) {
-    console.log(tools[i]);
-    const result = await axios({
-      method: 'get',
-      url: `https://api.hh.ru/vacancies?text=${encodeURIComponent(
-        tools[i].name_tools
-      )}&area=1&no_magic=true&page=0&per_page=0`,
-    });
-    pool.query(
-      `INSERT INTO count_in_hh(
+    for (let i = 0; i < tools.length; i++) {
+      const result = await axios({
+        method: 'get',
+        url: `https://api.hh.ru/vacancies?text=${encodeURIComponent(
+          tools[i].name_tools
+        )}&area=1&no_magic=true&page=0&per_page=0`,
+      });
+      pool.query(
+        `INSERT INTO count_in_hh(
         id_tools,
         date_of_completion,
         id_count_in_indeed)
@@ -82,15 +117,15 @@ async function uploadDataToTheDatabase() {
         ${tools[i].id_tools},
         (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
         ${result.data.found})`
-    );
-  }
+      );
+    }
 
-  let countOfError = 0;
+    let countOfError = 0;
 
-  async function getCount(tool) {
-    if (countOfError > 10)
-      return pool.query(
-        `INSERT INTO count_in_indeed(
+    async function getCount(tool) {
+      if (countOfError > 10)
+        return pool.query(
+          `INSERT INTO count_in_indeed(
         id_tools,
         date_of_completion,
         id_count_in_indeed)
@@ -98,28 +133,27 @@ async function uploadDataToTheDatabase() {
         ${tool.id_tools},
         (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
         0)`
-      );
-    try {
-      const encodeString = encodeURIComponent(tool.name_tools);
-      const url =
-        encodeString === tool.name_tools
-          ? `https://www.indeed.com/q-${tool.name_tools}-jobs.html`
-          : `https://www.indeed.com/jobs?q=${encodeString}&vj&vjk`;
+        );
+      try {
+        const encodeString = encodeURIComponent(tool.name_tools);
+        const url =
+          encodeString === tool.name_tools
+            ? `https://www.indeed.com/q-${tool.name_tools}-jobs.html`
+            : `https://www.indeed.com/jobs?q=${encodeString}&vj&vjk`;
 
-      let resp = await needle('get', url);
+        let resp = await needle('get', url);
 
-      let indexFirstDigit = resp.body.indexOf('Page 1 of ') + 10;
-      if (indexFirstDigit === 9) {
-        countOfError++;
-        return getCount(tool);
-      }
-      let number = resp.body.slice(indexFirstDigit, indexFirstDigit + 10);
-      let result = '';
-      for (const char of number) {
-        if (char === ' ') {
-          await console.log(tool.name_tools, result);
-          return pool.query(
-            `INSERT INTO count_in_indeed(
+        let indexFirstDigit = resp.body.indexOf('Page 1 of ') + 10;
+        if (indexFirstDigit === 9) {
+          countOfError++;
+          return getCount(tool);
+        }
+        let number = resp.body.slice(indexFirstDigit, indexFirstDigit + 10);
+        let result = '';
+        for (const char of number) {
+          if (char === ' ') {
+            return pool.query(
+              `INSERT INTO count_in_indeed(
             id_tools,
             date_of_completion,
             id_count_in_indeed)
@@ -127,23 +161,26 @@ async function uploadDataToTheDatabase() {
             ${tool.id_tools},
             (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
             ${result})`
-          );
+            );
+          }
+          if (char === ',') continue;
+          result += char;
         }
-        if (char === ',') continue;
-        result += char;
+      } catch (error) {
+        console.log('Произошла ошибка');
+        console.log(error);
+        return getCount(tool);
       }
-    } catch (error) {
-      console.log('Произошла ошибка');
-      console.log(error);
-      return getCount(tool);
     }
-  }
 
-  for (let i = 0; i < tools.length; i++) {
-    countOfError = 0;
-    await getCount(tools[i]);
-  }
-  console.log(`Потрачено минут: ${((new Date() - start) / 60000).toFixed(2)}`);
+    for (let i = 0; i < tools.length; i++) {
+      countOfError = 0;
+      await getCount(tools[i]);
+    }
+    console.log(
+      `Потрачено минут: ${((new Date() - start) / 60000).toFixed(2)}`
+    );
+  });
 }
 
 app.get('/uploadDataToTheDatabase', (req, res) => uploadDataToTheDatabase());
