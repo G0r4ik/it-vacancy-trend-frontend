@@ -66,7 +66,7 @@
             </span>
             <span
               class="list__column-item list__column-item_count"
-              @click="listSort('countHH')"
+              @click="listSort('countHeadHunter')"
             >
               HHru
             </span>
@@ -88,7 +88,7 @@
                 {{ tool.counts[selectedDate.id_date].countIndeed }}
               </span>
               <span class="list-rows__item list-rows__item_count">
-                {{ tool.counts[selectedDate.id_date].countHH }}
+                {{ tool.counts[selectedDate.id_date].countHeadHunter }}
               </span>
             </li>
           </ul>
@@ -155,7 +155,13 @@ export default {
       this.tools = tools.data;
       this.copyTools = tools.data;
     },
-    listSort(v = this.listSortVar) {
+    listSort(v = this.listSortVar, saveSort = false) {
+      if (!saveSort) {
+        this.directionsForSorting =
+          this.directionsForSorting === 'DESC' ? 'ASC' : 'DESC';
+      }
+      this.listSortVar = v;
+
       if (v === 'name_tools') {
         this.copyTools = this.copyTools.sort((a, b) =>
           this.directionsForSorting === 'DESC'
@@ -170,7 +176,7 @@ export default {
             : b.category.name_category.localeCompare(a.category.name_category)
         );
       }
-      if (v === 'countIndeed' || v === 'countHH') {
+      if (v === 'countIndeed' || v === 'countHeadHunter') {
         this.copyTools = this.copyTools.sort((a, b) =>
           this.directionsForSorting === 'DESC'
             ? a.counts[this.selectedDate.id_date][v] -
@@ -179,9 +185,6 @@ export default {
               a.counts[this.selectedDate.id_date][v]
         );
       }
-
-      this.directionsForSorting =
-        this.directionsForSorting === 'DESC' ? 'ASC' : 'DESC';
     },
   },
 
@@ -193,7 +196,7 @@ export default {
   watch: {
     selectedCategory(v) {
       this.copyTools = this.tools;
-      this.listSort();
+      this.listSort(this.listSortVar, true);
       if (v === 'all') {
         this.copyTools = this.copyTools.filter((tool) => {
           return tool.name_tools
@@ -210,7 +213,7 @@ export default {
     },
     searchInput(v) {
       this.copyTools = this.tools;
-      this.listSort();
+      this.listSort(this.listSortVar, true);
       if (this.selectedCategory === 'all') {
         this.copyTools = this.copyTools.filter((tool) => {
           return tool.name_tools.toLowerCase().includes(v.toLowerCase());

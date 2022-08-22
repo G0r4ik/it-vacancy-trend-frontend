@@ -42,9 +42,10 @@ app.get('/getTools', async (req, res) => {
       pool.query('SELECT * FROM date_of_completion', (e, results) => {
         const dates = results.rows;
         pool.query(
-          'SELECT * FROM count_in_indeed;SELECT * FROM count_in_hh',
+          'SELECT * FROM count_in_indeed;SELECT * FROM count_in_headhunter',
           async (error, results) => {
             const counts = [...results[0].rows, ...results[1].rows];
+
             tools = tools.map((tool) => ({ ...tool, counts: {} }));
             dates.map((date) => {
               return (tools = tools.map((tool) => {
@@ -53,11 +54,11 @@ app.get('/getTools', async (req, res) => {
                     count.id_tools === tool.id_tools &&
                     date.id_date === count.date_of_completion
                 );
-                const [countIndeed, countHH] = [
-                  count[0].id_count_in_indeed,
-                  count[1].id_count_in_indeed,
+                const [countIndeed, countHeadHunter] = [
+                  count[0]._count,
+                  count[1]._count,
                 ];
-                tool.counts[date.id_date] = { countHH, countIndeed };
+                tool.counts[date.id_date] = { countHeadHunter, countIndeed };
                 return { ...tool };
               }));
             });
@@ -78,7 +79,7 @@ app.get('/getCategories', (req, res) => {
 
 app.get('/getCount', (req, res) => {
   pool.query(
-    'SELECT * FROM count_in_indeed;SELECT * FROM count_in_hh',
+    'SELECT * FROM count_in_indeed;SELECT * FROM count_in_headhunter',
     (error, results) => res.status(200).json(results)
   );
 });
@@ -109,10 +110,10 @@ async function uploadDataToTheDatabase() {
         )}&area=1&no_magic=true&page=0&per_page=0`,
       });
       pool.query(
-        `INSERT INTO count_in_hh(
+        `INSERT INTO count_in_headhunter(
         id_tools,
         date_of_completion,
-        id_count_in_indeed)
+        _count)
         VALUES(
         ${tools[i].id_tools},
         (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
@@ -128,7 +129,7 @@ async function uploadDataToTheDatabase() {
           `INSERT INTO count_in_indeed(
         id_tools,
         date_of_completion,
-        id_count_in_indeed)
+        _count)
         VALUES(
         ${tool.id_tools},
         (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
@@ -156,7 +157,7 @@ async function uploadDataToTheDatabase() {
               `INSERT INTO count_in_indeed(
             id_tools,
             date_of_completion,
-            id_count_in_indeed)
+            _count)
             VALUES(
             ${tool.id_tools},
             (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),

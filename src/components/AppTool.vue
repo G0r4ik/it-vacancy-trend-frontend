@@ -21,11 +21,11 @@ export default {
     dates: Object,
   },
   mounted() {
-    const countsHH = [];
+    const countsHeadHunter = [];
     const countsIndeed = [];
     for (const count in this.currentTool.counts) {
       if (Object.hasOwnProperty.call(this.currentTool.counts, count)) {
-        countsHH.push(this.currentTool.counts[count].countHH);
+        countsHeadHunter.push(this.currentTool.counts[count].countHeadHunter);
         countsIndeed.push(this.currentTool.counts[count].countIndeed);
       }
     }
@@ -38,7 +38,7 @@ export default {
         datasets: [
           {
             label: 'HHru',
-            data: countsHH,
+            data: countsHeadHunter,
             borderColor: ['rgba(255, 99, 132, 1)'],
             borderWidth: 10,
           },
