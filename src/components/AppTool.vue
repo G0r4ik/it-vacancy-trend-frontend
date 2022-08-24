@@ -53,6 +53,14 @@ export default {
 
       options: {
         responsive: true,
+        scales: {
+          x: {
+            beginAtZero: true,
+          },
+          y: {
+            beginAtZero: true,
+          },
+        },
         elements: {
           line: {
             tension: 0.5,

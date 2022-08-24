@@ -51,7 +51,7 @@ app.get('/getTools', async (req, res) => {
               return (tools = tools.map((tool) => {
                 const count = counts.filter(
                   (count) =>
-                    count.id_tools === tool.id_tools &&
+                    count.id_tool === tool.id_tool &&
                     date.id_date === count.date_of_completion
                 );
                 const [countIndeed, countHeadHunter] = [
@@ -111,11 +111,11 @@ async function uploadDataToTheDatabase() {
       });
       pool.query(
         `INSERT INTO count_in_headhunter(
-        id_tools,
+        id_tool,
         date_of_completion,
         _count)
         VALUES(
-        ${tools[i].id_tools},
+        ${tools[i].id_tool},
         (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
         ${result.data.found})`
       );
@@ -127,11 +127,11 @@ async function uploadDataToTheDatabase() {
       if (countOfError > 10)
         return pool.query(
           `INSERT INTO count_in_indeed(
-        id_tools,
+        id_tool,
         date_of_completion,
         _count)
         VALUES(
-        ${tool.id_tools},
+        ${tool.id_tool},
         (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
         0)`
         );
@@ -155,11 +155,11 @@ async function uploadDataToTheDatabase() {
           if (char === ' ') {
             return pool.query(
               `INSERT INTO count_in_indeed(
-            id_tools,
+            id_tool,
             date_of_completion,
             _count)
             VALUES(
-            ${tool.id_tools},
+            ${tool.id_tool},
             (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
             ${result})`
             );

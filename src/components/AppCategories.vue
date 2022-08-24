@@ -5,23 +5,17 @@
       <div class="container">
         <div class="filters__inner">
           <div class="filters__selects">
-            <div class="filters__select-wrapper select-wrapper">
-              <div class="select-container">
-                <label for="date_of_completion">Дата:</label>
-                <select
-                  name="date_of_completion"
-                  id="date_of_completion"
-                  v-model="selectedDate"
-                >
-                  <option
-                    v-for="date of dates"
-                    :value="date"
-                    :key="date.id_date"
-                  >
-                    {{ date.date_of_completion }}
-                  </option>
-                </select>
-              </div>
+            <div class="select-container">
+              <label for="date_of_completion">Дата:</label>
+              <select
+                name="date_of_completion"
+                id="date_of_completion"
+                v-model="selectedDate"
+              >
+                <option v-for="date of dates" :value="date" :key="date.id_date">
+                  {{ date.date_of_completion }}
+                </option>
+              </select>
             </div>
             <div class="select-container">
               <label for="category">Категория:</label>
@@ -44,6 +38,32 @@
             placeholder="Введите технологию"
             v-model="searchInput"
           />
+        </div>
+      </div>
+    </div>
+
+    <div class="additional-filters">
+      <div class="container">
+        <div class="additional-filters__inner">
+          <button
+            class="additional-filters__button"
+            @click="currentList = 'tools'"
+          >
+            Все
+          </button>
+          <button
+            class="additional-filters__button"
+            @click="currentList = 'favoritesTools'"
+          >
+            Избранное
+          </button>
+          <button
+            class="additional-filters__button"
+            @click="selectList('ready')"
+          >
+            Изученное
+          </button>
+          <button class="additional-filters__button">Настроить</button>
         </div>
       </div>
     </div>
@@ -71,67 +91,42 @@
               HHru
             </span>
           </div>
-          <ul>
-            <li
-              v-for="tool of copyTools"
-              :key="tool.id_tools"
-              class="list__item list-rows"
-              :class="'category' + tool.category.id_category"
-            >
-              <span class="list-rows__item" @click="isOpenModalFunction(tool)">
-                {{ tool.name_tools }}</span
-              >
-              <span class="list-rows__item list-rows__item_category">
-                {{ tool.category.name_category }}
-              </span>
-              <span class="list-rows__item list-rows__item_count">
-                {{ tool.counts[selectedDate.id_date].countIndeed }}
-              </span>
-              <span class="list-rows__item list-rows__item_count">
-                {{ tool.counts[selectedDate.id_date].countHeadHunter }}
-              </span>
-            </li>
-          </ul>
         </div>
-        <div class="empty-list" v-if="!copyTools.length">Ничего нет</div>
+        <app-list
+          v-if="currentList"
+          :tools="lists[currentList]"
+          :favoritesTools="lists.favoritesTools"
+          :selectedDate="selectedDate"
+          :selectedCategory="selectedCategory"
+          :searchInput="searchInput"
+          @clickIconFavoriteTools="clickIconFavoriteTools"
+        ></app-list>
       </div>
     </div>
-    <teleport to="body">
-      <app-tool
-        :tools="copyTools"
-        :currentTool="toolInModal"
-        :dates="dates"
-        v-if="isOpenModal"
-      ></app-tool>
-    </teleport>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import appTool from './AppTool.vue';
+import AppList from './AppListAll.vue';
 
 export default {
   data() {
     return {
       categories: [],
       dates: [],
-      tools: [],
+      lists: { tools: [], favoritesTools: [], studiedTools: [] },
       copyTools: [],
+      copyFavoritesTools: [],
       selectedCategory: 'all',
-      selectedDate: 1,
-      directionsForSorting: 'DESC',
       searchInput: '',
-      isOpenModal: false,
-      toolInModal: null,
+      selectedDate: null,
       listSortVar: null,
+      currentList: 'tools',
+      directionsForSorting: 'DESC',
     };
   },
   methods: {
-    isOpenModalFunction(tool) {
-      this.isOpenModal = true;
-      this.toolInModal = tool;
-    },
     async getCategories() {
       let categories = await axios({
         method: 'get',
@@ -152,8 +147,8 @@ export default {
         method: 'get',
         url: 'http://127.0.0.1:5501/getTools',
       });
-      this.tools = tools.data;
       this.copyTools = tools.data;
+      this.lists.tools = tools.data;
     },
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
@@ -161,74 +156,135 @@ export default {
           this.directionsForSorting === 'DESC' ? 'ASC' : 'DESC';
       }
       this.listSortVar = v;
+      const directionsForSorting = this.directionsForSorting;
+
+      const sortName = () => {
+        return function (a, b) {
+          return directionsForSorting === 'DESC'
+            ? a[v].localeCompare(b[v])
+            : b[v].localeCompare(a[v]);
+        };
+      };
+      const sortCategory = () => {
+        return function (a, b) {
+          return directionsForSorting === 'DESC'
+            ? a.category.name_category.localeCompare(b.category.name_category)
+            : b.category.name_category.localeCompare(a.category.name_category);
+        };
+      };
+      const id_date = this.selectedDate.id_date;
+      const sortCount = () => {
+        return function (a, b) {
+          return directionsForSorting === 'DESC'
+            ? a.counts[id_date][v] - b.counts[id_date][v]
+            : b.counts[id_date][v] - a.counts[id_date][v];
+        };
+      };
 
       if (v === 'name_tools') {
-        this.copyTools = this.copyTools.sort((a, b) =>
-          this.directionsForSorting === 'DESC'
-            ? a[v].localeCompare(b[v])
-            : b[v].localeCompare(a[v])
-        );
+        this.lists.tools = this.lists.tools.sort(sortName());
+        this.lists.favoritesTools = this.lists.favoritesTools.sort(sortName());
       }
+
       if (v === 'id_category') {
-        this.copyTools = this.copyTools.sort((a, b) =>
-          this.directionsForSorting === 'DESC'
-            ? a.category.name_category.localeCompare(b.category.name_category)
-            : b.category.name_category.localeCompare(a.category.name_category)
+        this.lists.tools = this.lists.tools.sort(sortCategory());
+        this.lists.favoritesTools = this.lists.favoritesTools.sort(
+          sortCategory()
         );
       }
+
       if (v === 'countIndeed' || v === 'countHeadHunter') {
-        this.copyTools = this.copyTools.sort((a, b) =>
-          this.directionsForSorting === 'DESC'
-            ? a.counts[this.selectedDate.id_date][v] -
-              b.counts[this.selectedDate.id_date][v]
-            : b.counts[this.selectedDate.id_date][v] -
-              a.counts[this.selectedDate.id_date][v]
-        );
+        this.lists.tools = this.lists.tools.sort(sortCount());
+        this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount());
       }
+    },
+    clickIconFavoriteTools(tool) {
+      this.lists.favoritesTools = this.copyFavoritesTools;
+      const hasInFavoritesTools = this.lists.favoritesTools.find(
+        (t) => t.id_tool === tool.id_tool
+      );
+      if (hasInFavoritesTools) {
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          (_tool) => _tool.id_tool !== tool.id_tool
+        );
+      } else {
+        this.lists.favoritesTools.push(tool);
+      }
+      this.copyFavoritesTools = this.lists.favoritesTools;
+      localStorage.setItem(
+        'favoritesTools',
+        JSON.stringify(this.lists.favoritesTools)
+      );
+    },
+    changeFilter(input, category) {
+      return function (tool) {
+        if (category) {
+          return (
+            tool.category.id_category === category.id_category &&
+            tool.name_tools.toLowerCase().includes(input.toLowerCase())
+          );
+        }
+        return tool.name_tools.toLowerCase().includes(input.toLowerCase());
+      };
     },
   },
 
   mounted() {
+    this.lists.favoritesTools =
+      JSON.parse(localStorage.getItem('favoritesTools')) || [];
+    this.copyFavoritesTools = this.lists.favoritesTools;
+    this.lists.studiedTools =
+      JSON.parse(localStorage.getItem('studiedTools')) || [];
     this.getCategories();
     this.getTools();
     this.getDates();
   },
+
   watch: {
     selectedCategory(v) {
-      this.copyTools = this.tools;
+      this.lists.tools = this.copyTools;
+      this.lists.favoritesTools = this.copyFavoritesTools;
       this.listSort(this.listSortVar, true);
+
       if (v === 'all') {
-        this.copyTools = this.copyTools.filter((tool) => {
-          return tool.name_tools
-            .toLowerCase()
-            .includes(this.searchInput.toLowerCase());
-        });
-        return;
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput)
+        );
+      } else {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput, v)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput, v)
+        );
       }
-      this.copyTools = this.copyTools.filter(
-        (tool) =>
-          tool.category.id_category === v.id_category &&
-          tool.name_tools.toLowerCase().includes(this.searchInput.toLowerCase())
-      );
     },
     searchInput(v) {
-      this.copyTools = this.tools;
+      this.lists.tools = this.copyTools;
+      this.lists.favoritesTools = this.copyFavoritesTools;
       this.listSort(this.listSortVar, true);
-      if (this.selectedCategory === 'all') {
-        this.copyTools = this.copyTools.filter((tool) => {
-          return tool.name_tools.toLowerCase().includes(v.toLowerCase());
-        });
-        return;
-      }
 
-      this.copyTools = this.copyTools.filter(
-        (tool) =>
-          tool.category.id_category === this.selectedCategory.id_category &&
-          tool.name_tools.toLowerCase().includes(v.toLowerCase())
-      );
+      if (this.selectedCategory === 'all') {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput)
+        );
+      } else {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput, this.selectedCategory)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput, this.selectedCategory)
+        );
+      }
     },
   },
 
-  components: { appTool },
+  components: { AppList },
 };
 </script>
