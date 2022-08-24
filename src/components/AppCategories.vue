@@ -59,7 +59,7 @@
           </button>
           <button
             class="additional-filters__button"
-            @click="selectList('ready')"
+            @click="currentList = 'studiedTools'"
           >
             Изученное
           </button>
@@ -96,10 +96,12 @@
           v-if="currentList"
           :tools="lists[currentList]"
           :favoritesTools="lists.favoritesTools"
+          :studiedTools="lists.studiedTools"
           :selectedDate="selectedDate"
           :selectedCategory="selectedCategory"
           :searchInput="searchInput"
           @clickIconFavoriteTools="clickIconFavoriteTools"
+          @clickIconStudiedTools="clickIconStudiedTools"
         ></app-list>
       </div>
     </div>
@@ -108,7 +110,7 @@
 
 <script>
 import axios from 'axios';
-import AppList from './AppListAll.vue';
+import AppList from './AppList.vue';
 
 export default {
   data() {
@@ -118,6 +120,7 @@ export default {
       lists: { tools: [], favoritesTools: [], studiedTools: [] },
       copyTools: [],
       copyFavoritesTools: [],
+      copyStudiedTools: [],
       selectedCategory: 'all',
       searchInput: '',
       selectedDate: null,
@@ -216,6 +219,24 @@ export default {
         JSON.stringify(this.lists.favoritesTools)
       );
     },
+    clickIconStudiedTools(tool) {
+      this.lists.studiedTools = this.copyStudiedTools;
+      const hasInStudiedTools = this.lists.studiedTools.find(
+        (t) => t.id_tool === tool.id_tool
+      );
+      if (hasInStudiedTools) {
+        this.lists.studiedTools = this.lists.studiedTools.filter(
+          (_tool) => _tool.id_tool !== tool.id_tool
+        );
+      } else {
+        this.lists.studiedTools.push(tool);
+      }
+      this.copyStudiedTools = this.lists.studiedTools;
+      localStorage.setItem(
+        'studiedTools',
+        JSON.stringify(this.lists.studiedTools)
+      );
+    },
     changeFilter(input, category) {
       return function (tool) {
         if (category) {
@@ -235,6 +256,8 @@ export default {
     this.copyFavoritesTools = this.lists.favoritesTools;
     this.lists.studiedTools =
       JSON.parse(localStorage.getItem('studiedTools')) || [];
+    this.copyStudiedTools = this.lists.studiedTools;
+
     this.getCategories();
     this.getTools();
     this.getDates();

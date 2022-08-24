@@ -14,7 +14,9 @@
           ),
         }"
         @click="$emit('clickIconFavoriteTools', tool)"
-      ></span>
+      >
+        &#9733;</span
+      >
       <span class="list-rows__item" @click="isOpenModalFunction(tool)">
         {{ tool.name_tools }}
       </span>
@@ -26,6 +28,28 @@
       </span>
       <span class="list-rows__item list-rows__item_count">
         {{ tool.counts[selectedDate.id_date].countHeadHunter }}
+      </span>
+      <span
+        class="list-rows__ready"
+        @click="$emit('clickIconStudiedTools', tool)"
+      >
+        <svg
+          :class="{
+            'list-rows__ready_active': studiedTools?.find(
+              (t) => t.id_tool === tool.id_tool
+            ),
+          }"
+          class="list-rows__ready-svg"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"
+          />
+          <path
+            d="M13.67,22a1,1,0,0,1-.73-.32l-4.67-5a1,1,0,0,1,1.46-1.36l3.94,4.21,8.6-9.21a1,1,0,1,1,1.46,1.36l-9.33,10A1,1,0,0,1,13.67,22Z"
+          />
+        </svg>
       </span>
     </li>
     <teleport to="body">
@@ -44,7 +68,7 @@
 import appTool from './AppTool.vue';
 
 export default {
-  emits: ['clickIconFavoriteTools'],
+  emits: ['clickIconFavoriteTools', 'clickIconStudiedTools'],
 
   data() {
     return {
@@ -67,35 +91,11 @@ export default {
   props: {
     tools: Array,
     favoritesTools: Array,
+    studiedTools: Array,
     selectedDate: Object,
     selectedCategory: [String, Object],
     searchInput: String,
   },
-  mounted() {
-    // if (this.selectedCategory === 'all') {
-    //   this.copyTools = this.copyTools.filter((tool) => {
-    //     return tool.name_tools
-    //       .toLowerCase()
-    //       .includes(this.searchInput.toLowerCase());
-    //   });
-    //   this.copyFavoriteTools = this.copyFavoriteTools.filter((tool) => {
-    //     return tool.name_tools
-    //       .toLowerCase()
-    //       .includes(this.searchInput.toLowerCase());
-    //   });
-    // } else {
-    //   console.log('wwwwwwww')
-    //   this.copyTools = this.copyTools.filter(
-    //     (tool) =>
-    //       tool.category.id_category === this.selectedCategory.id_category &&
-    //       tool.name_tools.toLowerCase().includes(this.searchInput.toLowerCase())
-    //   );
-    //   this.copyFavoriteTools = this.copyFavoriteTools.filter(
-    //     (tool) =>
-    //       tool.category.id_category === this.selectedCategory.id_category &&
-    //       tool.name_tools.toLowerCase().includes(this.searchInput.toLowerCase())
-    //   );
-    // }
-  },
+  mounted() {},
 };
 </script>

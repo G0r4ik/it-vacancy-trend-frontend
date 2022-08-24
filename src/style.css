@@ -135,14 +135,35 @@ body {
   border-radius: 15px;
 }
 
-.list-rows__favourites::before {
-  content: '\2605';
-  width: 10px;
-  height: 10px;
+.list-rows__ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-rows__favourites {
+  position: relative;
+}
+
+.list-rows__ready-svg {
+  cursor: pointer;
+  width: 42px;
+  border-radius: 50%;
+  fill: #fff;
+}
+
+.list-rows__ready_active {
+  background: green;
+}
+
+.list-rows__favourites {
+  cursor: pointer;
+  font-size: 42px;
+  margin-top: -4px;
   color: gray;
 }
 
-.list-rows__favourites_active::before {
+.list-rows__favourites_active {
   color: #f6b87e;
 }
 
