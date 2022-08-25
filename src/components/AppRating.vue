@@ -109,8 +109,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import AppList from './AppList.vue';
+import { getCategories, getDates, getTools } from '../scripts/axios';
 
 export default {
   data() {
@@ -130,29 +130,6 @@ export default {
     };
   },
   methods: {
-    async getCategories() {
-      let categories = await axios({
-        method: 'get',
-        url: 'http://127.0.0.1:5501/getCategories',
-      });
-      this.categories = categories.data;
-    },
-    async getDates() {
-      let dates = await axios({
-        method: 'get',
-        url: 'http://127.0.0.1:5501/getDate',
-      });
-      this.dates = dates.data;
-      this.selectedDate = this.dates.at(-1);
-    },
-    async getTools() {
-      let tools = await axios({
-        method: 'get',
-        url: 'http://127.0.0.1:5501/getTools',
-      });
-      this.copyTools = tools.data;
-      this.lists.tools = tools.data;
-    },
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
         this.directionsForSorting =
@@ -258,9 +235,15 @@ export default {
       JSON.parse(localStorage.getItem('studiedTools')) || [];
     this.copyStudiedTools = this.lists.studiedTools;
 
-    this.getCategories();
-    this.getTools();
-    this.getDates();
+    getTools().then((res) => {
+      this.copyTools = res;
+      this.lists.tools = res;
+    });
+    getDates().then((res) => {
+      this.dates = res;
+      this.selectedDate = this.dates.at(-1);
+    });
+    getCategories().then((res) => (this.categories = res));
   },
 
   watch: {
@@ -311,3 +294,76 @@ export default {
   components: { AppList },
 };
 </script>
+<style scoped>
+.list__column-item {
+  min-width: 80px;
+  width: 35%;
+  /* text-align: center; */
+}
+
+.list__column-item_count {
+  min-width: 80px;
+  width: 10%;
+}
+.filters__selects {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--margin-small);
+}
+
+.filters__inner {
+  padding: 15px;
+  /* background: #1c1c25; */
+  border: 5px solid var(--color-border);
+  border-radius: 15px;
+  margin-bottom: var(--margin-middle);
+}
+
+.additional-filters__inner {
+  margin-bottom: var(--margin-large);
+}
+
+.additional-filters__button {
+  background: none;
+  border: 5px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  color: inherit;
+  outline: 0px;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 16px;
+  padding: 5px 8px;
+  margin-right: var(--margin-small);
+}
+
+.list__column {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.list__column-item {
+  /* color: #5cdba6; */
+  color: #585858;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.select-container {
+  position: relative;
+}
+
+.filters__search-input {
+  width: 100%;
+  border: 2px solid #e2e2e2;
+  background-color: transparent;
+  line-height: 2;
+  padding: 0 20px;
+  border-radius: 5px;
+  font-weight: 200;
+  color: var(--color-text);
+  font-size: 20px;
+  transition: all 0.25s;
+}
+</style>

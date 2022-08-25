@@ -99,3 +99,72 @@ export default {
   mounted() {},
 };
 </script>
+
+<style scoped>
+.list-rows__item {
+  min-width: 80px;
+  width: 35%;
+  /* text-align: center; */
+}
+
+.list-rows__item_count {
+  min-width: 80px;
+  width: 10%;
+}
+
+.list-rows__item_category {
+  /* background: #4ba5e4; */
+}
+
+.list__item {
+  /* background: #1c1c25; */
+  margin: var(--margin-small) 0;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: 5px solid var(--color-border);
+  border-radius: 15px;
+}
+
+.list-rows__ready {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-rows__favourites {
+  position: relative;
+}
+
+.list-rows__ready-svg {
+  cursor: pointer;
+  width: 42px;
+  border-radius: 50%;
+  fill: var(--color-text);
+}
+
+.list-rows__ready_active {
+  background: green;
+}
+
+.list-rows__favourites {
+  cursor: pointer;
+  font-size: 42px;
+  margin-top: -4px;
+  color: gray;
+}
+
+.list-rows__favourites_active {
+  color: #f6b87e;
+}
+
+.empty-list {
+  width: 100%;
+  font-size: 56px;
+  text-align: center;
+  color: #242424;
+  margin-top: 120px;
+}
+</style>

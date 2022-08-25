@@ -19,3 +19,23 @@
     </div>
   </header>
 </template>
+
+<style scoped>
+.header {
+  width: 100%;
+  margin-bottom: var(--margin-small);
+}
+
+.header__inner {
+  padding: 15px 0;
+  display: flex;
+  border-bottom: 5px solid var(--color-border);
+  /* justify-content: space-between; */
+}
+
+.header__link {
+  text-decoration: none;
+  color: inherit;
+  padding: 0 15px;
+}
+</style>

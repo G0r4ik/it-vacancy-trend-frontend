@@ -1,0 +1,50 @@
+<template>
+  <div class="other">
+    <div class="other__inner">
+      <p class="other__p">
+        На сайте каждый день в 4 часа ночи по Гринвичу выкладывается количество
+        вакансий определенных технологий.
+      </p>
+      <p class="other__p">
+        На данный момент на сайте есть два варианта. Российский рынок
+        (HeadHunter) и мировой (Indeed).
+      </p>
+
+      <p class="other__p">
+        В вашей стране есть локальный агрегатор вакансий и вы хотите чтобы этот
+        сайт отслеживал количество вакансий в нем и/или вы хотите чтобы на
+        условном Indeed отображались не все вакансии, а только вашей страны (а
+        может и города?), то пишите на почту.
+      </p>
+      <p class="other__p">
+        Некоректное название категории? Нет какой-либо тенхнологии? Неадекватные
+        цифры? Советы по развитию проекта? Нашли баги? Пишите на почту.
+      </p>
+      <p class="other__p">eforfora@gmail.com</p>
+    </div>
+  </div>
+</template>
+
+<style>
+.other {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.other__inner {
+  max-width: 1100px;
+  /* border: 5px solid var(--color-border); */
+  margin: var(--margin-small);
+  padding: var(--margin-small);
+  border-radius: 50px;
+  font-family: monospace;
+  line-height: 150%;
+}
+
+.other__p {
+  margin-bottom: var(--margin-small);
+}
+</style>

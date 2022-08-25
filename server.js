@@ -20,7 +20,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-app.get('/getDate', (req, res) => {
+app.get('/getDates', (req, res) => {
   pool.query('SELECT * FROM date_of_completion', (e, results) =>
     res.send(results.rows)
   );
@@ -186,6 +186,7 @@ async function uploadDataToTheDatabase() {
 
 app.get('/uploadDataToTheDatabase', (req, res) => uploadDataToTheDatabase());
 
-app.listen(5501, () => {
-  console.log('SERVER WORKING!');
+const port = 5501;
+app.listen(port, () => {
+  console.log('SERVER WORKING!', port);
 });

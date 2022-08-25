@@ -76,3 +76,28 @@ export default {
   },
 };
 </script>
+<style scoped>
+.background-modal {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.technology-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.technology-comparison__innner {
+  background: #111111;
+  max-width: 800px;
+  max-height: 500px;
+  padding: 50px;
+}
+</style>
