@@ -4,16 +4,32 @@
       <div class="header__inner">
         <span class="header__logo-text">IT Vacancy Trand</span>
         <nav class="header__nav">
-          <a href="#" class="header__link">Рейтинг</a>
-          <a href="#" class="header__link">Сравнить</a>
-          <a href="#" class="header__link">Прочее</a>
+          <a
+            href="#"
+            class="header__link"
+            @click="$emit('changePage', 'rating')"
+            >Рейтинг</a
+          >
+          <a
+            href="#"
+            class="header__link"
+            @click="$emit('changePage', 'compare')"
+            >Сравнить</a
+          >
+          <a href="#" class="header__link" @click="$emit('changePage', 'other')"
+            >Прочее</a
+          >
         </nav>
         <select name="select-lang" id="select-lang" class="header__select-lang">
           <option value="russian">EN</option>
           <option value="english">RU</option>
         </select>
         <div class="header__user">
-          <img src="../src/assets/user-avatar.png" alt="" />
+          <img
+            src="../assets/user-avatar.png"
+            alt="user avatar"
+            class="header__user-avatar"
+          />
           <!-- <img :src="require(`../../assets/user-avatar.png`)" alt="user logo" /> -->
         </div>
       </div>
@@ -38,5 +54,10 @@
   text-decoration: none;
   color: inherit;
   padding: 0 15px;
+}
+
+.header__user-avatar {
+  width: 42px;
+  height: 42px;
 }
 </style>
