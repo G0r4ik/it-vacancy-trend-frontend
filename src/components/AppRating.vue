@@ -113,6 +113,8 @@ import AppList from './AppList.vue';
 import { getCategories, getDates, getTools } from '../scripts/axios';
 
 export default {
+  components: { AppList },
+
   data() {
     return {
       categories: [],
@@ -129,6 +131,71 @@ export default {
       directionsForSorting: 'DESC',
     };
   },
+
+  watch: {
+    selectedCategory(v) {
+      this.lists.tools = this.copyTools;
+      this.lists.favoritesTools = this.copyFavoritesTools;
+      this.listSort(this.listSortVar, true);
+
+      if (v === 'all') {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput)
+        );
+      } else {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput, v)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput, v)
+        );
+      }
+    },
+    searchInput(v) {
+      this.lists.tools = this.copyTools;
+      this.lists.favoritesTools = this.copyFavoritesTools;
+      this.listSort(this.listSortVar, true);
+
+      if (this.selectedCategory === 'all') {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput)
+        );
+      } else {
+        this.lists.tools = this.lists.tools.filter(
+          this.changeFilter(this.searchInput, this.selectedCategory)
+        );
+        this.lists.favoritesTools = this.lists.favoritesTools.filter(
+          this.changeFilter(this.searchInput, this.selectedCategory)
+        );
+      }
+    },
+  },
+
+  mounted() {
+    this.lists.favoritesTools =
+      JSON.parse(localStorage.getItem('favoritesTools')) || [];
+    this.copyFavoritesTools = this.lists.favoritesTools;
+    this.lists.studiedTools =
+      JSON.parse(localStorage.getItem('studiedTools')) || [];
+    this.copyStudiedTools = this.lists.studiedTools;
+
+    getTools().then((res) => {
+      this.copyTools = res;
+      this.lists.tools = res;
+    });
+    getDates().then((res) => {
+      this.dates = res;
+      this.selectedDate = this.dates.at(-1);
+    });
+    getCategories().then((res) => (this.categories = res));
+  },
+
   methods: {
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
@@ -226,72 +293,6 @@ export default {
       };
     },
   },
-
-  mounted() {
-    this.lists.favoritesTools =
-      JSON.parse(localStorage.getItem('favoritesTools')) || [];
-    this.copyFavoritesTools = this.lists.favoritesTools;
-    this.lists.studiedTools =
-      JSON.parse(localStorage.getItem('studiedTools')) || [];
-    this.copyStudiedTools = this.lists.studiedTools;
-
-    getTools().then((res) => {
-      this.copyTools = res;
-      this.lists.tools = res;
-    });
-    getDates().then((res) => {
-      this.dates = res;
-      this.selectedDate = this.dates.at(-1);
-    });
-    getCategories().then((res) => (this.categories = res));
-  },
-
-  watch: {
-    selectedCategory(v) {
-      this.lists.tools = this.copyTools;
-      this.lists.favoritesTools = this.copyFavoritesTools;
-      this.listSort(this.listSortVar, true);
-
-      if (v === 'all') {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput)
-        );
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput)
-        );
-      } else {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput, v)
-        );
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput, v)
-        );
-      }
-    },
-    searchInput(v) {
-      this.lists.tools = this.copyTools;
-      this.lists.favoritesTools = this.copyFavoritesTools;
-      this.listSort(this.listSortVar, true);
-
-      if (this.selectedCategory === 'all') {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput)
-        );
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput)
-        );
-      } else {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput, this.selectedCategory)
-        );
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput, this.selectedCategory)
-        );
-      }
-    },
-  },
-
-  components: { AppList },
 };
 </script>
 <style scoped>

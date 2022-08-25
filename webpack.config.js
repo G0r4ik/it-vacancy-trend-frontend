@@ -9,6 +9,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { VueLoaderPlugin } = require('vue-loader');
+const webpack = require('webpack');
 
 const isDev = process.env.NODE_ENV === 'production' ? false : true;
 
@@ -32,7 +33,7 @@ const config = {
 
   resolve: {
     alias: {
-      // '@': path.resolve(__dirname, 'assets'),
+      '@': path.resolve(__dirname, 'assets'),
       // assets: paths.public,
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
@@ -69,6 +70,10 @@ const config = {
           globOptions: { ignore: ['*.DS_Store'] },
         },
       ],
+    }),
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false,
     }),
     // new BundleAnalyzerPlugin(),
   ],
@@ -244,34 +249,38 @@ const config = {
         ],
       },
 
-      // img
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/i,
-        //   type: 'asset/resource',
-        generator: {
-          filename: './img/[name]_[hash][ext]',
-        },
-        use: [
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              disable: isDev,
-              svgo: {},
-              pngquant: {
-                quality: [0.9, 1], // 0.8 85-90
-                speed: 1, // 4
-              },
-              mozjpeg: {
-                quality: 85,
-                progressive: true,
-              },
-              gifsicle: {
-                interlaced: true,
-              },
-            },
-          },
-        ],
+        test: /\.(png|jpe?g|gif)$/i,
+        type: 'asset/resource',
       },
+      // img
+      // {
+      //   test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/i,
+      //   //   type: 'asset/resource',
+      //   generator: {
+      //     filename: './img/[name]_[hash][ext]',
+      //   },
+      //   use: [
+      //     {
+      //       loader: 'image-webpack-loader',
+      //       options: {
+      //         disable: isDev,
+      //         svgo: {},
+      //         pngquant: {
+      //           quality: [0.9, 1], // 0.8 85-90
+      //           speed: 1, // 4
+      //         },
+      //         mozjpeg: {
+      //           quality: 85,
+      //           progressive: true,
+      //         },
+      //         gifsicle: {
+      //           interlaced: true,
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
     ],
   },
 };

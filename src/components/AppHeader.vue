@@ -9,11 +9,12 @@
           <a href="#" class="header__link">Прочее</a>
         </nav>
         <select name="select-lang" id="select-lang" class="header__select-lang">
-          <option value="russian">russian</option>
-          <option value="english">english</option>
+          <option value="russian">EN</option>
+          <option value="english">RU</option>
         </select>
         <div class="header__user">
-          <img src="#" alt="user logo" />
+          <img src="../src/assets/user-avatar.png" alt="" />
+          <!-- <img :src="require(`../../assets/user-avatar.png`)" alt="user logo" /> -->
         </div>
       </div>
     </div>

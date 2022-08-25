@@ -68,6 +68,16 @@
 import appTool from './AppTool.vue';
 
 export default {
+  components: { appTool },
+  props: {
+    tools: Array,
+    favoritesTools: Array,
+    studiedTools: Array,
+    selectedDate: Object,
+    selectedCategory: [String, Object],
+    searchInput: String,
+  },
+
   emits: ['clickIconFavoriteTools', 'clickIconStudiedTools'],
 
   data() {
@@ -87,16 +97,6 @@ export default {
       this.toolInModal = tool;
     },
   },
-  components: { appTool },
-  props: {
-    tools: Array,
-    favoritesTools: Array,
-    studiedTools: Array,
-    selectedDate: Object,
-    selectedCategory: [String, Object],
-    searchInput: String,
-  },
-  mounted() {},
 };
 </script>
 
