@@ -104,7 +104,7 @@ async function uploadDataToTheDatabase() {
       const result = await axios({
         method: 'get',
         url: `https://api.hh.ru/vacancies?text=${encodeURIComponent(
-          tools[i].name_tools
+          tools[i].name_tool
         )}&area=1&no_magic=true&page=0&per_page=0`,
       })
       pool.query(
@@ -134,10 +134,10 @@ async function uploadDataToTheDatabase() {
         0)`
         )
       try {
-        const encodeString = encodeURIComponent(tool.name_tools)
+        const encodeString = encodeURIComponent(tool.name_tool)
         const url =
-          encodeString === tool.name_tools
-            ? `https://www.indeed.com/q-${tool.name_tools}-jobs.html`
+          encodeString === tool.name_tool
+            ? `https://www.indeed.com/q-${tool.name_tool}-jobs.html`
             : `https://www.indeed.com/jobs?q=${encodeString}&vj&vjk`
 
         let resp = await needle('get', url)

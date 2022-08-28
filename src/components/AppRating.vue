@@ -70,7 +70,7 @@
       <div class="container">
         <div class="list__inner">
           <div class="list__column">
-            <span class="list__column-item" @click="listSort('name_tools')">
+            <span class="list__column-item" @click="listSort('name_tool')">
               Название
             </span>
             <span class="list__column-item" @click="listSort('id_category')"
@@ -224,7 +224,7 @@ export default {
         }
       }
 
-      if (v === 'name_tools') {
+      if (v === 'name_tool') {
         this.lists.tools = this.lists.tools.sort(sortName())
         this.lists.favoritesTools = this.lists.favoritesTools.sort(sortName())
       }
@@ -282,10 +282,10 @@ export default {
         if (category) {
           return (
             tool.category.id_category === category.id_category &&
-            tool.name_tools.toLowerCase().includes(input.toLowerCase())
+            tool.name_tool.toLowerCase().includes(input.toLowerCase())
           )
         }
-        return tool.name_tools.toLowerCase().includes(input.toLowerCase())
+        return tool.name_tool.toLowerCase().includes(input.toLowerCase())
       }
     },
   },

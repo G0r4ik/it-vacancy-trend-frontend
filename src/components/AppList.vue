@@ -6,9 +6,9 @@
       class="list__item list-rows"
       :class="'category' + tool.category.id_category">
       <span
-        class="list-rows__favourites"
+        class="list-rows__favorites"
         :class="{
-          'list-rows__favourites_active': favoritesTools?.find(
+          'list-rows__favorites_active': favoritesTools?.find(
             t => t.id_tool === tool.id_tool
           ),
         }"
@@ -16,7 +16,7 @@
         &#9733;</span
       >
       <span class="list-rows__item" @click="isOpenModalFunction(tool)">
-        {{ tool.name_tools }}
+        {{ tool.name_tool }}
       </span>
       <span class="list-rows__item list-rows__item_category">
         {{ tool.category.name_category }}
@@ -107,7 +107,7 @@ export default {
   border-radius: 15px;
 }
 
-.list-rows__favourites {
+.list-rows__favorites {
   position: relative;
   cursor: pointer;
   font-size: 42px;
@@ -125,7 +125,7 @@ export default {
   background: green;
 }
 
-.list-rows__favourites_active {
+.list-rows__favorites_active {
   color: #f6b87e;
 }
 
