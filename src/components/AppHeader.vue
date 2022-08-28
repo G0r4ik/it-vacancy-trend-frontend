@@ -2,23 +2,34 @@
   <header class="header">
     <div class="container">
       <div class="header__inner">
-        <span class="header__logo-text">IT Vacancy Trand</span>
+        <span class="header__logo-text">IT Vacancy Trend</span>
         <nav class="header__nav">
-          <a
-            href="#"
-            class="header__link"
-            @click="$emit('changePage', 'rating')"
-            >Рейтинг</a
-          >
-          <a
-            href="#"
-            class="header__link"
-            @click="$emit('changePage', 'compare')"
-            >Сравнить</a
-          >
-          <a href="#" class="header__link" @click="$emit('changePage', 'other')"
-            >Прочее</a
-          >
+          <ul class="header__list-links">
+            <li class="header__item">
+              <a
+                href="#"
+                class="header__link"
+                @click="$emit('changePage', 'rating')">
+                Рейтинг
+              </a>
+            </li>
+            <li class="header__item">
+              <a
+                href="#"
+                class="header__link"
+                @click="$emit('changePage', 'compare')">
+                Сравнить
+              </a>
+            </li>
+            <li class="header__item">
+              <a
+                href="#"
+                class="header__link"
+                @click="$emit('changePage', 'other')">
+                Прочее
+              </a>
+            </li>
+          </ul>
         </nav>
         <select name="select-lang" id="select-lang" class="header__select-lang">
           <option value="russian">EN</option>
@@ -28,8 +39,7 @@
           <img
             src="../assets/user-avatar.png"
             alt="user avatar"
-            class="header__user-avatar"
-          />
+            class="header__user-avatar" />
           <!-- <img :src="require(`../../assets/user-avatar.png`)" alt="user logo" /> -->
         </div>
       </div>

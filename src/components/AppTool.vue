@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import Chart from 'chart.js/auto';
+import Chart from 'chart.js/auto'
 
 export default {
   props: {
@@ -21,20 +21,20 @@ export default {
     dates: Object,
   },
   mounted() {
-    const countsHeadHunter = [];
-    const countsIndeed = [];
+    const countsHeadHunter = []
+    const countsIndeed = []
     for (const count in this.currentTool.counts) {
       if (Object.hasOwnProperty.call(this.currentTool.counts, count)) {
-        countsHeadHunter.push(this.currentTool.counts[count].countHeadHunter);
-        countsIndeed.push(this.currentTool.counts[count].countIndeed);
+        countsHeadHunter.push(this.currentTool.counts[count].countHeadHunter)
+        countsIndeed.push(this.currentTool.counts[count].countIndeed)
       }
     }
-    console.log(countsIndeed);
-    const ctx = document.getElementById('myChart').getContext('2d');
+    console.log(countsIndeed)
+    const ctx = document.getElementById('myChart').getContext('2d')
     const myChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: this.dates.map((date) => date.date_of_completion),
+        labels: this.dates.map(date => date.date_of_completion),
         datasets: [
           {
             label: 'HHru',
@@ -67,14 +67,14 @@ export default {
           },
         },
       },
-    });
+    })
   },
   data() {
     return {
       selectedTools: [],
-    };
+    }
   },
-};
+}
 </script>
 <style scoped>
 .background-modal {

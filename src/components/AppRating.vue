@@ -6,27 +6,29 @@
         <div class="filters__inner">
           <div class="filters__selects">
             <div class="select-container">
-              <label for="date_of_completion">Дата:</label>
+              <label for="date_of_completion" class="select-container__label"
+                >Дата:</label
+              >
               <select
                 name="date_of_completion"
                 id="date_of_completion"
-                v-model="selectedDate"
-              >
+                v-model="selectedDate">
                 <option v-for="date of dates" :value="date" :key="date.id_date">
                   {{ date.date_of_completion }}
                 </option>
               </select>
             </div>
             <div class="select-container">
-              <label for="category">Категория:</label>
+              <label for="category" class="select-container__label">
+                Категория:
+              </label>
               <select name="category" id="category" v-model="selectedCategory">
                 <option value="all">Все</option>
                 <option
                   v-for="category of categories"
                   :key="category.id_category"
                   :class="'category' + category.id_category"
-                  :value="category"
-                >
+                  :value="category">
                   {{ category.name_category }}
                 </option>
               </select>
@@ -36,8 +38,7 @@
             type="search"
             class="filters__search-input"
             placeholder="Введите технологию"
-            v-model="searchInput"
-          />
+            v-model="searchInput" />
         </div>
       </div>
     </div>
@@ -47,20 +48,17 @@
         <div class="additional-filters__inner">
           <button
             class="additional-filters__button"
-            @click="currentList = 'tools'"
-          >
+            @click="currentList = 'tools'">
             Все
           </button>
           <button
             class="additional-filters__button"
-            @click="currentList = 'favoritesTools'"
-          >
+            @click="currentList = 'favoritesTools'">
             Избранное
           </button>
           <button
             class="additional-filters__button"
-            @click="currentList = 'studiedTools'"
-          >
+            @click="currentList = 'studiedTools'">
             Изученное
           </button>
           <button class="additional-filters__button">Настроить</button>
@@ -80,14 +78,12 @@
             </span>
             <span
               class="list__column-item list__column-item_count"
-              @click="listSort('countIndeed')"
-            >
+              @click="listSort('countIndeed')">
               Indeed
             </span>
             <span
               class="list__column-item list__column-item_count"
-              @click="listSort('countHeadHunter')"
-            >
+              @click="listSort('countHeadHunter')">
               HHru
             </span>
           </div>
@@ -101,8 +97,8 @@
           :selectedCategory="selectedCategory"
           :searchInput="searchInput"
           @clickIconFavoriteTools="clickIconFavoriteTools"
-          @clickIconStudiedTools="clickIconStudiedTools"
-        ></app-list>
+          @clickIconStudiedTools="clickIconStudiedTools">
+        </app-list>
       </div>
     </div>
   </div>
@@ -185,15 +181,15 @@ export default {
       JSON.parse(localStorage.getItem('studiedTools')) || []
     this.copyStudiedTools = this.lists.studiedTools
 
-    getTools().then((res) => {
+    getTools().then(res => {
       this.copyTools = res
       this.lists.tools = res
     })
-    getDates().then((res) => {
+    getDates().then(res => {
       this.dates = res
       this.selectedDate = this.dates.at(-1)
     })
-    getCategories().then((res) => (this.categories = res))
+    getCategories().then(res => (this.categories = res))
   },
 
   methods: {
@@ -248,11 +244,11 @@ export default {
     clickIconFavoriteTools(tool) {
       this.lists.favoritesTools = this.copyFavoritesTools
       const hasInFavoritesTools = this.lists.favoritesTools.find(
-        (t) => t.id_tool === tool.id_tool
+        t => t.id_tool === tool.id_tool
       )
       if (hasInFavoritesTools) {
         this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          (_tool) => _tool.id_tool !== tool.id_tool
+          _tool => _tool.id_tool !== tool.id_tool
         )
       } else {
         this.lists.favoritesTools.push(tool)
@@ -266,11 +262,11 @@ export default {
     clickIconStudiedTools(tool) {
       this.lists.studiedTools = this.copyStudiedTools
       const hasInStudiedTools = this.lists.studiedTools.find(
-        (t) => t.id_tool === tool.id_tool
+        t => t.id_tool === tool.id_tool
       )
       if (hasInStudiedTools) {
         this.lists.studiedTools = this.lists.studiedTools.filter(
-          (_tool) => _tool.id_tool !== tool.id_tool
+          _tool => _tool.id_tool !== tool.id_tool
         )
       } else {
         this.lists.studiedTools.push(tool)
@@ -300,10 +296,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: var(--margin-small);
-}
-
-.select-container {
-  position: relative;
 }
 
 .filters__search-input {
@@ -342,7 +334,6 @@ export default {
   justify-content: space-between;
   padding: 0 15px;
 }
-
 .list__column-item {
   min-width: 80px;
   width: 35%;

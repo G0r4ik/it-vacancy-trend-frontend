@@ -7,8 +7,9 @@
       </p>
       <p class="other__p">
         Ваши списки сохраняются только в браузере на котором была открыта эта
-        страница, на других устройствах или браузерах ничего не сохранится.
-        Хотите чтобы ваши списки сохранялись? Создайте и войдите в аккаунт
+        страница, на других устройствах или в других браузерах ничего не
+        сохранится. Хотите чтобы ваши списки сохранялись? Создайте или войдите в
+        аккаунт
       </p>
       <p class="other__p">
         На данный момент на сайте есть два варианта. Российский рынок
@@ -40,11 +41,10 @@
 }
 
 .other__inner {
-  max-width: 1100px;
-  /* border: 5px solid var(--color-border); */
+  max-width: var(--container-large);
+  border: 1px solid var(--color-border);
   margin: var(--margin-small);
-  padding: var(--margin-small);
-  border-radius: 50px;
+  padding: var(--padding-small);
   font-family: monospace;
   line-height: 150%;
 }
