@@ -8,7 +8,7 @@ body {
   font-family: Roboto, sans-serif;
   background: var(--color-background);
   /* font-size: 24px; */
-  font-size: 16px;
+  font-size: 24px;
   /* font-size: calc((100vw - 480px) / (1280 - 480) * (24 - 16) + 16px); */
   color: var(--color-text);
 }
@@ -16,6 +16,7 @@ body {
 .container {
   max-width: 1120px;
   margin: 0 auto;
+  padding: 0 15px;
 }
 
 .main {

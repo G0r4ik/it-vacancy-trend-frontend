@@ -4,7 +4,7 @@
   --color_chartreuse-base: #9bff00;
   --color_picton-blue-base: #4ba5e4;
   --color_cod-gray-base: #111111;
-
+/* 5cdba6 */
   --color-border: var(--color_mine-shaft-base);
   --color-text: var(--color_white-base);
   --color-primary: var(--color_chartreuse-base);
@@ -36,4 +36,5 @@
   --container-middle: 760px;
   --container-large: 1100px;
   --container-extra-large: 1400px;
+  /* width-icon, height-icon; */
 }

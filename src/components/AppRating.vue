@@ -5,24 +5,29 @@
       <div class="container">
         <div class="filters__inner">
           <div class="filters__selects">
-            <div class="select-container">
-              <label for="date_of_completion" class="select-container__label"
-                >Дата:</label
-              >
+            <div class="filters__select-container select-container">
+              <label for="date_of_completion" class="select-container__label">
+                Дата:
+              </label>
               <select
                 name="date_of_completion"
                 id="date_of_completion"
-                v-model="selectedDate">
+                v-model="selectedDate"
+                class="select-container__input">
                 <option v-for="date of dates" :value="date" :key="date.id_date">
                   {{ date.date_of_completion }}
                 </option>
               </select>
             </div>
-            <div class="select-container">
+            <div class="filters__select-container select-container">
               <label for="category" class="select-container__label">
                 Категория:
               </label>
-              <select name="category" id="category" v-model="selectedCategory">
+              <select
+                name="category"
+                id="category"
+                v-model="selectedCategory"
+                class="select-container__input">
                 <option value="all">Все</option>
                 <option
                   v-for="category of categories"
@@ -66,29 +71,9 @@
       </div>
     </div>
 
-    <div class="list">
+    <div class="rating-main">
       <div class="container">
-        <div class="list__inner">
-          <div class="list__column">
-            <span class="list__column-item" @click="listSort('name_tool')">
-              Название
-            </span>
-            <span class="list__column-item" @click="listSort('id_category')"
-              >Категория
-            </span>
-            <span
-              class="list__column-item list__column-item_count"
-              @click="listSort('countIndeed')">
-              Indeed
-            </span>
-            <span
-              class="list__column-item list__column-item_count"
-              @click="listSort('countHeadHunter')">
-              HHru
-            </span>
-          </div>
-        </div>
-        <app-list
+        <tools-table
           v-if="currentList"
           :tools="lists[currentList]"
           :favoritesTools="lists.favoritesTools"
@@ -97,19 +82,23 @@
           :selectedCategory="selectedCategory"
           :searchInput="searchInput"
           @clickIconFavoriteTools="clickIconFavoriteTools"
-          @clickIconStudiedTools="clickIconStudiedTools">
-        </app-list>
+          @clickIconStudiedTools="clickIconStudiedTools"
+          @listSort="listSort">
+        </tools-table>
       </div>
     </div>
+    <div class="empty-list" v-if="listEmpty">Ничего нет</div>
   </div>
 </template>
 
 <script>
-import AppList from './AppList.vue'
+import ToolsTable from './ToolsTable.vue'
+// import AppList from './AppList.vue'
 import { getCategories, getDates, getTools } from '../scripts/axios'
+import ToolsTable1 from './ToolsTable.vue'
 
 export default {
-  components: { AppList },
+  components: { ToolsTable, ToolsTable1 },
 
   data() {
     return {
@@ -126,6 +115,12 @@ export default {
       currentList: 'tools',
       directionsForSorting: 'DESC',
     }
+  },
+
+  computed: {
+    listEmpty() {
+      return !this.lists[this.currentList].length
+    },
   },
 
   watch: {
@@ -292,12 +287,28 @@ export default {
 }
 </script>
 <style scoped>
+.filters {
+}
+
+.filters__inner {
+  padding: 15px;
+  border: 5px solid var(--color-border);
+  border-radius: 15px;
+  margin-bottom: var(--margin-middle);
+}
 .filters__selects {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-bottom: var(--margin-small);
 }
 
+.select-container {
+}
+.filters__select-container {
+}
+.select-container__label {
+}
 .filters__search-input {
   width: 100%;
   border: 2px solid #e2e2e2;
@@ -310,11 +321,11 @@ export default {
   font-size: 20px;
   transition: all 0.25s;
 }
-
+.additional-filters {
+}
 .additional-filters__inner {
   margin-bottom: var(--margin-large);
 }
-
 .additional-filters__button {
   background: none;
   border: 5px solid var(--color-border);
@@ -328,32 +339,23 @@ export default {
   padding: 5px 8px;
   margin-right: var(--margin-small);
 }
-
-.list__column {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 15px;
+.rating-main {
 }
-.list__column-item {
-  min-width: 80px;
-  width: 35%;
-  /* text-align: center; */
-  /* color: #5cdba6; */
-  color: #585858;
-  font-weight: 700;
-  cursor: pointer;
+.empty-list {
+  width: 100%;
+  font-size: 56px;
+  text-align: center;
+  color: #242424;
+  margin-top: 120px;
 }
 
-.list__column-item_count {
-  min-width: 80px;
-  width: 10%;
-}
+@media (max-width: 1000px) {
+  .filters__select-container {
+    margin-bottom: var(--margin-small);
+  }
 
-.filters__inner {
-  padding: 15px;
-  /* background: #1c1c25; */
-  border: 5px solid var(--color-border);
-  border-radius: 15px;
-  margin-bottom: var(--margin-middle);
+  .select-container__input {
+    font-size: 16px;
+  }
 }
 </style>
