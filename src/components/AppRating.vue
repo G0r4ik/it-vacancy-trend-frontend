@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="title">RATING:</h2>
+    <h2 class="title">RATING ({{ lists[currentList].length }})</h2>
     <div class="filters">
       <div class="container">
         <div class="filters__inner">
@@ -71,6 +71,54 @@
       </div>
     </div>
 
+    <div class="pagination">
+      <button
+        class="pagination__button"
+        :disabled="currentPage === 1"
+        @click="goFirst">
+        --
+      </button>
+      <button
+        class="pagination__button"
+        :disabled="currentPage === 1"
+        @click="minusOne">
+        -
+      </button>
+      <button
+        class="pagination__button"
+        :class="currentPage === page ? 'pagination__button_current' : ''"
+        :disabled="page > pageCount"
+        v-for="page of visible"
+        :key="page"
+        @click="changeClick(page)">
+        {{ page }}
+      </button>
+      <button
+        class="pagination__button"
+        :disabled="currentPage === pageCount"
+        @click="addOne">
+        +
+      </button>
+      <button
+        class="pagination__button"
+        :disabled="currentPage === pageCount"
+        @click="goLast">
+        ++
+      </button>
+    </div>
+
+    <label for="listing-per-pages">
+      <select
+        name="listing-per-pages"
+        id="listing-per-pages"
+        @change="changePerPage($event)">
+        <option value="10">10</option>
+        <option value="25" selected="selected">25</option>
+        <option value="50">50</option>
+        <option value="10000">All</option>
+      </select>
+    </label>
+
     <div class="rating-main">
       <div class="container">
         <tools-table
@@ -81,6 +129,7 @@
           :selectedDate="selectedDate"
           :selectedCategory="selectedCategory"
           :searchInput="searchInput"
+          :dates="dates"
           @clickIconFavoriteTools="clickIconFavoriteTools"
           @clickIconStudiedTools="clickIconStudiedTools"
           @listSort="listSort">
@@ -94,11 +143,10 @@
 <script>
 import ToolsTable from './ToolsTable.vue'
 // import AppList from './AppList.vue'
-import { getCategories, getDates, getTools } from '../scripts/axios'
-import ToolsTable1 from './ToolsTable.vue'
+import { getCategories, getDates, getTools, getIndeed } from '../scripts/axios'
 
 export default {
-  components: { ToolsTable, ToolsTable1 },
+  components: { ToolsTable },
 
   data() {
     return {
@@ -114,6 +162,12 @@ export default {
       listSortVar: null,
       currentList: 'tools',
       directionsForSorting: 'DESC',
+      currentJobBoard: 'Indeed',
+      currentPage: 1,
+      itemsPerPage: 25,
+      paginatedTools: [],
+      visible: [],
+      pageCount: null,
     }
   },
 
@@ -176,18 +230,163 @@ export default {
       JSON.parse(localStorage.getItem('studiedTools')) || []
     this.copyStudiedTools = this.lists.studiedTools
 
-    getTools().then(res => {
-      this.copyTools = res
-      this.lists.tools = res
-    })
     getDates().then(res => {
       this.dates = res
       this.selectedDate = this.dates.at(-1)
     })
     getCategories().then(res => (this.categories = res))
+
+    getTools().then(res => {
+      this.copyTools = res
+      this.lists.tools = res
+
+      getIndeed().then(res => {
+        for (const j of res) {
+          const [date, count] = j.count
+          const findTool = this.lists.tools.find(t => t.id_tool === j.id_tool)
+          if (!findTool.counts.Indeed) findTool.counts.Indeed = {}
+          findTool.counts.Indeed[date] = count
+        }
+      })
+      this.changePerPage()
+    })
   },
 
   methods: {
+    addOne() {
+      this.currentPage++
+      this.paginatedTools = []
+
+      this.paginatedTools = this.lists[this.currentList].slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
+      )
+      if (
+        this.currentPage < 3 ||
+        this.currentPage === this.pageCount - 1 ||
+        this.currentPage === this.pageCount
+      ) {
+        return
+      }
+
+      this.visible = [
+        this.currentPage - 2,
+        this.currentPage - 1,
+        this.currentPage,
+        this.currentPage + 1,
+        this.currentPage + 2,
+      ]
+    },
+    minusOne() {
+      this.currentPage--
+      this.paginatedTools = []
+
+      this.paginatedTools = this.lists[this.currentList].slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
+      )
+      if (
+        this.currentPage < 3 ||
+        this.currentPage === this.pageCount - 1 ||
+        this.currentPage === this.pageCount
+      ) {
+        return
+      }
+
+      this.visible = [
+        this.currentPage - 2,
+        this.currentPage - 1,
+        this.currentPage,
+        this.currentPage + 1,
+        this.currentPage + 2,
+      ]
+    },
+    goFirst() {
+      this.currentPage = 1
+      this.paginatedTools = []
+
+      this.paginatedTools = this.lists[this.currentList].slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
+      )
+
+      this.visible = []
+      if (this.pageCount > 6) {
+        for (let i = 1; i < 6; i++) this.visible.push(i)
+      } else {
+        for (let i = 1; i <= this.pageCount; i++) this.visible.push(i)
+      }
+    },
+    goLast() {
+      this.currentPage = this.pageCount
+      this.paginatedTools = []
+
+      this.paginatedTools = this.lists[this.currentList].slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
+      )
+
+      this.visible = []
+      if (this.pageCount > 6) {
+        console.log('1')
+        for (let i = this.pageCount; i > this.pageCount - 5; i--)
+          this.visible.unshift(i)
+      } else {
+        console.log('2')
+        for (let i = 1; i <= this.pageCount; i++) this.visible.push(i)
+      }
+    },
+    changePerPage(e = 25) {
+      this.currentPage = 1
+      if (e.target) this.itemsPerPage = e.target.value
+      if (!e.target) this.itemsPerPage = +e
+
+      this.pageCount = Math.ceil(
+        this.lists[this.currentList].length / this.itemsPerPage
+      )
+      this.paginatedTools = []
+      this.visible = []
+      if (this.pageCount > 5) {
+        this.visible = [1, 2, 3, 4, 5]
+      } else {
+        for (let i = 1; i <= this.pageCount; i++) {
+          this.visible.push(i)
+        }
+      }
+      this.paginatedTools = this.lists[this.currentList].slice(
+        0,
+        this.itemsPerPage
+      )
+    },
+    changeClick(e) {
+      this.currentPage = e
+      this.paginatedTools = []
+      console.log((this.currentPage - 1) * this.itemsPerPage, 'start')
+      console.log(
+        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage,
+        'end'
+      )
+
+      this.paginatedTools = this.lists[this.currentList].slice(
+        (this.currentPage - 1) * this.itemsPerPage,
+        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
+      )
+      if (
+        this.currentPage < 3 ||
+        this.currentPage === this.pageCount - 1 ||
+        this.currentPage === this.pageCount
+      ) {
+        return
+      }
+
+      this.visible = [
+        this.currentPage - 2,
+        this.currentPage - 1,
+        this.currentPage,
+        this.currentPage + 1,
+        this.currentPage + 2,
+      ]
+    },
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
         this.directionsForSorting =
@@ -214,8 +413,8 @@ export default {
       const sortCount = () => {
         return function (a, b) {
           return directionsForSorting === 'DESC'
-            ? a.counts[id_date][v] - b.counts[id_date][v]
-            : b.counts[id_date][v] - a.counts[id_date][v]
+            ? a.counts[v][id_date] - b.counts[v][id_date]
+            : b.counts[v][id_date] - a.counts[v][id_date]
         }
       }
 
@@ -231,7 +430,7 @@ export default {
         )
       }
 
-      if (v === 'countIndeed' || v === 'countHeadHunter') {
+      if (v === 'Indeed' || v === 'HeadHunter') {
         this.lists.tools = this.lists.tools.sort(sortCount())
         this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount())
       }
@@ -339,6 +538,34 @@ export default {
   padding: 5px 8px;
   margin-right: var(--margin-small);
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagination__button {
+  color: var(--color-text);
+  margin: 0 5px;
+  width: 10%;
+  max-width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* font-size: 18px; */
+}
+
+.pagination__button_current {
+  background: gray;
+  opacity: 0.8;
+}
+
+.pagination__button:disabled {
+  background: red;
+}
+
 .rating-main {
 }
 .empty-list {

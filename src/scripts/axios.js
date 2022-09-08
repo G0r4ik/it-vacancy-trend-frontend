@@ -7,7 +7,8 @@ const instance = axios.create({
 })
 
 const getTools = () => instance.get('getTools').then(t => t.data)
+const getIndeed = () => instance.get('getIndeed').then(t => t.data)
 const getCategories = () => instance.get('getCategories').then(c => c.data)
 const getDates = () => instance.get('getDates').then(r => r.data)
 
-export { getTools, getCategories, getDates }
+export { getTools, getCategories, getDates, getIndeed }
