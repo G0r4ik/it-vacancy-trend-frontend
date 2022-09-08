@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     addCloseFunction(e) {
-      console.log(e)
       if (e.key === 'Escape') {
         this.$emit('closeModal')
       }
