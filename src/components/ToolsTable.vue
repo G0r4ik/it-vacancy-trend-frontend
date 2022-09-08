@@ -228,7 +228,6 @@ export default {
   data() {
     return {
       isOpenModal: false,
-      copyTools: this.tools,
       currentPage: 1,
       itemsPerPage: 25,
       paginatedTools: [],
@@ -239,8 +238,11 @@ export default {
 
   computed: {},
   watch: {
-    tools() {
-      this.changePerPage(this.itemsPerPage)
+    tools: {
+      handler() {
+        this.changePerPage(this.itemsPerPage)
+      },
+      deep: true,
     },
   },
   mounted() {},

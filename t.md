@@ -17,6 +17,7 @@
 - Пофиксить названия категорий
 - Добавить не добавленные вещи в БД
 - Пользователь может сам добавлять свои списки (убрать определенные технологии, добавить свои столбцы)
+- рейтинг сложности технологии
 
 ---
 
@@ -30,16 +31,16 @@
 
 // \! chcp 1251
 // document.location.href = `${error.response.data.errors[0].captcha_url}&backurl='http://127.0.0.1:5500/index.html'`
--- SELECT * FROM date_of_completion;
--- SELECT * FROM count_in_headhunter;
--- SELECT * FROM count_in_headhunter;
+-- SELECT _ FROM date_of_completion;
+-- SELECT _ FROM count_in_headhunter;
+-- SELECT \* FROM count_in_headhunter;
 
 -- DELETE FROM count_in_indeed WHERE date_of_completion >116;
 -- DELETE FROM count_in_headhunter WHERE date_of_completion > 116;
 -- DELETE FROM date_of_completion WHERE id_date > 116;
 
 -- DROP TABLE Indeed_Global;
--- DROP TABLE _tables;
+-- DROP TABLE \_tables;
 -- DROP TABLE job_boards CASCADE;
 -- DROP TABLE regions CASCADE;
 
@@ -48,31 +49,25 @@
 
 INSERT INTO regions(region_name) VALUES('Russia');
 
-
-
-
 -- CREATE TABLE job_boards (
---     job_board_id SERIAL PRIMARY KEY,
---     job_board_name varchar(30)
+-- job_board_id SERIAL PRIMARY KEY,
+-- job_board_name varchar(30)
 -- );
-
 
 -- CREATE TABLE regions (
---     region_id SERIAL PRIMARY KEY,
---     region_name varchar(30)
+-- region_id SERIAL PRIMARY KEY,
+-- region_name varchar(30)
 -- );
 
-
--- CREATE TABLE _tables (
---     job_board_id integer REFERENCES job_boards(job_board_id),
---     region_id integer REFERENCES regions(region_id),
---     fk_id_table integer
+-- CREATE TABLE \_tables (
+-- job_board_id integer REFERENCES job_boards(job_board_id),
+-- region_id integer REFERENCES regions(region_id),
+-- fk_id_table integer
 -- );
-
 
 -- CREATE TABLE Indeed_Global(
---     id_table SERIAL PRIMARY KEY,
---     id_tool integer REFERENCES tools(id_tool),
---     date_of_completion integer REFERENCES date_of_completion(id_date),
---     _count int
+-- id_table SERIAL PRIMARY KEY,
+-- id_tool integer REFERENCES tools(id_tool),
+-- date_of_completion integer REFERENCES date_of_completion(id_date),
+-- \_count int
 -- );

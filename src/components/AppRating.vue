@@ -240,6 +240,10 @@ export default {
       if (v === 'name_tool') {
         this.lists.tools = this.lists.tools.sort(sortName())
         this.lists.favoritesTools = this.lists.favoritesTools.sort(sortName())
+        this.lists.studiedTools = this.lists.studiedTools.sort(sortName())
+        console.log(this.lists.tools[0])
+        // this.paginatedTools = this.tools.slice(0, this.itemsPerPage)
+
       }
 
       if (v === 'id_category') {
@@ -247,11 +251,13 @@ export default {
         this.lists.favoritesTools = this.lists.favoritesTools.sort(
           sortCategory()
         )
+        this.lists.studiedTools = this.lists.studiedTools.sort(sortCategory())
       }
 
       if (v === 'Indeed' || v === 'HeadHunter') {
         this.lists.tools = this.lists.tools.sort(sortCount())
         this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount())
+        this.lists.studiedTools = this.lists.studiedTools.sort(sortCount())
       }
     },
     clickIconFavoriteTools(tool) {
