@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+*::selection {
+  background-color: #ff0054;
+}
+
 body {
   font-family: Roboto, sans-serif;
   background: var(--color-background);
@@ -63,4 +67,80 @@ button {
 
 a {
   text-decoration: none;
+}
+
+.category1 {
+  background: rgba(112, 17, 245, 0.1);
+  color: #7011f5;
+  border: 2px solid #7011f5 !important;
+}
+.category2 {
+  background: rgb(95%, 24%, 18%, 0.1);
+  color: #f13d2e;
+  border: 2px solid #f13d2e !important;
+}
+.category3 {
+  background: rgba(98%, 52%, 0%, 0.1);
+  color: #ffb703;
+  border: 2px solid #ffb703 !important;
+}
+.category4 {
+  background: rgb(90%, 22%, 27%, 0.1);
+  color: #e63946;
+  border: 2px solid #e63946 !important;
+}
+.category5 {
+  background: rgb(66, 185, 131, 0.1);
+  color: #42b983;
+  border: 2px solid #42b983 !important;
+}
+.category6 {
+  background: rgba(46, 196, 182, 0.1);
+  color: #2ec4b6;
+  border: 2px solid #2ec4b6 !important;
+}
+.category7 {
+  background: rgb(100%, 92%, 0%, 0.1);
+  color: #ffea00;
+  border: 2px solid #ffea00 !important;
+}
+.category8 {
+  background: rgba(253, 255, 182, 0.1);
+  color: #fdffb6;
+  border: 2px solid #fdffb6 !important;
+}
+.category9 {
+  background: rgba(38, 77, 228, 0.1);
+  color: #264de4;
+  border: 2px solid #264de4 !important;
+}
+.category10 {
+  background: rgb(46%, 69%, 80%, 0.1);
+  color: #75afcc;
+  border: 2px solid #75afcc !important;
+}
+.category11 {
+  background: rgb(62%, 16%, 17%, 0.1);
+  color: #9e2a2b;
+  border: 2px solid #9e2a2b !important;
+}
+.category12 {
+  background: rgb(47%, 16%, 6%, 0.1);
+  color: #78290f;
+  border: 2px solid #78290f !important;
+}
+.category13 {
+  background: rgb(56%, 60%, 69%, 0.1);
+  color: #8e9aaf;
+  border: 2px solid #8e9aaf !important;
+}
+.category14 {
+  background: rgb(96%, 89%, 52%, 0.1);
+  color: #f4e285;
+  border: 2px solid #f4e285 !important;
+}
+.category15 {
+  background: rgb(98%, 44%, 57%, 0.1);
+  color: #fb6f92;
+  border: 2px solid #fb6f92 !important ;
 }

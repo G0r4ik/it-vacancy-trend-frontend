@@ -9,7 +9,7 @@
     <table class="rating-table__inner">
       <thead class="rating-table__thead">
         <tr class="rating-table__row">
-          <th class="rating-table__th"></th>
+          <!-- <th class="rating-table__th"></th> -->
           <th class="rating-table__th" @click="$emit('listSort', 'name_tool')">
             Название
             <span class="rating-table__icon-change-sort">
@@ -68,9 +68,9 @@
           v-for="(tool, i) of paginatedTools"
           :key="tool.id_tool"
           class="rating-table__row">
-          <td class="rating-table__item rating-table__item_counter">
+          <!-- <td class="rating-table__item rating-table__item_counter">
             {{ i + 1 }}
-          </td>
+          </td> -->
           <td class="rating-table__item rating-table__item_name">
             <img
               class="rating-table__item-logo"
@@ -153,7 +153,6 @@ export default {
     favoritesTools: Array,
     studiedTools: Array,
     selectedDate: Object,
-    selectedCategory: [String, Object],
     searchInput: String,
   },
 
@@ -212,8 +211,8 @@ export default {
 }
 
 table {
-  counter-reset: section;
-  list-style-type: none;
+  /* counter-reset: section;
+  list-style-type: none; */
 }
 
 .rating-table__th {
@@ -252,8 +251,8 @@ table {
 }
 
 .rating-table__item_counter::before {
-  counter-increment: section;
-  content: counters(section, '.') ' ';
+  /* counter-increment: section;
+  content: counters(section, '.') ' '; */
 }
 
 .rating-table__item_name {
@@ -311,82 +310,6 @@ table {
   width: 42px;
   border-radius: 50%;
   fill: var(--color-text);
-}
-
-.category1 {
-  background: rgba(112, 17, 245, 0.1);
-  color: #7011f5;
-  border: 2px solid #7011f5;
-}
-.category2 {
-  background: rgb(95%, 24%, 18%, 0.1);
-  color: #f13d2e;
-  border: 2px solid #f13d2e;
-}
-.category3 {
-  background: rgba(98%, 52%, 0%, 0.1);
-  border: 2px solid #ffb703;
-  color: #ffb703;
-}
-.category4 {
-  background: rgb(90%, 22%, 27%, 0.1);
-  border: 2px solid #e63946;
-  color: #e63946;
-}
-.category5 {
-  background: rgb(66, 185, 131, 0.1);
-  border: 2px solid #42b983;
-  color: #42b983;
-}
-.category6 {
-  background: rgba(46, 196, 182, 0.1);
-  color: #2ec4b6;
-  border: 2px solid #2ec4b6;
-}
-.category7 {
-  background: rgb(100%, 92%, 0%, 0.1);
-  color: #ffea00;
-  border: 2px solid #ffea00;
-}
-.category8 {
-  background: rgba(253, 255, 182, 0.1);
-  color: #fdffb6;
-  border: 2px solid #fdffb6;
-}
-.category9 {
-  background: rgba(38, 77, 228, 0.1);
-  color: #264de4;
-  border: 2px solid #264de4;
-}
-.category10 {
-  background: rgb(46%, 69%, 80%, 0.1);
-  color: #75afcc;
-  border: 2px solid #75afcc;
-}
-.category11 {
-  background: rgb(62%, 16%, 17%, 0.1);
-  color: #9e2a2b;
-  border: 2px solid #9e2a2b;
-}
-.category12 {
-  background: rgb(47%, 16%, 6%, 0.1);
-  color: #78290f;
-  border: 2px solid #78290f;
-}
-.category13 {
-  background: rgb(56%, 60%, 69%, 0.1);
-  color: #8e9aaf;
-  border: 2px solid #8e9aaf;
-}
-.category14 {
-  background: rgb(96%, 89%, 52%, 0.1);
-  color: #f4e285;
-  border: 2px solid #f4e285;
-}
-.category15 {
-  background: rgb(98%, 44%, 57%, 0.1);
-  color: #fb6f92;
-  border: 2px solid #fb6f92;
 }
 
 @media (max-width: 700px) {

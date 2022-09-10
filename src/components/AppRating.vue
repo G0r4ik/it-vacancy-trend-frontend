@@ -19,25 +19,10 @@
                 </option>
               </select>
             </div>
-            <div class="filters__select-container select-container">
-              <label for="category" class="select-container__label">
-                Категория:
-              </label>
-              <select
-                name="category"
-                id="category"
-                v-model="selectedCategory"
-                class="select-container__input">
-                <option value="all">Все</option>
-                <option
-                  v-for="category of categories"
-                  :key="category.id_category"
-                  :class="'category' + category.id_category"
-                  :value="category">
-                  {{ category.name_category }}
-                </option>
-              </select>
-            </div>
+            <app-categories
+              :categories="categories"
+              :selectedCategory="selectedCategory"
+              @selectedCategory="changeCategory"></app-categories>
           </div>
           <input
             type="search"
@@ -94,11 +79,12 @@
 
 <script>
 import ToolsTable from './ToolsTable.vue'
+import AppCategories from './AppCategories.vue'
 // import AppList from './AppList.vue'
 import { getCategories, getDates, getTools, getIndeed } from '../scripts/axios'
 
 export default {
-  components: { ToolsTable },
+  components: { ToolsTable, AppCategories },
 
   data() {
     return {
@@ -125,54 +111,33 @@ export default {
   },
 
   watch: {
-    selectedCategory(v) {
-      this.lists.tools = this.copyTools
-      this.lists.favoritesTools = this.copyFavoritesTools
-      this.listSort(this.listSortVar, true)
+    // selectedCategory(v) {
+    //   this.lists.tools = this.copyTools
+    //   this.lists.favoritesTools = this.copyFavoritesTools
+    //   this.listSort(this.listSortVar, true)
 
-      if (v === 'all') {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput)
-        )
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput)
-        )
-      } else {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput, v)
-        )
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput, v)
-        )
-      }
-    },
+    //   this.lists.tools = this.lists.tools.filter(
+    //     this.changeFilter(this.searchInput)
+    //   )
+    //   this.lists.favoritesTools = this.lists.favoritesTools.filter(
+    //     this.changeFilter(this.searchInput)
+    //   )
+    // },
     searchInput(v) {
       this.lists.tools = this.copyTools
       this.lists.favoritesTools = this.copyFavoritesTools
       this.lists.studiedTools = this.copyStudiedTools
       this.listSort(this.listSortVar, true)
 
-      if (this.selectedCategory === 'all') {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput)
-        )
-        this.lists.favoritesTools = this.copyFavoritesTools.filter(
-          this.changeFilter(this.searchInput)
-        )
-        this.lists.studiedTools = this.copyStudiedTools.filter(
-          this.changeFilter(this.searchInput)
-        )
-      } else {
-        this.lists.tools = this.lists.tools.filter(
-          this.changeFilter(this.searchInput, this.selectedCategory)
-        )
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          this.changeFilter(this.searchInput, this.selectedCategory)
-        )
-        this.lists.studiedTools = this.copyStudiedTools.filter(
-          this.changeFilter(this.searchInput, this.selectedCategory)
-        )
-      }
+      this.lists.tools = this.lists.tools.filter(
+        this.changeFilter(this.searchInput, this.selectedCategory)
+      )
+      this.lists.favoritesTools = this.copyFavoritesTools.filter(
+        this.changeFilter(this.searchInput, this.selectedCategory)
+      )
+      this.lists.studiedTools = this.copyStudiedTools.filter(
+        this.changeFilter(this.searchInput, this.selectedCategory)
+      )
     },
   },
 
@@ -206,6 +171,40 @@ export default {
   },
 
   methods: {
+    changeCategory(e) {
+      if (
+        e === 'all' ||
+        (this.selectedCategory.includes(e) &&
+          this.selectedCategory.length === 1)
+      ) {
+        this.selectedCategory = 'all'
+      } else {
+        if (
+          typeof this.selectedCategory === 'object' &&
+          this.selectedCategory.length
+        ) {
+          if (this.selectedCategory.includes(e)) {
+            this.selectedCategory.splice(this.selectedCategory.indexOf(e), 1)
+          } else {
+            this.selectedCategory.push(e)
+          }
+        } else {
+          this.selectedCategory = [e]
+        }
+      }
+      this.lists.tools = this.copyTools
+      this.lists.favoritesTools = this.copyFavoritesTools
+      this.listSort(this.listSortVar, true)
+      this.lists.tools = this.lists.tools.filter(
+        this.changeFilter(this.searchInput, this.selectedCategory)
+      )
+      this.lists.favoritesTools = this.lists.favoritesTools.filter(
+        this.changeFilter(this.searchInput, this.selectedCategory)
+      )
+      this.lists.studiedTools = this.copyStudiedTools.filter(
+        this.changeFilter(this.searchInput, this.selectedCategory)
+      )
+    },
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
         this.directionsForSorting =
@@ -293,11 +292,11 @@ export default {
         JSON.stringify(this.lists.studiedTools)
       )
     },
-    changeFilter(input, category) {
+    changeFilter(input, categories) {
       return function (tool) {
-        if (category) {
+        if (categories !== 'all') {
           return (
-            tool.category.id_category === category.id_category &&
+            categories.includes(tool.category.id_category) &&
             tool.name_tool.toLowerCase().includes(input.toLowerCase())
           )
         }
