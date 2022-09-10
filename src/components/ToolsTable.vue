@@ -186,7 +186,6 @@ export default {
   },
 }
 </script>
-
 <style scoped>
 .rating-table {
   overflow-x: auto;
@@ -315,58 +314,79 @@ table {
 }
 
 .category1 {
-  background: #ff00ff;
+  background: rgba(112, 17, 245, 0.1);
+  color: #7011f5;
+  border: 2px solid #7011f5;
 }
 .category2 {
-  background: #ffff00;
-  color: var(--color-background);
+  background: rgb(95%, 24%, 18%, 0.1);
+  color: #f13d2e;
+  border: 2px solid #f13d2e;
 }
 .category3 {
-  background: #ff9900;
+  background: rgba(98%, 52%, 0%, 0.1);
+  border: 2px solid #ffb703;
+  color: #ffb703;
 }
 .category4 {
-  background: #ea4335;
+  background: rgb(90%, 22%, 27%, 0.1);
+  border: 2px solid #e63946;
+  color: #e63946;
 }
 .category5 {
-  background: #00ff00;
-  color: var(--color-background);
+  background: rgb(66, 185, 131, 0.1);
+  border: 2px solid #42b983;
+  color: #42b983;
 }
 .category6 {
-  background: #00ffff;
-  color: var(--color-background);
+  background: rgba(46, 196, 182, 0.1);
+  color: #2ec4b6;
+  border: 2px solid #2ec4b6;
 }
 .category7 {
-  background: #b6d7a8;
-  color: var(--color-background);
+  background: rgb(100%, 92%, 0%, 0.1);
+  color: #ffea00;
+  border: 2px solid #ffea00;
 }
 .category8 {
-  background: #46bdc6;
+  background: rgba(253, 255, 182, 0.1);
+  color: #fdffb6;
+  border: 2px solid #fdffb6;
 }
 .category9 {
-  background: #9900ff;
+  background: rgba(38, 77, 228, 0.1);
+  color: #264de4;
+  border: 2px solid #264de4;
 }
 .category10 {
-  background: #a4c2f4;
-  color: var(--color-background);
+  background: rgb(46%, 69%, 80%, 0.1);
+  color: #75afcc;
+  border: 2px solid #75afcc;
 }
 .category11 {
-  background: #34a853;
+  background: rgb(62%, 16%, 17%, 0.1);
+  color: #9e2a2b;
+  border: 2px solid #9e2a2b;
 }
 .category12 {
-  background: #3d85c6;
+  background: rgb(47%, 16%, 6%, 0.1);
+  color: #78290f;
+  border: 2px solid #78290f;
 }
 .category13 {
-  background: #ead1dc;
-  color: var(--color-background);
+  background: rgb(56%, 60%, 69%, 0.1);
+  color: #8e9aaf;
+  border: 2px solid #8e9aaf;
 }
 .category14 {
-  background: #f3f3f3;
-  border: 5px solid red;
-  color: var(--color-background);
+  background: rgb(96%, 89%, 52%, 0.1);
+  color: #f4e285;
+  border: 2px solid #f4e285;
 }
 .category15 {
-  background: #cccccc;
-  color: var(--color-background);
+  background: rgb(98%, 44%, 57%, 0.1);
+  color: #fb6f92;
+  border: 2px solid #fb6f92;
 }
 
 @media (max-width: 700px) {

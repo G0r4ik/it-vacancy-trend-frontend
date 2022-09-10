@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="title">RATING ({{ lists[currentList].length }})</h2>
+    <h2 class="title">Rating ({{ lists[currentList].length }})</h2>
     <div class="filters">
       <div class="container">
         <div class="filters__inner">

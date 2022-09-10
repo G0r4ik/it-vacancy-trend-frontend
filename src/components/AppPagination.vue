@@ -124,18 +124,13 @@ export default {
       }
 
       if (this.currentPage > this.pageCount && this.currentPage !== 1) {
-        this.currentPage = this.pageCount
-        console.log(2)
+        this.currentPage = this.pageCount || 1
+        console.log('2')
         this.$emit('changePerPage', 0, this.itemsPerPage)
       } else {
-        console.log('ba2')
+        console.log('1')
         const start = (this.currentPage - 1) * this.itemsPerPage
         this.$emit('changePerPage', start, start + this.itemsPerPage)
-
-        // this.paginatedTools = this.tools.slice(
-        //   currentPage * itemsPerPage,
-        //   itemsPerPage
-        // )
       }
     },
     changeClick(page) {
