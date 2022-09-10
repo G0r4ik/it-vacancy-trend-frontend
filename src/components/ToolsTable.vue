@@ -1,83 +1,10 @@
 <template>
   <div class="rating-table">
-    <div class="wrapper-top-table">
-      <div class="pagination">
-        <button
-          class="pagination__button"
-          :disabled="currentPage === 1"
-          @click="goFirst">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g data-name="Layer 2">
-              <g data-name="arrowhead-left">
-                <path
-                  d="M11.64 5.23a1 1 0 0 0-1.41.13l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63L7.29 12l4.48-5.37a1 1 0 0 0-.13-1.4z" />
-                <path
-                  d="m14.29 12 4.48-5.37a1 1 0 0 0-1.54-1.28l-5 6a1 1 0 0 0 0 1.27l4.83 6a1 1 0 0 0 .78.37 1 1 0 0 0 .78-1.63z" />
-              </g>
-            </g>
-          </svg>
-        </button>
-        <button
-          class="pagination__button"
-          :disabled="currentPage === 1"
-          @click="minusOne">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g data-name="Layer 2">
-              <path
-                d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64z"
-                data-name="arrow-ios-back" />
-            </g>
-          </svg>
-        </button>
-        <button
-          class="pagination__button"
-          :class="currentPage === page ? 'pagination__button_current' : ''"
-          :disabled="page > pageCount"
-          v-for="page of visible"
-          :key="page"
-          @click="changeClick(page)">
-          {{ page }}
-        </button>
-        <button
-          class="pagination__button"
-          :disabled="currentPage === pageCount"
-          @click="addOne">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g data-name="Layer 2">
-              <path
-                d="M10 19a1 1 0 0 1-.64-.23 1 1 0 0 1-.13-1.41L13.71 12 9.39 6.63a1 1 0 0 1 .15-1.41 1 1 0 0 1 1.46.15l4.83 6a1 1 0 0 1 0 1.27l-5 6A1 1 0 0 1 10 19z"
-                data-name="arrow-ios-forward" />
-            </g>
-          </svg>
-        </button>
-        <button
-          class="pagination__button"
-          :disabled="currentPage === pageCount"
-          @click="goLast">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g data-name="Layer 2">
-              <g data-name="arrowhead-right">
-                <path
-                  d="m18.78 11.37-4.78-6a1 1 0 0 0-1.41-.15 1 1 0 0 0-.15 1.41L16.71 12l-4.48 5.37a1 1 0 0 0 .13 1.41A1 1 0 0 0 13 19a1 1 0 0 0 .77-.36l5-6a1 1 0 0 0 .01-1.27z" />
-                <path
-                  d="M7 5.37a1 1 0 0 0-1.61 1.26L9.71 12l-4.48 5.36a1 1 0 0 0 .13 1.41A1 1 0 0 0 6 19a1 1 0 0 0 .77-.36l5-6a1 1 0 0 0 0-1.27z" />
-              </g>
-            </g>
-          </svg>
-        </button>
-      </div>
-      <label for="listing-per-pages">
-        <select
-          name="listing-per-pages"
-          id="listing-per-pages"
-          @change="changePerPage($event)">
-          <option value="10">10</option>
-          <option value="25" selected="selected">25</option>
-          <option value="50">50</option>
-          <option value="10000">All</option>
-        </select>
-      </label>
-    </div>
+    <app-pagination
+      :tools="tools"
+      @changePerPage="changePerPage"
+      @changeClick="changeClick">
+    </app-pagination>
 
     <table class="rating-table__inner">
       <thead class="rating-table__thead">
@@ -205,14 +132,21 @@
         </teleport>
       </tbody>
     </table>
+
+    <!-- <app-pagination
+      :tools="tools"
+      @changePerPage="changePerPage"
+      @changeClick="changeClick">
+    </app-pagination> -->
   </div>
 </template>
 
 <script>
 import appTool from './AppTool.vue'
+import AppPagination from './AppPagination.vue'
 
 export default {
-  components: { appTool },
+  components: { appTool, AppPagination },
   props: {
     dates: Array,
     tools: Array,
@@ -228,24 +162,10 @@ export default {
   data() {
     return {
       isOpenModal: false,
-      currentPage: 1,
-      itemsPerPage: 25,
       paginatedTools: [],
-      visible: [],
-      pageCount: null,
     }
   },
 
-  computed: {},
-  watch: {
-    tools: {
-      handler() {
-        this.changePerPage(this.itemsPerPage)
-      },
-      deep: true,
-    },
-  },
-  mounted() {},
   methods: {
     isOpenModalFunction(tool) {
       this.isOpenModal = true
@@ -254,163 +174,20 @@ export default {
     closeModal() {
       this.isOpenModal = false
     },
-    addOne() {
-      this.currentPage++
-      this.test()
-      if (
-        this.currentPage < 3 ||
-        this.currentPage === this.pageCount - 1 ||
-        this.currentPage === this.pageCount
-      ) {
-        return
-      }
-
-      this.visible = [
-        this.currentPage - 2,
-        this.currentPage - 1,
-        this.currentPage,
-        this.currentPage + 1,
-        this.currentPage + 2,
-      ]
+    changePerPage(start, end) {
+      this.paginatedTools = this.tools.slice(start, end)
     },
-    minusOne() {
-      this.currentPage--
-      this.test()
-      if (
-        this.currentPage < 3 ||
-        this.currentPage === this.pageCount - 1 ||
-        this.currentPage === this.pageCount
-      ) {
-        return
-      }
-
-      this.visible = [
-        this.currentPage - 2,
-        this.currentPage - 1,
-        this.currentPage,
-        this.currentPage + 1,
-        this.currentPage + 2,
-      ]
-    },
-    goFirst() {
-      this.currentPage = 1
-      this.test()
-
-      this.visible = []
-      if (this.pageCount > 6) {
-        for (let i = 1; i < 6; i++) this.visible.push(i)
-      } else {
-        for (let i = 1; i <= this.pageCount; i++) this.visible.push(i)
-      }
-    },
-    goLast() {
-      this.currentPage = this.pageCount
-      this.test()
-      this.visible = []
-      if (this.pageCount > 6) {
-        for (let i = this.pageCount; i > this.pageCount - 5; i--) {
-          this.visible.unshift(i)
-        }
-      } else {
-        for (let i = 1; i <= this.pageCount; i++) {
-          this.visible.push(i)
-        }
-      }
-    },
-    test() {
-      this.paginatedTools = []
+    changeClick(currentPage, itemsPerPage) {
       this.paginatedTools = this.tools.slice(
-        (this.currentPage - 1) * this.itemsPerPage,
-        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
+        (currentPage - 1) * itemsPerPage,
+        (currentPage - 1) * itemsPerPage + itemsPerPage
       )
-    },
-    changePerPage(e = 25) {
-      this.currentPage = 1
-      if (e.target) this.itemsPerPage = e.target.value
-      if (!e.target) this.itemsPerPage = +e
-
-      this.pageCount = Math.ceil(this.tools.length / this.itemsPerPage)
-      this.paginatedTools = []
-      this.visible = []
-      if (this.pageCount > 5) {
-        this.visible = [1, 2, 3, 4, 5]
-      } else {
-        for (let i = 1; i <= this.pageCount; i++) {
-          this.visible.push(i)
-        }
-      }
-      this.paginatedTools = this.tools.slice(0, this.itemsPerPage)
-    },
-    changeClick(e) {
-      this.currentPage = e
-      this.paginatedTools = []
-
-      this.paginatedTools = this.tools.slice(
-        (this.currentPage - 1) * this.itemsPerPage,
-        (this.currentPage - 1) * +this.itemsPerPage + +this.itemsPerPage
-      )
-      if (
-        this.currentPage < 3 ||
-        this.currentPage === this.pageCount - 1 ||
-        this.currentPage === this.pageCount
-      ) {
-        return
-      }
-
-      this.visible = [
-        this.currentPage - 2,
-        this.currentPage - 1,
-        this.currentPage,
-        this.currentPage + 1,
-        this.currentPage + 2,
-      ]
     },
   },
 }
 </script>
 
 <style scoped>
-.wrapper-top-table {
-  margin-bottom: var(--margin-small);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.pagination {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 300px;
-}
-.pagination__button {
-  color: var(--color-text);
-  margin: 0 5px;
-  width: 10%;
-  max-width: 35px;
-  height: 35px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.pagination__button_current {
-  background: #bbbbbb6c;
-}
-
-.pagination__button:disabled {
-  cursor: auto;
-}
-
-.pagination__button svg {
-  fill: var(--color-text);
-}
-
-.pagination__button:disabled svg {
-  fill: gray;
-}
 .rating-table {
   overflow-x: auto;
 }
