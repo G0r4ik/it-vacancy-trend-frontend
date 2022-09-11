@@ -6,9 +6,16 @@ const instance = axios.create({
   // withCredentials: true,
 })
 
-const getTools = () => instance.get('getTools').then(t => t.data)
-const getIndeed = () => instance.get('getIndeed').then(t => t.data)
+const getTools = (region, jobBoard) =>
+  instance
+    .get('getTools', {
+      params: {
+        region,
+        jobBoard,
+      },
+    })
+    .then(t => t.data)
 const getCategories = () => instance.get('getCategories').then(c => c.data)
 const getDates = () => instance.get('getDates').then(r => r.data)
 
-export { getTools, getCategories, getDates, getIndeed }
+export { getTools, getCategories, getDates }

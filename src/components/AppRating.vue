@@ -78,7 +78,7 @@ import AppCategories from './AppCategories.vue'
 import flatpickr from 'flatpickr'
 require('flatpickr/dist/flatpickr.css')
 // import AppList from './AppList.vue'
-import { getCategories, getDates, getTools, getIndeed } from '../scripts/axios'
+import { getCategories, getDates, getTools } from '../scripts/axios'
 
 export default {
   components: { ToolsTable, AppCategories },
@@ -99,7 +99,7 @@ export default {
       listSortVar: null,
       currentList: 'tools',
       directionsForSorting: 'DESC',
-      currentJobBoard: 'Indeed',
+      // currentJobBoard: 'Indeed',
     }
   },
 
@@ -110,18 +110,6 @@ export default {
   },
 
   watch: {
-    // selectedCategory(v) {
-    //   this.lists.tools = this.copyTools
-    //   this.lists.favoritesTools = this.copyFavoritesTools
-    //   this.listSort(this.listSortVar, true)
-
-    //   this.lists.tools = this.lists.tools.filter(
-    //     this.changeFilter(this.searchInput)
-    //   )
-    //   this.lists.favoritesTools = this.lists.favoritesTools.filter(
-    //     this.changeFilter(this.searchInput)
-    //   )
-    // },
     searchInput(v) {
       this.lists.tools = this.copyTools
       this.lists.favoritesTools = this.copyFavoritesTools
@@ -129,13 +117,13 @@ export default {
       this.listSort(this.listSortVar, true)
 
       this.lists.tools = this.lists.tools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategory)
+        this.changeFilter(v, this.selectedCategory)
       )
       this.lists.favoritesTools = this.copyFavoritesTools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategory)
+        this.changeFilter(v, this.selectedCategory)
       )
       this.lists.studiedTools = this.copyStudiedTools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategory)
+        this.changeFilter(v, this.selectedCategory)
       )
     },
   },
@@ -153,10 +141,9 @@ export default {
       this.selectedDate = this.dates.at(-1)
       const dates = []
       for (let i = 0; i < res.length; i++) {
-        const [date, time] = res[i].date_of_completion.split(' ')
-        const [hour, minute] = time.split(':')
+        const date = res[i].date_of_completion
         const [day, month, year] = date.split('.')
-        dates.push(new Date(year, month, day, hour, minute))
+        dates.push(new Date(year, month, day))
       }
       flatpickr('#date', {
         // altInput: true,
@@ -174,18 +161,10 @@ export default {
     })
     getCategories().then(res => (this.categories = res))
 
-    getTools().then(res => {
+    getTools('Russia', 'HeadHunter').then(res => {
+      console.log(res[0])
       this.copyTools = res
       this.lists.tools = res
-
-      // getIndeed().then(res => {
-      //   for (const j of res) {
-      //     const [date, count] = j.count
-      //     const findTool = this.lists.tools.find(t => t.id_tool === j.id_tool)
-      //     if (!findTool.counts.Indeed) findTool.counts.Indeed = {}
-      //     findTool.counts.Indeed[date] = count
-      //   }
-      // })
     })
   },
 
@@ -269,7 +248,8 @@ export default {
         this.lists.studiedTools = this.lists.studiedTools.sort(sortCategory())
       }
 
-      if (v === 'Indeed' || v === 'HeadHunter') {
+      // if (v === 'Indeed' || v === 'HeadHunter') {
+      if (v === 'HeadHunter') {
         this.lists.tools = this.lists.tools.sort(sortCount())
         this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount())
         this.lists.studiedTools = this.lists.studiedTools.sort(sortCount())
