@@ -9,15 +9,10 @@
               <label for="date_of_completion" class="select-container__label">
                 Дата:
               </label>
-              <select
-                name="date_of_completion"
-                id="date_of_completion"
-                v-model="selectedDate"
-                class="select-container__input">
-                <option v-for="date of dates" :value="date" :key="date.id_date">
-                  {{ date.date_of_completion }}
-                </option>
-              </select>
+              <input
+                id="date"
+                class="select-date"
+                v-model="selectedDate.date_of_completion" />
             </div>
             <app-categories
               :categories="categories"
@@ -80,6 +75,8 @@
 <script>
 import ToolsTable from './ToolsTable.vue'
 import AppCategories from './AppCategories.vue'
+import flatpickr from 'flatpickr'
+require('flatpickr/dist/flatpickr.css')
 // import AppList from './AppList.vue'
 import { getCategories, getDates, getTools, getIndeed } from '../scripts/axios'
 
@@ -96,7 +93,9 @@ export default {
       copyStudiedTools: [],
       selectedCategory: 'all',
       searchInput: '',
-      selectedDate: null,
+      selectedDate: {
+        date_of_completion: null,
+      },
       listSortVar: null,
       currentList: 'tools',
       directionsForSorting: 'DESC',
@@ -152,6 +151,26 @@ export default {
     getDates().then(res => {
       this.dates = res
       this.selectedDate = this.dates.at(-1)
+      const dates = []
+      for (let i = 0; i < res.length; i++) {
+        const [date, time] = res[i].date_of_completion.split(' ')
+        const [hour, minute] = time.split(':')
+        const [day, month, year] = date.split('.')
+        dates.push(new Date(year, month, day, hour, minute))
+      }
+      flatpickr('#date', {
+        // altInput: true,
+        // altFormat: 'F j, Y',
+        // dateFormat: 'Y-m-d',
+        minDate: dates[0],
+        defaultDate: 1,
+        maxDate: dates.at(-1),
+        enable: dates,
+        onChange: function (selectedDates, dateStr, instance) {
+          console.log(1)
+        },
+        // inline: true
+      })
     })
     getCategories().then(res => (this.categories = res))
 
@@ -329,6 +348,19 @@ export default {
 }
 .select-container__label {
 }
+
+.select-date {
+  width: 150px;
+  text-align: center;
+  border: 2px solid #e2e2e2;
+  background-color: transparent;
+  line-height: 1.5;
+  border-radius: 5px;
+  color: var(--color-text);
+  font-size: 20px;
+  transition: all 0.25s;
+}
+
 .filters__search-input {
   width: 100%;
   border: 2px solid #e2e2e2;

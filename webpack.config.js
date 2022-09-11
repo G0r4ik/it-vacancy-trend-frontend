@@ -1,17 +1,17 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const StylelintPlugin = require('stylelint-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const StylelintPlugin = require('stylelint-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const { VueLoaderPlugin } = require('vue-loader');
-const webpack = require('webpack');
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { VueLoaderPlugin } = require('vue-loader')
+const webpack = require('webpack')
 
-const isDev = process.env.NODE_ENV === 'production' ? false : true;
+const isDev = process.env.NODE_ENV === 'production' ? false : true
 
 const config = {
   cache: !isDev,
@@ -283,9 +283,9 @@ const config = {
       // },
     ],
   },
-};
+}
 
-module.exports = config;
+module.exports = config
 
 //  ProvidePlugin           svg          webp-img           critical css         order css
 

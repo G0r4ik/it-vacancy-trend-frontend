@@ -39,9 +39,10 @@ export default {
 .categories__item {
   display: inline-block;
   list-style: none;
-  margin: 2.5px;
+  margin: 2.5px 5px;
   padding: 2.5px;
   cursor: pointer;
+  background: rgba(92.9, 92.9, 91.4, 0.2);
   border: 2px solid transparent;
 }
 

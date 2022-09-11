@@ -144,3 +144,8 @@ a {
   color: #fb6f92;
   border: 2px solid #fb6f92 !important ;
 }
+
+
+.flatpickr-weekdays {
+  display: none !important;
+}

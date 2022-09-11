@@ -17,6 +17,7 @@
   "dependencies": {
     "chart.js": "^3.9.1",
     "concurrently": "^7.3.0",
+    "flatpickr": "^4.6.13",
     "postcss-svgo": "^5.1.0",
     "webpack-cli": "^4.10.0"
   },

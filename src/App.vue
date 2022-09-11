@@ -10,7 +10,6 @@
 import AppHeader from './components/AppHeader.vue'
 import AppRating from './components/AppRating.vue'
 import AppOther from './components/AppOther.vue'
-
 export default {
   data() {
     return {
