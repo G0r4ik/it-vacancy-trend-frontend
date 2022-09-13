@@ -3,149 +3,126 @@
   padding: 0;
   box-sizing: border-box;
 }
-
-*::selection {
-  background-color: #ff0054;
-}
-
 body {
-  font-family: Roboto, sans-serif;
+  font-family: Inter, Roboto, sans-serif;
   background: var(--color-background);
-  /* font-size: 24px; */
-  font-size: 24px;
+  font-size: var(--text-large);
   /* font-size: calc((100vw - 480px) / (1280 - 480) * (24 - 16) + 16px); */
   color: var(--color-text);
 }
-
-.container {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-.main {
-  margin-top: var(--margin-middle);
-}
-
-.title {
-  max-width: 1120px;
-  margin: 0 auto;
-  margin-top: var(--margin-middle);
-  margin-bottom: var(--margin-extra-small);
-}
-
 select {
-  /* font-size: 24px; */
   background-color: transparent;
   border: 0;
-  border-bottom: 1px solid var(--color-text);
-  padding: 2px 26px 2px 6px;
+  border-bottom: 2px solid var(--color-border);
   cursor: pointer;
+  padding-bottom: var(--padding-extra-small);
   color: var(--color-text);
 }
-
 select option {
   background-color: var(--color-text);
   color: #000;
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-p {
-  padding: 0;
-  margin: 0;
-}
-
 button {
   border: none;
   background: none;
   cursor: pointer;
+  color: inherit;
 }
-
 a {
   text-decoration: none;
 }
-
-.category1 {
-  background: rgba(112, 17, 245, 0.1);
+.container {
+  max-width: var(--container-large);
+  margin: 0 auto;
+  padding: 0 var(--padding-middle);
+}
+.main {
+  margin-top: var(--margin-middle);
+}
+.title {
+  font-size: var(--text-extra-extra-large);
+  margin-top: var(--margin-middle);
+  margin-bottom: var(--margin-middle);
+}
+.title span {
+  color: var(--color-primary3);
+  font-size: var(--text-large);
+}
+.categories__item_1 {
+  background: rgb(112 17 245 / 0.1);
   color: #7011f5;
   border: 2px solid #7011f5 !important;
 }
-.category2 {
-  background: rgb(95%, 24%, 18%, 0.1);
+.categories__item_2 {
+  background: rgb(95% 24% 18% / 0.1);
   color: #f13d2e;
   border: 2px solid #f13d2e !important;
 }
-.category3 {
-  background: rgba(98%, 52%, 0%, 0.1);
+.categories__item_3 {
+  background: rgb(98% 52% 0% / 0.1);
   color: #ffb703;
   border: 2px solid #ffb703 !important;
 }
-.category4 {
-  background: rgb(90%, 22%, 27%, 0.1);
+.categories__item_4 {
+  background: rgb(90% 22% 27% / 0.1);
   color: #e63946;
   border: 2px solid #e63946 !important;
 }
-.category5 {
-  background: rgb(66, 185, 131, 0.1);
+.categories__item_5 {
+  background: rgb(66 185 131 / 0.1);
   color: #42b983;
   border: 2px solid #42b983 !important;
 }
-.category6 {
-  background: rgba(46, 196, 182, 0.1);
+.categories__item_6 {
+  background: rgb(46 196 182 / 0.1);
   color: #2ec4b6;
   border: 2px solid #2ec4b6 !important;
 }
-.category7 {
-  background: rgb(100%, 92%, 0%, 0.1);
+.categories__item_7 {
+  background: rgb(100% 92% 0% / 0.1);
   color: #ffea00;
   border: 2px solid #ffea00 !important;
 }
-.category8 {
-  background: rgba(253, 255, 182, 0.1);
+.categories__item_8 {
+  background: rgb(253 255 182 / 0.1);
   color: #fdffb6;
   border: 2px solid #fdffb6 !important;
 }
-.category9 {
-  background: rgba(38, 77, 228, 0.1);
+.categories__item_9 {
+  background: rgb(38 77 228 / 0.1);
   color: #264de4;
   border: 2px solid #264de4 !important;
 }
-.category10 {
-  background: rgb(46%, 69%, 80%, 0.1);
+.categories__item_10 {
+  background: rgb(46% 69% 80% / 0.1);
   color: #75afcc;
   border: 2px solid #75afcc !important;
 }
-.category11 {
-  background: rgb(62%, 16%, 17%, 0.1);
+.categories__item_11 {
+  background: rgb(62% 16% 17% / 0.1);
   color: #9e2a2b;
   border: 2px solid #9e2a2b !important;
 }
-.category12 {
-  background: rgb(47%, 16%, 6%, 0.1);
+.categories__item_12 {
+  background: rgb(47% 16% 6% / 0.1);
   color: #78290f;
   border: 2px solid #78290f !important;
 }
-.category13 {
-  background: rgb(56%, 60%, 69%, 0.1);
+.categories__item_13 {
+  background: rgb(56% 60% 69% / 0.1);
   color: #8e9aaf;
   border: 2px solid #8e9aaf !important;
 }
-.category14 {
-  background: rgb(96%, 89%, 52%, 0.1);
+.categories__item_14 {
+  background: rgb(96% 89% 52% / 0.1);
   color: #f4e285;
   border: 2px solid #f4e285 !important;
 }
-.category15 {
-  background: rgb(98%, 44%, 57%, 0.1);
+.categories__item_15 {
+  background: rgb(98% 44% 57% / 0.1);
   color: #fb6f92;
-  border: 2px solid #fb6f92 !important ;
+  border: 2px solid #fb6f92 !important;
 }
-
-
 .flatpickr-weekdays {
-  display: none !important;
+  display: none;
 }

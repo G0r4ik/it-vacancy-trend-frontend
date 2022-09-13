@@ -1,31 +1,27 @@
 <template>
   <ul class="categories">
     <li
-      class="categories__item"
-      :class="{ active: this.selectedCategory === 'all' }"
-      @click="$emit('selectedCategory', 'all')">
-      all
-    </li>
-    <li
       v-for="category of categories"
       class="categories__item"
-      tabindex="0"
-      :key="category.id_category"
       :class="
-        selectedCategory.includes(+category.id_category)
-          ? 'category' + category.id_category
-          : ''
+        selectedCategories.includes(category.id_category) &&
+        `categories__item_${category.id_category}`
       "
-      @click="$emit('selectedCategory', category.id_category)">
-      {{ category.name_category }}
+      :key="category.id_category"
+      @click="$emit('changeCategory', category.id_category)"
+    >
+      <button>
+        {{ category.name_category }}
+      </button>
     </li>
   </ul>
 </template>
+
 <script>
 export default {
   props: {
     categories: Array,
-    selectedCategory: [String, Array],
+    selectedCategories: Array,
   },
 }
 </script>
@@ -35,18 +31,23 @@ export default {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
+  margin-top: var(--margin-small);
 }
 .categories__item {
   display: inline-block;
+  text-align: left;
   list-style: none;
-  margin: 2.5px 5px;
+  margin: 2.5px 0;
+  margin-right: var(--margin-small);
   padding: 2.5px;
   cursor: pointer;
-  background: rgba(92.9, 92.9, 91.4, 0.2);
   border: 2px solid transparent;
+  font-size: var(--text-middle);
 }
-
-.active {
-  border: 2px solid lightblue;
+.categories__item:last-child {
+  margin-right: 0;
+}
+.categories__item button {
+  text-align: left;
 }
 </style>

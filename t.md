@@ -1,76 +1,100 @@
-- Кнопка добавить в сравнение
-- Авторизация пользователя
-- Прочее: Хотите добавить ваш язык?
-- Добавить вывод в виде списка, а не таблицы
+naming component
+css vars
+css width icon
+порядок атрибутов
+Хранить favorite и studied в tool
+server
+container
+поменять НИЧЕГО НЕТ
+selectedCategories
+skeleton
+интуитивно не понятны фильтры
+
+# AppCategories
+
+- слишком много места для категорий
+- не убирается выбор даты
+- кнопка all не стилизована
+- подрыгивание экрана при 100vh+
+
+# AppHeader
+
+- Переключение страниц
+- Переключение языка
+- Аккаунт пользователя
+
+# AppTool AppPagination Tools Table
+
+- Полностью SCRIPT SCRIPT
+
+# BUGS / REFACTORING
+
+- При наличии текста в поиске и убирании из избараного - очищается фильтр
 - Подумать над вынесением логики в другие компоненты
-- Сделать вкладку Сравнить
-- Пагинация
+
+# BACKEND
+
 - При парсинге, дать возможность работать с сервером (создает дату, но не все элементы есть)
-- светлая тема
-- вынести фильтры в кнопки
-- jsovskoe -> ecosystem js
-- добавить иконки к категориям
-- добавить "Показать следующие"
-- показать рядом с количеством стрелку вверх или вниз
-- несколько категорий
-- добавить плашку: "Из-за специфичного слова, результаты могут быть некорекнтыми"
-- при наличии текста в поиске и убирании из избараного - очищается фильтр
-- Подумать над стилизацией _Select_
-- Фильтры в урле
-- Дать возможность редактирования списка
-- Перепроверить результаты получаемые от HH и Indeed
-- Подумать над несколькими языками
-- Пофиксить названия категорий
+- Авторизация пользователя
 - Добавить не добавленные вещи в БД
-- Пользователь может сам добавлять свои списки (убрать определенные технологии, добавить свои столбцы)
-- рейтинг сложности технологии
+- Переименовать Категории
+
+# BUILD
+
+- Добавить новые npm скрипты: minimize img
+- Удалить неиспользуемые пакеты
+- Вынести в .env
+- Глобальный гит игнор сделать
+- Plugins postcss
+- Webpack svg
+
+# FRONTEND
+
+- Сделать вкладку Сравнить
+- Добавить вывод в виде списка, а не таблицы
+- Подумать над стилизацией _Select_
+- Добавить иконки к категориям
 - Сделать адаптив под мобилки
 - Поработать с tab-ами
+- Кнопка добавить в сравнение
+- Светлая тема
+- Добавить "Показать следующие"
+- FONST
+- Скачка при появлении скролла
+
+# ANOTHER
+
+- Пользователь может сам добавлять свои списки (убрать определенные технологии, добавить свои столбцы)
+- Дать возможность редактирования списка
 - Поработать с a11y
 - Подумать об использовании SSG/SSR
-- Webpack svg
-- head заполнить
-- router
+- Фильтры в урле
+- Добавить плашку: "Из-за специфичного слова, результаты могут быть некорекнтыми"
+- Перепроверить результаты получаемые от HH и Indeed
+- Подумать над несколькими языками
+- Router
+- Head заполнить
+- Рейтинг сложности технологии
+- К одной технологии относятся несколько категорий.
 
-// \! chcp 1251
-// document.location.href = `${error.response.data.errors[0].captcha_url}&backurl='http://127.0.0.1:5500/index.html'`
--- SELECT _ FROM date_of_completion;
--- SELECT _ FROM count_in_headhunter;
--- SELECT \* FROM count_in_headhunter;
+# UNUSED PACKAGES
 
--- DELETE FROM count_in_indeed WHERE date_of_completion >116;
--- DELETE FROM count_in_headhunter WHERE date_of_completion > 116;
--- DELETE FROM date_of_completion WHERE id_date > 116;
+- postcss-svgo
+- postcss-cssnext
+- stylelint-selector-bem-pattern
 
--- DROP TABLE Indeed_Global;
--- DROP TABLE \_tables;
--- DROP TABLE job_boards CASCADE;
--- DROP TABLE regions CASCADE;
+- @svgr/webpack
+- file-loader
+- image-minimizer-webpack-plugin
+- imagemin
 
--- INSERT INTO job_boards(job_board_name) VALUES('Monster');
--- INSERT INTO regions(region_name) VALUES('Russia');
+#
 
-INSERT INTO regions(region_name) VALUES('Russia');
+94 со всем
+94 ток с презентом
+61 с префиксом
+49 без всего
+unused uncss purgecss cssmin purify
 
--- CREATE TABLE job_boards (
--- job_board_id SERIAL PRIMARY KEY,
--- job_board_name varchar(30)
--- );
-
--- CREATE TABLE regions (
--- region_id SERIAL PRIMARY KEY,
--- region_name varchar(30)
--- );
-
--- CREATE TABLE \_tables (
--- job_board_id integer REFERENCES job_boards(job_board_id),
--- region_id integer REFERENCES regions(region_id),
--- fk_id_table integer
--- );
-
--- CREATE TABLE Indeed_Global(
--- id_table SERIAL PRIMARY KEY,
--- id_tool integer REFERENCES tools(id_tool),
--- date_of_completion integer REFERENCES date_of_completion(id_date),
--- \_count int
--- );
+\! chcp 1251
+document.location.href = `${error.response.data.errors[0].captcha_url}&backurl='http://127.0.0.1:5500/index.html'`

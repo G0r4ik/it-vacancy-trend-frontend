@@ -1,88 +1,57 @@
 <template>
-  <div>
-    <h2 class="title">Rating ({{ lists[currentList].length }})</h2>
-    <div class="filters">
-      <div class="container">
-        <div class="filters__inner">
-          <div class="filters__selects">
-            <div class="filters__select-container select-container">
-              <label for="date_of_completion" class="select-container__label">
-                Дата:
-              </label>
-              <input
-                id="date"
-                class="select-date"
-                v-model="selectedDate.date_of_completion" />
-            </div>
-            <app-categories
-              :categories="categories"
-              :selectedCategory="selectedCategory"
-              @selectedCategory="changeCategory"></app-categories>
-          </div>
-          <input
-            type="search"
-            class="filters__search-input"
-            placeholder="Введите технологию"
-            v-model="searchInput" />
-        </div>
-      </div>
-    </div>
+  <div class="container">
+    <h2 class="title">
+      Rating <span>({{ lists[currentList].length }})</span>
+    </h2>
 
-    <div class="additional-filters">
-      <div class="container">
-        <div class="additional-filters__inner">
-          <button
-            class="additional-filters__button"
-            @click="currentList = 'tools'">
-            Все
-          </button>
-          <button
-            class="additional-filters__button"
-            @click="currentList = 'favoritesTools'">
-            Избранное
-          </button>
-          <button
-            class="additional-filters__button"
-            @click="currentList = 'studiedTools'">
-            Изученное
-          </button>
-          <button class="additional-filters__button">Настроить</button>
-        </div>
-      </div>
-    </div>
+    <rating-filters
+      :categories="categories"
+      :selectedCategories="selectedCategories"
+      @changeCategory="changeCategory"
+      @selectDate="selectDate"
+      @changeSearch="changeSearch"
+    ></rating-filters>
 
-    <div class="rating-main">
-      <div class="container">
-        <tools-table
-          v-if="currentList"
-          :tools="lists[currentList]"
-          :favoritesTools="lists.favoritesTools"
-          :studiedTools="lists.studiedTools"
-          :selectedDate="selectedDate"
-          :selectedCategory="selectedCategory"
-          :searchInput="searchInput"
-          :dates="dates"
-          @clickIconFavoriteTools="clickIconFavoriteTools"
-          @clickIconStudiedTools="clickIconStudiedTools"
-          @listSort="listSort">
-        </tools-table>
-      </div>
-    </div>
-    <div class="empty-list" v-if="listEmpty">Ничего нет</div>
+    <rating-select-list
+      :list="currentList"
+      @changeCurrentList="changeCurrentList"
+    >
+    </rating-select-list>
+
+    <app-pagination
+      :tools="lists[currentList]"
+      @changePerPage="changePerPage"
+      @changePageWhenClickNumber="changePageWhenClickNumber"
+    >
+    </app-pagination>
+
+    <tools-table
+      v-if="currentList"
+      :tools="lists[currentList]"
+      :favoritesTools="lists.favoritesTools"
+      :studiedTools="lists.studiedTools"
+      :selectedDate="selectedDate"
+      :dates="dates"
+      :paginatedTools="paginatedTools"
+      @addToFavoriteTools="addToFavoriteTools"
+      @addToStudiedTools="addToStudiedTools"
+      @listSort="listSort"
+    >
+    </tools-table>
   </div>
 </template>
 
 <script>
 import ToolsTable from './ToolsTable.vue'
-import AppCategories from './AppCategories.vue'
+import AppPagination from './AppPagination.vue'
+import RatingFilters from './RatingFilters.vue'
+import RatingSelectList from './RatingSelectList.vue'
+// import ToolsList from './ToolsList.vue'
 import flatpickr from 'flatpickr'
-require('flatpickr/dist/flatpickr.css')
-// import AppList from './AppList.vue'
-import { getCategories, getDates, getTools } from '../scripts/axios'
+import { getCategories, getDates, getTools } from '../api'
 
 export default {
-  components: { ToolsTable, AppCategories },
-
+  components: { ToolsTable, AppPagination, RatingFilters, RatingSelectList },
   data() {
     return {
       categories: [],
@@ -91,7 +60,7 @@ export default {
       copyTools: [],
       copyFavoritesTools: [],
       copyStudiedTools: [],
-      selectedCategory: 'all',
+      selectedCategories: [],
       searchInput: '',
       selectedDate: {
         date_of_completion: null,
@@ -99,14 +68,9 @@ export default {
       listSortVar: null,
       currentList: 'tools',
       directionsForSorting: 'DESC',
+      paginatedTools: [],
       // currentJobBoard: 'Indeed',
     }
-  },
-
-  computed: {
-    listEmpty() {
-      return !this.lists[this.currentList].length
-    },
   },
 
   watch: {
@@ -117,13 +81,13 @@ export default {
       this.listSort(this.listSortVar, true)
 
       this.lists.tools = this.lists.tools.filter(
-        this.changeFilter(v, this.selectedCategory)
+        this.changeFilter(v, this.selectedCategories)
       )
       this.lists.favoritesTools = this.copyFavoritesTools.filter(
-        this.changeFilter(v, this.selectedCategory)
+        this.changeFilter(v, this.selectedCategories)
       )
       this.lists.studiedTools = this.copyStudiedTools.filter(
-        this.changeFilter(v, this.selectedCategory)
+        this.changeFilter(v, this.selectedCategories)
       )
     },
   },
@@ -145,7 +109,7 @@ export default {
         const [day, month, year] = date.split('.')
         dates.push(new Date(year, month, day))
       }
-      flatpickr('#date', {
+      flatpickr('#select-date', {
         // altInput: true,
         // altFormat: 'F j, Y',
         // dateFormat: 'Y-m-d',
@@ -153,54 +117,68 @@ export default {
         defaultDate: 1,
         maxDate: dates.at(-1),
         enable: dates,
-        onChange: function (selectedDates, dateStr, instance) {
-          console.log(1)
-        },
+        onChange: function (selectedDates, dateStr, instance) {},
         // inline: true
       })
     })
-    getCategories().then(res => (this.categories = res))
+    getCategories().then(res => {
+      this.categories = res
+      this.selectedCategories = res.map(c => c.id_category)
+    })
 
     getTools('Russia', 'HeadHunter').then(res => {
-      console.log(res[0])
       this.copyTools = res
       this.lists.tools = res
+      console.log(
+        this.lists.tools.reduce((acc, current) => {
+          return (acc += +current.counts.HeadHunter[this.selectedDate.id_date])
+        }, 0) - this.lists.tools[0].counts.HeadHunter[this.selectedDate.id_date]
+      )
     })
   },
 
   methods: {
-    changeCategory(e) {
-      if (
-        e === 'all' ||
-        (this.selectedCategory.includes(e) &&
-          this.selectedCategory.length === 1)
-      ) {
-        this.selectedCategory = 'all'
-      } else {
-        if (
-          typeof this.selectedCategory === 'object' &&
-          this.selectedCategory.length
-        ) {
-          if (this.selectedCategory.includes(e)) {
-            this.selectedCategory.splice(this.selectedCategory.indexOf(e), 1)
-          } else {
-            this.selectedCategory.push(e)
-          }
-        } else {
-          this.selectedCategory = [e]
-        }
+    changeCurrentList(list) {
+      this.currentList = list
+    },
+    changeSearch(e) {
+      this.searchInput = e.target.value
+    },
+    selectDate(e) {
+      this.selectedDate.date_of_completion = e
+    },
+    changePerPage(start, end) {
+      this.paginatedTools = this.lists[this.currentList].slice(start, end)
+    },
+    changePageWhenClickNumber(currentPage, itemsPerPage) {
+      this.paginatedTools = this.lists[this.currentList].slice(
+        (currentPage - 1) * itemsPerPage,
+        (currentPage - 1) * itemsPerPage + itemsPerPage
+      )
+    },
+    changeCategory(category) {
+      const index = this.selectedCategories.indexOf(category)
+      if (category === 'all' && !this.selectedCategories.length) {
+        this.selectedCategories = this.categories.map(c => c.id_category)
+      } else if (category === 'all' && this.selectedCategories.length) {
+        this.selectedCategories = []
+      } else if (category !== 'all' && index === -1) {
+        this.selectedCategories.push(category)
+      } else if (category !== 'all' && index !== -1) {
+        this.selectedCategories.splice(index, 1)
       }
+
       this.lists.tools = this.copyTools
       this.lists.favoritesTools = this.copyFavoritesTools
       this.listSort(this.listSortVar, true)
       this.lists.tools = this.lists.tools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategory)
+        this.changeFilter(this.searchInput, this.selectedCategories)
       )
       this.lists.favoritesTools = this.lists.favoritesTools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategory)
+        this.changeFilter(this.searchInput, this.selectedCategories)
       )
       this.lists.studiedTools = this.copyStudiedTools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategory)
+        this.changeFilter(this.searchInput, this.selectedCategories)
       )
     },
     listSort(v = this.listSortVar, saveSort = false) {
@@ -255,7 +233,7 @@ export default {
         this.lists.studiedTools = this.lists.studiedTools.sort(sortCount())
       }
     },
-    clickIconFavoriteTools(tool) {
+    addToFavoriteTools(tool) {
       this.lists.favoritesTools = this.copyFavoritesTools
       const hasInFavoritesTools = this.lists.favoritesTools.find(
         t => t.id_tool === tool.id_tool
@@ -273,7 +251,7 @@ export default {
         JSON.stringify(this.lists.favoritesTools)
       )
     },
-    clickIconStudiedTools(tool) {
+    addToStudiedTools(tool) {
       this.lists.studiedTools = this.copyStudiedTools
       const hasInStudiedTools = this.lists.studiedTools.find(
         t => t.id_tool === tool.id_tool
@@ -305,90 +283,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-.filters {
-}
-
-.filters__inner {
-  padding: 15px;
-  border: 5px solid var(--color-border);
-  border-radius: 15px;
-  margin-bottom: var(--margin-middle);
-}
-.filters__selects {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: var(--margin-small);
-}
-
-.select-container {
-}
-.filters__select-container {
-}
-.select-container__label {
-}
-
-.select-date {
-  width: 150px;
-  text-align: center;
-  border: 2px solid #e2e2e2;
-  background-color: transparent;
-  line-height: 1.5;
-  border-radius: 5px;
-  color: var(--color-text);
-  font-size: 20px;
-  transition: all 0.25s;
-}
-
-.filters__search-input {
-  width: 100%;
-  border: 2px solid #e2e2e2;
-  background-color: transparent;
-  line-height: 2;
-  padding: 0 20px;
-  border-radius: 5px;
-  font-weight: 200;
-  color: var(--color-text);
-  font-size: 20px;
-  transition: all 0.25s;
-}
-.additional-filters {
-}
-.additional-filters__inner {
-  margin-bottom: var(--margin-large);
-}
-.additional-filters__button {
-  background: none;
-  border: 5px solid var(--color-border);
-  border-radius: 8px;
-  cursor: pointer;
-  color: inherit;
-  outline: 0px;
-  font-weight: 600;
-  font-size: 12px;
-  padding: 6px 16px;
-  padding: 5px 8px;
-  margin-right: var(--margin-small);
-}
-
-.rating-main {
-}
-.empty-list {
-  width: 100%;
-  font-size: 56px;
-  text-align: center;
-  color: #242424;
-  margin-top: 120px;
-}
-
-@media (max-width: 1000px) {
-  .filters__select-container {
-    margin-bottom: var(--margin-small);
-  }
-
-  .select-container__input {
-    font-size: 16px;
-  }
-}
-</style>

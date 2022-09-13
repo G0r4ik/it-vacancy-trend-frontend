@@ -1,20 +1,18 @@
 module.exports = ({ env }) => ({
-  plugins: [
-    // require('doiuse')({
-    //   onFeatureUsage: function (usageInfo) {
-    //     console.log(usageInfo.message);
-    //   },
-    // }),
+  plugins: env === 'production' && [
+    require('doiuse')({
+      browsers: ['> 0.1%', 'not ie 11', 'not OperaMini all'],
+      ignore: [''],
+      ignoreFiles: ['**/normalize.css', '**/node_modules/**/*.css'],
+    }),
+    require('@fullhuman/postcss-purgecss')({
+      content: ['./src/**/*.*', './node_modules/flatpickr/dist/flatpickr.css'],
+    }),
     require('postcss-flexbugs-fixes'),
     require('postcss-bem-linter'),
-    env === 'production' ? require('postcss-preset-env') : false,
-    env === 'production' ? require('webp-in-css/plugin') : false,
-    // require('colorguard'),
-    // require('postcss-reporter')({ clearReportedMessages: true }),
+    require('postcss-preset-env'),
+    require('webp-in-css/plugin'),
+    require('colorguard', {}),
+    require('postcss-reporter')({ clearReportedMessages: true }),
   ],
-});
-// 94 со всем
-// 94 ток с презентом
-// 61 с префиксом
-// 49 без всего
-// unused uncss purgecss
+})

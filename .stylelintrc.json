@@ -1,9 +1,17 @@
 {
-  "extends": ["stylelint-config-standard"],
+  "ignoreFiles": ["**/normalize.css"],
+  "extends": ["stylelint-config-standard", "stylelint-config-recommended-vue"],
   "rules": {
-    "scss/selector-no-redundant-nesting-selector": true,
+    "string-quotes": "single",
     "declaration-colon-newline-after": null,
     "value-list-comma-newline-after": null,
-    "selector-class-pattern": null
+    "selector-class-pattern": null,
+    "rule-empty-line-before": "never",
+    "at-rule-empty-line-before": "never",
+    "comment-empty-line-before": "never",
+    "block-no-empty": null,
+    "custom-property-pattern": null,
+    "alpha-value-notation": "number",
+    "color-function-notation": "modern"
   }
 }

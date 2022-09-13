@@ -2,36 +2,39 @@
   --color_mine-shaft-base: #242424;
   --color_white-base: #fff;
   --color_chartreuse-base: #9bff00;
+  --color_turquoise-base: #5cdba6;
   --color_picton-blue-base: #4ba5e4;
-  --color_cod-gray-base: #111111;
-/* 5cdba6 */
+  --color_cod-gray-base: #111;
+  --color-gray: gray;
+  /* #e2e2e2; */
+  /* COLOR */
   --color-border: var(--color_mine-shaft-base);
   --color-text: var(--color_white-base);
   --color-primary: var(--color_chartreuse-base);
+  --color-primary2: var(--color_turquoise-base);
+  --color-primary3: var(--color_picton-blue-base);
   --color-background: var(--color_cod-gray-base);
-  --color-primary: var(--color_picton-blue-base);
   --color-link: var(--color_picton-blue-base);
-  --color-contrast: var(--color_picton-blue-base);
-
+  /* UNIT */
   --unit: 15px;
-
+  /* MARGIN */
   --margin-extra-small: calc(var(--unit) - 10px);
   --margin-small: var(--unit);
   --margin-middle: calc(var(--unit) * 2);
   --margin-large: calc(var(--unit) * 3);
-
+  /* PADDING */
   --padding-extra-small: calc(var(--unit) - 10px);
   --padding-small: var(--unit);
   --padding-middle: calc(var(--unit) * 2);
   --padding-large: calc(var(--unit) * 3);
-
+  /* FONT-SIZE */
   --text-extra-small: 14px;
   --text-small: 16px;
   --text-middle: 18px;
-  --text-large: 20px;
-  --text-extra-large: 22px;
-  --text-extra-extra-large: 24px;
-
+  --text-large: 24px;
+  --text-extra-large: 30px;
+  --text-extra-extra-large: 50px;
+  /* CONTAINER WIDTH */
   --container-small: 360px;
   --container-middle: 760px;
   --container-large: 1100px;

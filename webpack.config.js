@@ -1,7 +1,7 @@
+const Dotenv = require('dotenv-webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const StylelintPlugin = require('stylelint-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
@@ -10,7 +10,6 @@ const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack')
-
 const isDev = process.env.NODE_ENV === 'production' ? false : true
 
 const config = {
@@ -33,8 +32,7 @@ const config = {
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'assets'),
-      // assets: paths.public,
+      '@': path.join(__dirname, 'src'),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
   },
@@ -48,12 +46,10 @@ const config = {
   },
 
   plugins: [
+    new Dotenv(),
     new MiniCssExtractPlugin({
       filename: '[name]-[chunkhash:7].css',
     }),
-    // new StylelintPlugin({
-    //   configFile: './.stylelintrc.json',
-    // }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
@@ -75,8 +71,8 @@ const config = {
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: false,
     }),
-    // new BundleAnalyzerPlugin(),
-  ],
+    // !isDev && new BundleAnalyzerPlugin(),
+  ].filter(n => n),
 
   optimization: {
     minimize: !isDev,

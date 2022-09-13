@@ -4,7 +4,8 @@
       <div class="technology-comparison__inner">
         <div
           class="technology-comparison__cross"
-          @click.stop="$emit('closeModal')">
+          @click.stop="$emit('closeModal')"
+        >
           &#9587;
         </div>
         <input type="text" name="" id="" />
@@ -16,6 +17,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Chart from 'chart.js/auto'
 
@@ -107,6 +109,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 #myChart {
   background: yellow;
@@ -131,7 +134,7 @@ export default {
 
 .technology-comparison__inner {
   position: relative;
-  background: #111111;
+
   max-width: 800px;
   max-height: 500px;
   padding: 50px;
