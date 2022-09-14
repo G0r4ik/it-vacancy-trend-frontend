@@ -9,6 +9,7 @@ container
 selectedCategories
 skeleton
 интуитивно не понятны фильтры
+sort and local
 
 # AppCategories
 

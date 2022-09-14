@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    {{ filteredList.length }}
     <h2 class="title">
-      Rating <span>({{ tools.length }})</span>
+      Rating <span>({{ filteredList.length }})</span>
     </h2>
 
     <rating-filters
@@ -10,9 +9,10 @@
       :categories="categories"
       :selectedCategories="selectedCategories"
       :dates="dates"
+      :selectedDate="selectedDate"
       @changeCategory="changeCategory"
-      @selectDate="selectDate"
       @changeSearch="changeSearch"
+      @changeSelectDate="changeSelectDate"
     ></rating-filters>
 
     <rating-select-list
@@ -125,14 +125,14 @@ export default {
   },
 
   methods: {
+    changeSelectDate(selectDate) {
+      this.selectedDate = selectDate
+    },
     changeCurrentList(list) {
       this.currentList = list
     },
     changeSearch(e) {
       this.searchInput = e.target.value
-    },
-    selectDate(e) {
-      this.selectedDate.date_of_completion = e
     },
     changePerPage(start, end) {
       this.paginatedTools = this.filteredList.slice(start, end)
@@ -155,6 +155,7 @@ export default {
         this.selectedCategories.splice(index, 1)
       }
     },
+    // !!!
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
         this.directionsForSorting =

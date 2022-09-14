@@ -4,11 +4,7 @@
       <div class="filters__top">
         <label for="select-date" class="select-container__label">
           Дата:
-          <input
-            id="select-date"
-            class="select-date"
-            @change="$emit('selectDate', $event)"
-          />
+          <input id="select-date" class="select-date" />
         </label>
         <button
           class="filters__top-all"
@@ -40,11 +36,12 @@ import flatpickr from 'flatpickr'
 
 export default {
   components: { AppCategories },
-  emits: ['changeCategory', 'changeSearch', 'selectDate'],
+  emits: ['changeCategory', 'changeSearch', 'changeSelectDate'],
   props: {
     categories: Array,
     selectedCategories: Array,
     dates: Array,
+    selectedDate: Object,
   },
 
   computed: {
@@ -53,22 +50,30 @@ export default {
     },
   },
   mounted() {
-    const dates = []
+    const dates1 = []
     for (let i = 0; i < this.dates.length; i++) {
-      const date = this.dates[i].date_of_completion
-      const [day, month, year] = date.split('.')
-      dates.push(new Date(year, month, day))
+      const idDate = this.dates[i].id_date
+      const dateOfCompletion = this.dates[i].date_of_completion
+      dates1.push([idDate, dateOfCompletion])
     }
+    const _dates = this.dates
+    const emit = this.$emit
     flatpickr('#select-date', {
       // altInput: true,
       // altFormat: 'F j, Y',
-      // dateFormat: 'Y-m-d',
-      minDate: dates[0],
-      defaultDate: 1,
-      maxDate: dates.at(-1),
-      enable: dates,
-      onChange: function (selectedDates, dateStr, instance) {},
-      // inline: true
+      // dateFormat: 'y-m-d',
+      minDate: dates1[0][1],
+      defaultDate: this.selectedDate.date_of_completion,
+      maxDate: dates1.at(-1)[1],
+      enable: dates1.map(d => d[1]),
+      onChange: function (s, d, i) {
+        for (let i = 0; i < _dates.length; i++) {
+          if (_dates[i].date_of_completion === d) {
+            emit('changeSelectDate', _dates[i])
+            break
+          }
+        }
+      },
     })
   },
 }

@@ -120,9 +120,9 @@ async function getDataNumberOfVacancies() {
 
   const now = new Date()
   const day = String(now.getDate()).padStart(2, '0')
-  const month = String(now.getMonth()).padStart(2, '0')
+  const month = String(now.getMonth() + 1).padStart(2, '0')
   const year = String(now.getFullYear()).padStart(2, '0')
-  const date = `${day}.${month}.${year}`
+  const date = `${year}-${month}-${day}`
 
   p.query(
     `INSERT INTO date_of_completion(date_of_completion) VALUES('${date}')`
