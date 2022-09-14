@@ -1,7 +1,8 @@
 <template>
   <div class="container">
+    {{ filteredList.length }}
     <h2 class="title">
-      Rating <span>({{ lists[currentList].length }})</span>
+      Rating <span>({{ tools.length }})</span>
     </h2>
 
     <rating-filters
@@ -21,7 +22,8 @@
     </rating-select-list>
 
     <app-pagination
-      :tools="lists[currentList]"
+      :tools="tools"
+      :paginationTools="filteredList"
       @changePerPage="changePerPage"
       @changePageWhenClickNumber="changePageWhenClickNumber"
     >
@@ -29,8 +31,6 @@
 
     <tools-table
       v-if="currentList"
-      :favoritesTools="lists.favoritesTools"
-      :studiedTools="lists.studiedTools"
       :selectedDate="selectedDate"
       :paginatedTools="paginatedTools"
       @addToFavoriteTools="addToFavoriteTools"
@@ -55,50 +55,42 @@ export default {
     return {
       categories: [],
       dates: [],
-      lists: { tools: [], favoritesTools: [], studiedTools: [] },
-      copyTools: [],
-      copyFavoritesTools: [],
-      copyStudiedTools: [],
+      tools: [],
+      paginatedTools: [],
       selectedCategories: [],
       searchInput: '',
       selectedDate: {
+        id_date: null,
         date_of_completion: null,
       },
       listSortVar: null,
       currentList: 'tools',
       directionsForSorting: 'DESC',
-      paginatedTools: [],
+      pagination: {
+        start: null,
+        end: null,
+      },
       // currentJobBoard: 'Indeed',
     }
   },
-
-  watch: {
-    searchInput(v) {
-      this.lists.tools = this.copyTools
-      this.lists.favoritesTools = this.copyFavoritesTools
-      this.lists.studiedTools = this.copyStudiedTools
-      this.listSort(this.listSortVar, true)
-
-      this.lists.tools = this.lists.tools.filter(
-        this.changeFilter(v, this.selectedCategories)
-      )
-      this.lists.favoritesTools = this.copyFavoritesTools.filter(
-        this.changeFilter(v, this.selectedCategories)
-      )
-      this.lists.studiedTools = this.copyStudiedTools.filter(
-        this.changeFilter(v, this.selectedCategories)
-      )
+  computed: {
+    filteredList() {
+      const list = this.tools.filter(t => {
+        return (
+          t.name_tool.toLowerCase().includes(this.searchInput.toLowerCase()) &&
+          this.selectedCategories.includes(t.category.id_category)
+        )
+      })
+      if (this.currentList === 'favoritesTools') {
+        return list.filter(t => t.isFav)
+      }
+      if (this.currentList === 'studiedTools') {
+        return list.filter(t => t.isStudiedTools)
+      }
+      return list
     },
   },
-
   mounted() {
-    this.lists.favoritesTools =
-      JSON.parse(localStorage.getItem('favoritesTools')) || []
-    this.copyFavoritesTools = this.lists.favoritesTools
-    this.lists.studiedTools =
-      JSON.parse(localStorage.getItem('studiedTools')) || []
-    this.copyStudiedTools = this.lists.studiedTools
-
     getDates().then(res => {
       this.dates = res
       this.selectedDate = this.dates.at(-1)
@@ -109,13 +101,26 @@ export default {
     })
 
     getTools('Russia', 'HeadHunter').then(res => {
-      this.copyTools = res
-      this.lists.tools = res
-      console.log(
-        this.lists.tools.reduce((acc, current) => {
-          return (acc += +current.counts.HeadHunter[this.selectedDate.id_date])
-        }, 0) - this.lists.tools[0].counts.HeadHunter[this.selectedDate.id_date]
-      )
+      this.tools = res
+
+      let favoritesTools =
+        JSON.parse(localStorage.getItem('favoritesTools')) || []
+      let studiedTools = JSON.parse(localStorage.getItem('studiedTools')) || []
+      for (let i = 0; i < this.tools.length; i++) {
+        this.tools[i].isFav = false
+        this.tools[i].isStudiedTools = false
+
+        for (let j = 0; j < favoritesTools.length; j++) {
+          if (this.tools[i].id_tool === favoritesTools[j].id_tool) {
+            this.tools[i].isFav = true
+          }
+        }
+        for (let j = 0; j < studiedTools.length; j++) {
+          if (this.tools[i].id_tool === studiedTools[j].id_tool) {
+            this.tools[i].isStudiedTools = true
+          }
+        }
+      }
     })
   },
 
@@ -130,10 +135,10 @@ export default {
       this.selectedDate.date_of_completion = e
     },
     changePerPage(start, end) {
-      this.paginatedTools = this.lists[this.currentList].slice(start, end)
+      this.paginatedTools = this.filteredList.slice(start, end)
     },
     changePageWhenClickNumber(currentPage, itemsPerPage) {
-      this.paginatedTools = this.lists[this.currentList].slice(
+      this.paginatedTools = this.filteredList.slice(
         (currentPage - 1) * itemsPerPage,
         (currentPage - 1) * itemsPerPage + itemsPerPage
       )
@@ -149,19 +154,6 @@ export default {
       } else if (category !== 'all' && index !== -1) {
         this.selectedCategories.splice(index, 1)
       }
-
-      this.lists.tools = this.copyTools
-      this.lists.favoritesTools = this.copyFavoritesTools
-      this.listSort(this.listSortVar, true)
-      this.lists.tools = this.lists.tools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategories)
-      )
-      this.lists.favoritesTools = this.lists.favoritesTools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategories)
-      )
-      this.lists.studiedTools = this.copyStudiedTools.filter(
-        this.changeFilter(this.searchInput, this.selectedCategories)
-      )
     },
     listSort(v = this.listSortVar, saveSort = false) {
       if (!saveSort) {
@@ -194,73 +186,34 @@ export default {
         }
       }
 
-      if (v === 'name_tool') {
-        this.lists.tools = this.lists.tools.sort(sortName())
-        this.lists.favoritesTools = this.lists.favoritesTools.sort(sortName())
-        this.lists.studiedTools = this.lists.studiedTools.sort(sortName())
-      }
+      // if (v === 'name_tool') {
+      //   this.lists.tools = this.lists.tools.sort(sortName())
+      //   this.lists.favoritesTools = this.lists.favoritesTools.sort(sortName())
+      //   this.lists.studiedTools = this.lists.studiedTools.sort(sortName())
+      // }
 
-      if (v === 'id_category') {
-        this.lists.tools = this.lists.tools.sort(sortCategory())
-        this.lists.favoritesTools = this.lists.favoritesTools.sort(
-          sortCategory()
-        )
-        this.lists.studiedTools = this.lists.studiedTools.sort(sortCategory())
-      }
+      // if (v === 'id_category') {
+      //   this.lists.tools = this.lists.tools.sort(sortCategory())
+      //   this.lists.favoritesTools = this.lists.favoritesTools.sort(
+      //     sortCategory()
+      //   )
+      //   this.lists.studiedTools = this.lists.studiedTools.sort(sortCategory())
+      // }
 
-      // if (v === 'Indeed' || v === 'HeadHunter') {
-      if (v === 'HeadHunter') {
-        this.lists.tools = this.lists.tools.sort(sortCount())
-        this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount())
-        this.lists.studiedTools = this.lists.studiedTools.sort(sortCount())
-      }
+      // // if (v === 'Indeed' || v === 'HeadHunter') {
+      // if (v === 'HeadHunter') {
+      //   this.lists.tools = this.lists.tools.sort(sortCount())
+      //   this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount())
+      //   this.lists.studiedTools = this.lists.studiedTools.sort(sortCount())
+      // }
     },
     addToFavoriteTools(tool) {
-      this.lists.favoritesTools = this.copyFavoritesTools
-      const hasInFavoritesTools = this.lists.favoritesTools.find(
-        t => t.id_tool === tool.id_tool
-      )
-      if (hasInFavoritesTools) {
-        this.lists.favoritesTools = this.lists.favoritesTools.filter(
-          _tool => _tool.id_tool !== tool.id_tool
-        )
-      } else {
-        this.lists.favoritesTools.push(tool)
-      }
-      this.copyFavoritesTools = this.lists.favoritesTools
-      localStorage.setItem(
-        'favoritesTools',
-        JSON.stringify(this.lists.favoritesTools)
-      )
+      tool.isFav = !tool.isFav
+      localStorage.setItem('favoritesTools', JSON.stringify('!!!'))
     },
     addToStudiedTools(tool) {
-      this.lists.studiedTools = this.copyStudiedTools
-      const hasInStudiedTools = this.lists.studiedTools.find(
-        t => t.id_tool === tool.id_tool
-      )
-      if (hasInStudiedTools) {
-        this.lists.studiedTools = this.lists.studiedTools.filter(
-          _tool => _tool.id_tool !== tool.id_tool
-        )
-      } else {
-        this.lists.studiedTools.push(tool)
-      }
-      this.copyStudiedTools = this.lists.studiedTools
-      localStorage.setItem(
-        'studiedTools',
-        JSON.stringify(this.lists.studiedTools)
-      )
-    },
-    changeFilter(input, categories) {
-      return function (tool) {
-        if (categories !== 'all') {
-          return (
-            categories.includes(tool.category.id_category) &&
-            tool.name_tool.toLowerCase().includes(input.toLowerCase())
-          )
-        }
-        return tool.name_tool.toLowerCase().includes(input.toLowerCase())
-      }
+      tool.isStudiedTools = !tool.isStudiedTools
+      localStorage.setItem('studiedTools', JSON.stringify('!!!'))
     },
   },
 }

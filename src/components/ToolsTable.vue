@@ -72,9 +72,7 @@
             <span
               class="rating-table__item-star"
               :class="{
-                'rating-table__item-star_active': favoritesTools?.find(
-                  t => t.id_tool === tool.id_tool
-                ),
+                'rating-table__item-star_active': tool.isFav,
               }"
               @click="$emit('addToFavoriteTools', tool)"
             >
@@ -96,9 +94,7 @@
             <svg
               @click="$emit('addToStudiedTools', tool)"
               :class="{
-                'rating-table__item-svg_acitve': studiedTools?.find(
-                  t => t.id_tool === tool.id_tool
-                ),
+                'rating-table__item-svg_acitve': tool.isStudiedTools
               }"
               class="rating-table__item-svg"
               viewBox="0 0 32 32"
@@ -136,8 +132,6 @@
 export default {
   // components: { appTool },
   props: {
-    favoritesTools: Array,
-    studiedTools: Array,
     selectedDate: Object,
     paginatedTools: Array,
   },

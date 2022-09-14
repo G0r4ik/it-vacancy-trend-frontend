@@ -95,6 +95,7 @@
 export default {
   props: {
     tools: Array,
+    paginationTools: Array,
   },
 
   data() {
@@ -106,7 +107,7 @@ export default {
       itemsPerPage: 50,
     }
   },
-  
+
   computed: {
     isFirstPage() {
       return this.currentPage === 1
@@ -117,9 +118,9 @@ export default {
   },
 
   watch: {
-    tools: {
+    paginationTools: {
       handler() {
-        this.changePerPage(this.itemsPerPage, this.currentPage)
+        this.changePerPage(this.itemsPerPage, 1)
       },
       deep: true,
     },
@@ -131,7 +132,9 @@ export default {
       if (e.target) this.itemsPerPage = e.target.value
       if (!e.target) this.itemsPerPage = +e
 
-      this.pageCount = Math.ceil(this.tools.length / this.itemsPerPage)
+      this.pageCount = Math.ceil(
+        this.paginationTools.length / this.itemsPerPage
+      )
       this.paginationItems = []
       if (this.pageCount > 5) {
         this.paginationItems = [1, 2, 3, 4, 5]
