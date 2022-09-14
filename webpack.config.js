@@ -33,6 +33,7 @@ const config = {
   resolve: {
     alias: {
       '@': path.join(__dirname, 'src'),
+      '~n': path.join(__dirname, 'node_modules'),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
   },

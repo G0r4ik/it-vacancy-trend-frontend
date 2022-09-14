@@ -133,12 +133,9 @@
 
 <script>
 // import appTool from './AppTool.vue'
-
 export default {
   // components: { appTool },
   props: {
-    dates: Array,
-    tools: Array,
     favoritesTools: Array,
     studiedTools: Array,
     selectedDate: Object,
@@ -154,7 +151,7 @@ export default {
   },
   computed: {
     listEmpty() {
-      return !this.tools.length
+      return !this.paginatedTools.length
     },
   },
 
@@ -190,7 +187,7 @@ export default {
   padding-bottom: var(--padding-small);
   border-bottom: 2px solid var(--color-border);
   padding-top: var(--padding-small);
-  font-size: 16px;
+  font-size: var(--text-small);
 }
 .rating-table__icon-change-sort {
   width: 13px;
@@ -202,7 +199,6 @@ export default {
   border-bottom: 2px solid var(--color-border);
   padding: var(--padding-small) var(--padding-extra-small);
   text-align: center;
-  min-width: 130px;
   vertical-align: middle;
 }
 .rating-table__item_name {
@@ -222,13 +218,13 @@ export default {
   color: #f6b87e;
 }
 .rating-table__item_category {
-  padding: 0 10px;
+  padding: 0 var(--padding-small);
   height: 40px;
   border-radius: 20px;
   max-width: 200px;
   /* display: inline-flex; */
-  display: flex;
   /* !!! */
+  display: flex;
   justify-content: center;
   align-items: center;
   font-size: var(--text-extra-small);
@@ -247,7 +243,7 @@ export default {
   width: 100%;
   font-size: 56px;
   text-align: center;
-  color: #242424;
+  color: var(--color-border);
   margin-top: 120px;
 }
 @media (max-width: 700px) {

@@ -36,6 +36,7 @@
 
 <script>
 import AppCategories from './AppCategories.vue'
+import flatpickr from 'flatpickr'
 
 export default {
   components: { AppCategories },
@@ -43,11 +44,32 @@ export default {
   props: {
     categories: Array,
     selectedCategories: Array,
+    dates: Array,
   },
+
   computed: {
     changeCategoryAll() {
       return this.selectedCategories.length ? 'remove all' : 'show all'
     },
+  },
+  mounted() {
+    const dates = []
+    for (let i = 0; i < this.dates.length; i++) {
+      const date = this.dates[i].date_of_completion
+      const [day, month, year] = date.split('.')
+      dates.push(new Date(year, month, day))
+    }
+    flatpickr('#select-date', {
+      // altInput: true,
+      // altFormat: 'F j, Y',
+      // dateFormat: 'Y-m-d',
+      minDate: dates[0],
+      defaultDate: 1,
+      maxDate: dates.at(-1),
+      enable: dates,
+      onChange: function (selectedDates, dateStr, instance) {},
+      // inline: true
+    })
   },
 }
 </script>

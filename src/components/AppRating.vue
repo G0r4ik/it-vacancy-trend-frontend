@@ -5,8 +5,10 @@
     </h2>
 
     <rating-filters
+      v-if="selectedDate.date_of_completion"
       :categories="categories"
       :selectedCategories="selectedCategories"
+      :dates="dates"
       @changeCategory="changeCategory"
       @selectDate="selectDate"
       @changeSearch="changeSearch"
@@ -27,11 +29,9 @@
 
     <tools-table
       v-if="currentList"
-      :tools="lists[currentList]"
       :favoritesTools="lists.favoritesTools"
       :studiedTools="lists.studiedTools"
       :selectedDate="selectedDate"
-      :dates="dates"
       :paginatedTools="paginatedTools"
       @addToFavoriteTools="addToFavoriteTools"
       @addToStudiedTools="addToStudiedTools"
@@ -47,7 +47,6 @@ import AppPagination from './AppPagination.vue'
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
 // import ToolsList from './ToolsList.vue'
-import flatpickr from 'flatpickr'
 import { getCategories, getDates, getTools } from '../api'
 
 export default {
@@ -103,23 +102,6 @@ export default {
     getDates().then(res => {
       this.dates = res
       this.selectedDate = this.dates.at(-1)
-      const dates = []
-      for (let i = 0; i < res.length; i++) {
-        const date = res[i].date_of_completion
-        const [day, month, year] = date.split('.')
-        dates.push(new Date(year, month, day))
-      }
-      flatpickr('#select-date', {
-        // altInput: true,
-        // altFormat: 'F j, Y',
-        // dateFormat: 'Y-m-d',
-        minDate: dates[0],
-        defaultDate: 1,
-        maxDate: dates.at(-1),
-        enable: dates,
-        onChange: function (selectedDates, dateStr, instance) {},
-        // inline: true
-      })
     })
     getCategories().then(res => {
       this.categories = res

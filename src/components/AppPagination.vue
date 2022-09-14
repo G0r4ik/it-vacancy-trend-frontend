@@ -3,7 +3,7 @@
     <div class="pagination__inner">
       <button
         class="pagination__button"
-        :disabled="currentPage === 1"
+        :disabled="isFirstPage"
         @click="changePageWhenClickNumber(1)"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -21,7 +21,7 @@
       </button>
       <button
         class="pagination__button"
-        :disabled="currentPage === 1"
+        :disabled="isFirstPage"
         @click="changePageWhenClickNumber(currentPage - 1)"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@
       </button>
       <button
         class="pagination__button"
-        :disabled="currentPage === pageCount"
+        :disabled="isLastPage"
         @click="changePageWhenClickNumber(currentPage + 1)"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
       </button>
       <button
         class="pagination__button"
-        :disabled="currentPage === pageCount"
+        :disabled="isLastPage"
         @click="changePageWhenClickNumber(pageCount)"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -82,10 +82,10 @@
         id="listing-per-pages"
         @change="changePerPage"
       >
-        <option value="10">10</option>
-        <option value="25" selected="selected">25</option>
-        <option value="50">50</option>
-        <option value="10000">All</option>
+        <option value="25">25</option>
+        <option value="50" selected="selected">50</option>
+        <option value="100">100</option>
+        <option value="1000">All</option>
       </select>
     </label>
   </div>
@@ -103,8 +103,17 @@ export default {
       pageCount: null,
       paginationItems: [],
       currentPage: 1,
-      itemsPerPage: 25,
+      itemsPerPage: 50,
     }
+  },
+  
+  computed: {
+    isFirstPage() {
+      return this.currentPage === 1
+    },
+    isLastPage() {
+      return this.currentPage === this.pageCount
+    },
   },
 
   watch: {
@@ -117,7 +126,7 @@ export default {
   },
 
   methods: {
-    changePerPage(e = 25, currentPage = 1) {
+    changePerPage(e = 50, currentPage = 1) {
       this.currentPage = currentPage
       if (e.target) this.itemsPerPage = e.target.value
       if (!e.target) this.itemsPerPage = +e
@@ -175,25 +184,25 @@ export default {
 
 <style scoped>
 .pagination {
-  margin-bottom: var(--margin-small);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: var(--margin-small);
   padding: 0 var(--padding-extra-small);
 }
 .pagination__inner {
   display: inline-flex;
 }
 .pagination__button {
-  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 var(--margin-extra-small);
   width: 30px;
   height: 35px;
   border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
+  font-size: var(--text-small);
+  color: var(--color-text);
 }
 .pagination__button_current {
   background: var(--color-border);
