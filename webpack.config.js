@@ -27,19 +27,19 @@ const config = {
   },
 
   entry: {
-    index: './src/index.js',
+    index: './client/src/index.js',
   },
 
   resolve: {
     alias: {
-      '@': path.join(__dirname, 'src'),
+      '@': path.join(__dirname, 'client/src'),
       '~n': path.join(__dirname, 'node_modules'),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
   },
 
   devServer: {
-    static: { directory: path.resolve(__dirname, 'src'), watch: true },
+    static: { directory: path.resolve(__dirname, 'client/src'), watch: true },
     historyApiFallback: true,
     compress: true,
     port: 9000,
@@ -53,19 +53,23 @@ const config = {
     }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './client/src/index.html',
       title: 'App',
     }),
     new VueLoaderPlugin(),
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'public'),
+          from: path.resolve(__dirname, './client/public'),
           to: path.resolve(__dirname, 'dist/public'),
           info: { minimized: true },
           noErrorOnMissing: true,
           globOptions: { ignore: ['*.DS_Store'] },
         },
+        // {
+        //   from: path.resolve(__dirname, 'server/index.js'),
+        //   to: path.resolve(__dirname, 'dist/server/index.js'),
+        // },
       ],
     }),
     new webpack.DefinePlugin({

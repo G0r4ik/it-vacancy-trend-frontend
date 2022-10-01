@@ -6,7 +6,10 @@ module.exports = ({ env }) => ({
       ignoreFiles: ['**/normalize.css', '**/node_modules/**/*.css'],
     }),
     require('@fullhuman/postcss-purgecss')({
-      content: ['./src/**/*.*', './node_modules/flatpickr/dist/flatpickr.css'],
+      content: [
+        './client/**/*.*',
+        './node_modules/flatpickr/dist/flatpickr.css',
+      ],
     }),
     require('postcss-flexbugs-fixes'),
     require('postcss-bem-linter'),

@@ -1,6 +1,8 @@
 import axios from 'axios'
 const instance = axios.create({
-  baseURL: `${process.env.SERVER_ADDRESS}:${process.env.SERVER_PORT}`,
+  baseURL: `${process.env.SERVER_ADDRESS || 'http://localhost'}:${
+    process.env.PORT || 5000
+  }`,
   timeout: 0,
   // withCredentials: true,
 })

@@ -125,13 +125,12 @@ async function getDataNumberOfVacancies() {
   const date = `${year}-${month}-${day}`
 
   p.query(
-    `INSERT INTO date_of_completion(date_of_completion) VALUES('${date}')`
-  )
-
-  p.query(
     `SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1`,
     (e, results) => {
-      const lastDateId = results.rows[0].id_date
+      p.query(
+        `INSERT INTO date_of_completion(date_of_completion) VALUES('${date}')`
+      )
+      const lastDateId = results.rows[0].id_date + 1
       p.query('SELECT * FROM tools', async (e, results) => {
         let tools = results.rows
         for (const tool of tools) {
@@ -236,7 +235,7 @@ async function getDataNumberOfVacancies() {
 
 app.get('/getDataNumberOfVacancies', () => getDataNumberOfVacancies())
 
-const port = process.env.SERVER_PORT
+const port = process.env.PORT || 5000
 app.listen(port, () => {
   console.log('SERVER WORKING!', port)
 })
