@@ -1,7 +1,7 @@
 import axios from 'axios'
 const url = process.env.SERVER_ADDRESS
 const instance = axios.create({
-  baseURL: url
+  baseURL: url,
   timeout: 0,
   // withCredentials: true,
 })
