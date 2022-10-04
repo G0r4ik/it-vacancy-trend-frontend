@@ -2,16 +2,50 @@
   <header class="header">
     <div class="container">
       <div class="header__inner">
-        <div class="header__logo-text">
-          <div>IT</div>
-          <div>Vacancy</div>
-          <div>Trend</div>
+        <div class="header__logo logo">
+          <div class="header__logo-text">IT Vacancy Trend</div>
         </div>
-        <nav class="header__nav">
-          <ul class="header__nav-list">
+        <nav class="header__menu menu">
+          <button
+            class="menu__button"
+            type="button"
+            aria-expanded="false"
+            aria-controls="menu__list"
+            @click="showMenu($event)"
+          >
+            <svg
+              class="menu__icon menu__icon-cross"
+              aria-hidden="true"
+              width="32"
+              height="32"
+              id="cross"
+              viewBox="0 0 32 32"
+            >
+              <path
+                d="M7 24L25 8M25 24L7 8"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+            </svg>
+            <svg
+              class="menu__icon menu__icon-menu"
+              aria-hidden="true"
+              width="32"
+              height="32"
+              id="menu"
+              viewBox="0 0 32 32"
+            >
+              <path
+                d="M5 8h22M5 16h22M27 24H5"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+          <ul class="menu__list">
             <li
-              class="header__nav-item"
-              :class="{ 'header__nav-item_active': page === 'rating' }"
+              class="menu__item"
+              :class="{ menu__item_active: page === 'rating' }"
               tabindex="0"
               @click="$emit('changePage', 'rating')"
               @keyup.enter="$emit('changePage', 'rating')"
@@ -19,8 +53,8 @@
               Рейтинг
             </li>
             <li
-              class="header__nav-item"
-              :class="{ 'header__nav-item_active': page === 'compare' }"
+              class="menu__item"
+              :class="{ menu__item_active: page === 'compare' }"
               tabindex="0"
               @click="$emit('changePage', 'compare')"
               @keyup.enter="$emit('changePage', 'compare')"
@@ -28,8 +62,8 @@
               Сравнить
             </li>
             <li
-              class="header__nav-item"
-              :class="{ 'header__nav-item_active': page === 'other' }"
+              class="menu__item"
+              :class="{ menu__item_active: page === 'other' }"
               tabindex="0"
               @click="$emit('changePage', 'other')"
               @keyup.enter="$emit('changePage', 'other')"
@@ -38,23 +72,48 @@
             </li>
           </ul>
         </nav>
-        <div class="header__group">
-          <select
-            name="select-lang"
-            id="select-lang"
-            class="header__select-lang"
+        <div class="header__user-wrapper">
+          <button
+            class="header__user"
+            @click="showUserAction = !showUserAction"
           >
-            <option value="russian">EN</option>
-            <option value="english">RU</option>
-          </select>
-          <div class="header__user">
-            <img
-              src="@/assets/test-img.png"
-              alt="user avatar"
-              class="header__test-img"
-            />
-          </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-user-off"
+              width="44"
+              height="44"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="#00abfb"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M14.274 10.291a4 4 0 1 0 -5.554 -5.58m-.548 3.453a4.01 4.01 0 0 0 2.62 2.65"
+              />
+              <path
+                d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 1.147 .167m2.685 2.681a4 4 0 0 1 .168 1.152v2"
+              />
+              <line x1="3" y1="3" x2="21" y2="21" />
+            </svg>
+          </button>
         </div>
+        <ul class="user-dropdown" v-if="showUserAction">
+          <li class="user-dropdown__item">
+            <button class="user-dropdown__button">Войти</button>
+          </li>
+          <li class="user-dropdown__item">
+            <button class="user-dropdown__button">Зарегестрироваться</button>
+          </li>
+          <li class="user-dropdown__item">
+            <button class="user-dropdown__button">Создать новый список</button>
+          </li>
+          <li class="user-dropdown__item">
+            <button class="user-dropdown__button">Выйти</button>
+          </li>
+        </ul>
       </div>
     </div>
   </header>
@@ -62,52 +121,70 @@
 
 <script>
 export default {
+  data() {
+    return {
+      showUserAction: false,
+    }
+  },
   props: {
     page: String,
+  },
+  methods: {
+    showMenu() {
+      const menuButton = document.querySelector('.menu__button')
+      const menuList = document.querySelector('.menu__list')
+      let expanded = menuButton.getAttribute('aria-expanded') === 'true'
+      menuButton.setAttribute('aria-expanded', !expanded)
+      menuButton.classList.toggle('menu__button_open')
+      menuList.classList.toggle('menu__list_open')
+    },
   },
 }
 </script>
 
 <style scoped>
-.header {
-  width: 100%;
-  margin-bottom: var(--margin-small);
-}
 .header__inner {
   padding: var(--padding-small) 0;
-  display: flex;
   border-bottom: 5px solid var(--color-border);
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
   justify-content: space-between;
-  align-items: center;
 }
-.header__logo-text {
-  margin-right: var(--margin-large);
-  border: 1px solid var(--color-primary3);
+.header__logo {
+  border: 2.5px solid var(--color-primary3);
+  border-left: 2.5px solid #4be4d7;
+  border-right: 2.5px solid #4be4d7;
   padding: var(--padding-extra-small);
-}
-.header__nav {
-}
-.header__nav-list {
+  border-radius: 10px;
+  width: 115px;
   display: flex;
-  list-style-type: none;
+  align-items: center;
+  justify-content: center;
+  align-self: start;
 }
-.header__nav-item {
+.header__menu {
+  align-self: center;
+}
+.menu__list {
+  list-style-type: none;
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 8px;
+}
+.menu__item {
   text-decoration: none;
   color: inherit;
   margin: 0 var(--margin-small);
   padding-bottom: var(--padding-extra-small);
   cursor: pointer;
 }
-.header__nav-item_active {
+.menu__item_active {
   border-bottom: 2px solid var(--color-primary3);
 }
-.header__group {
-  display: flex;
-  justify-content: center;
+.header__user-wrapper {
+  display: inline-flex;
   align-items: center;
-}
-.header__select-lang {
-  margin-right: var(--margin-small);
+  justify-content: center;
 }
 .header__user {
 }
@@ -115,5 +192,107 @@ export default {
 .header__test-img {
   width: 42px;
   height: 42px;
+}
+.menu__button {
+  display: none;
+}
+.user-dropdown {
+  position: absolute;
+  right: 15px;
+  top: 90px;
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  /* box-shadow: 0 0 10px 1px var(--color-border); */
+  padding: var(--padding-small);
+}
+.user-dropdown__item {
+  margin-bottom: var(--margin-extra-small);
+}
+.user-dropdown__item:last-child {
+  margin-bottom: 0;
+}
+.user-dropdown__button {
+}
+
+@media (width <= 736px) {
+  .header__logo {
+    /* width: 80px; */
+  }
+  .header__logo-text {
+    /* font-size: var(--text-small); */
+  }
+  .header__menu {
+    grid-row: 1;
+  }
+  .menu {
+    display: grid;
+  }
+  .menu__button {
+    z-index: 1;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    justify-self: end;
+  }
+  .menu__icon {
+    display: block;
+    stroke: var(--color-text);
+  }
+  .menu__icon:hover {
+    stroke: var(--color-text);
+  }
+  .menu__icon-menu,
+  .menu__button_open .menu__icon-cross {
+    display: block;
+  }
+  .menu__icon-cross,
+  .menu__button_open .menu__icon-menu {
+    display: none;
+  }
+  .menu__list {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding: var(--padding-middle) 0;
+    background-color: var(--color-background);
+  }
+  .menu__list_open::after {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-background),
+      transparent
+    );
+    content: '';
+  }
+  .menu__list_open {
+    display: block;
+  }
+
+  .menu__item {
+    margin-left: 100px;
+    margin-bottom: var(--margin-small);
+    display: inline-block;
+  }
+  .menu__item_active {
+    border-bottom: none;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+  .user-dropdown__button {
+    font-size: var(--text-small);
+  }
 }
 </style>
