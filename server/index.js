@@ -233,7 +233,10 @@ async function getDataNumberOfVacancies() {
   )
 }
 
-app.get('/getDataNumberOfVacancies', () => getDataNumberOfVacancies())
+app.get('/getDataNumberOfVacancies', (req, res) => {
+  res.send('...')
+  getDataNumberOfVacancies()
+})
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
