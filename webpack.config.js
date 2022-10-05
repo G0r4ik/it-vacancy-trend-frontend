@@ -27,7 +27,7 @@ const config = {
   },
 
   entry: {
-    index: './client/src/index.js',
+    index: path.resolve(__dirname, 'client/src/index.js'),
   },
 
   resolve: {
@@ -53,16 +53,15 @@ const config = {
     }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
-      template: './client/src/index.html',
+      template: path.resolve(__dirname, 'client/src/index.html'),
       title: 'App',
-      // publicPath: './',
     }),
     new VueLoaderPlugin(),
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, './client/src/public'),
-          to: path.resolve(__dirname, './dist/public'),
+          from: path.resolve(__dirname, 'client/src/public'),
+          to: path.resolve(__dirname, 'dist/public'),
           info: { minimized: true },
           noErrorOnMissing: true,
           globOptions: { ignore: ['*.DS_Store'] },
@@ -155,11 +154,11 @@ const config = {
       },
 
       // html
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-        options: { minimize: !isDev },
-      },
+      // {
+      //   test: /\.html$/,
+      //   loader: 'html-loader',
+      //   options: { minimize: !isDev },
+      // },
 
       // fonts
       {
