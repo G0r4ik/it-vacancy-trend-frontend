@@ -55,14 +55,14 @@ const config = {
     new HtmlWebpackPlugin({
       template: './client/src/index.html',
       title: 'App',
-      publicPath: './',
+      // publicPath: './',
     }),
     new VueLoaderPlugin(),
     new CopyPlugin({
       patterns: [
         {
           from: path.resolve(__dirname, './client/src/public'),
-          to: path.resolve(__dirname, 'dist/public'),
+          to: path.resolve(__dirname, './dist/public'),
           info: { minimized: true },
           noErrorOnMissing: true,
           globOptions: { ignore: ['*.DS_Store'] },
