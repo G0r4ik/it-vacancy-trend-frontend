@@ -52,10 +52,10 @@ const config = {
       filename: '[name]-[chunkhash:7].css',
     }),
     new CaseSensitivePathsPlugin(),
-    // new SpriteLoaderPlugin(),
     new HtmlWebpackPlugin({
       template: './client/src/index.html',
       title: 'App',
+      publicPath: './',
     }),
     new VueLoaderPlugin(),
     new CopyPlugin({
