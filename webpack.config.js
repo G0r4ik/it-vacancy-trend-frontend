@@ -52,6 +52,7 @@ const config = {
       filename: '[name]-[chunkhash:7].css',
     }),
     new CaseSensitivePathsPlugin(),
+    // new SpriteLoaderPlugin(),
     new HtmlWebpackPlugin({
       template: './client/src/index.html',
       title: 'App',
@@ -60,7 +61,7 @@ const config = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, './client/public'),
+          from: path.resolve(__dirname, './client/src/public'),
           to: path.resolve(__dirname, 'dist/public'),
           info: { minimized: true },
           noErrorOnMissing: true,
@@ -236,23 +237,84 @@ const config = {
       //   test: /\.svg$/,
       //   loader: 'svg-inline-loader',
       // },
+      // {
+      //   test: /\.svg$/,
+      //   use: [
+      //     { loader: 'svg-sprite-loader', options: {} },
+      //     'svg-transform-loader',
+      //     'svgo-loader',
+      //   ],
+      // },
+      //{
+      //test: /\.svg$/,
+
+      // use: [
+      //   {
+      //     loader: 'svg-sprite-loader',
+      //   },
+      // ],
+      // use: [
+      // { loader: 'svg-sprite-loader' },
+      // 'svg-transform-loader',
+      // 'svgo-loader',
+      // ],
+      // loader: 'svg-inline-loader',
+      //},
       //svg
+      // {
+      //   test: /\.(?:svg)$/i,
+      //   generator: {
+      //     filename: './img/[name]_[hash][ext]',
+      //   },
+      //   use: [
+      //     {
+      //       loader: 'image-webpack-loader',
+      //       options: { disable: isDev },
+      //     },
+      //   ],
+      // },
+
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'vue-svg-loader',
+      // },
+
+      //svg
+      // {
+      //   test: /\.(?:svg)$/i,
+      //   generator: {
+      //     filename: './img/[name]_[hash][ext]',
+      //   },
+      //   use: [
+      //     {
+      //       loader: 'image-webpack-loader',
+      //       options: { disable: isDev },
+      //     },
+      //   ],
+      // },
+
+      // {
+      //   test: /\.(?:svg)$/i,
+      //   generator: {
+      //     filename: './img/[name]_[hash][ext]',
+      //   },
+      //   use: [
+      //     {
+      //       loader: 'image-webpack-loader',
+      //       options: { disable: isDev },
+      //     },
+      //   ],
+      // },
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'svg-inline-loader',
+      // },
       {
-        test: /\.(?:svg)$/i,
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
         generator: {
           filename: './img/[name]_[hash][ext]',
         },
-        use: [
-          {
-            loader: 'image-webpack-loader',
-            options: { disable: isDev },
-          },
-        ],
-      },
-
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        type: 'asset/resource',
       },
       // img
       // {
