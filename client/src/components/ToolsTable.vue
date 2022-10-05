@@ -163,6 +163,7 @@ export default {
 
 <style scoped>
 .rating-table {
+  overflow: hidden;
   overflow-x: auto;
 }
 .rating-table__inner {
@@ -240,7 +241,7 @@ export default {
   color: var(--color-border);
   margin-top: 120px;
 }
-@media (max-width: 700px) {
+@media (max-width: 760px) {
   .rating-table__inner {
     font-size: var(--text-small);
   }

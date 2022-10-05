@@ -1,9 +1,12 @@
 import axios from 'axios'
-const url = process.env.SERVER_ADDRESS
+const url =
+  process.env.NODE_ENV == 'production'
+    ? process.env.SERVER_ADDRESS
+    : 'http://localhost:5000'
+
 const instance = axios.create({
   baseURL: url,
   timeout: 0,
-  // withCredentials: true,
 })
 
 const getTools = (region, jobBoard) =>

@@ -2,8 +2,11 @@
   <header class="header">
     <div class="container">
       <div class="header__inner">
-        <div class="header__logo logo">
+        <div class="header__logo header__logo_dekstop">
           <div class="header__logo-text">IT Vacancy Trend</div>
+        </div>
+        <div class="header__logo header__logo_mobile">
+          <div class="header__logo-text">ITV</div>
         </div>
         <nav class="header__menu menu">
           <button
@@ -11,7 +14,7 @@
             type="button"
             aria-expanded="false"
             aria-controls="menu__list"
-            @click="showMenu($event)"
+            @click="showMenuFunction"
           >
             <svg
               class="menu__icon menu__icon-cross"
@@ -47,8 +50,8 @@
               class="menu__item"
               :class="{ menu__item_active: page === 'rating' }"
               tabindex="0"
-              @click="$emit('changePage', 'rating')"
-              @keyup.enter="$emit('changePage', 'rating')"
+              @click="changePage('rating')"
+              @keyup.enter="changePage('rating')"
             >
               Рейтинг
             </li>
@@ -56,8 +59,8 @@
               class="menu__item"
               :class="{ menu__item_active: page === 'compare' }"
               tabindex="0"
-              @click="$emit('changePage', 'compare')"
-              @keyup.enter="$emit('changePage', 'compare')"
+              @click="changePage('compare')"
+              @keyup.enter="changePage('compare')"
             >
               Сравнить
             </li>
@@ -65,23 +68,22 @@
               class="menu__item"
               :class="{ menu__item_active: page === 'other' }"
               tabindex="0"
-              @click="$emit('changePage', 'other')"
-              @keyup.enter="$emit('changePage', 'other')"
+              @click="changePage('other')"
+              @keyup.enter="changePage('other')"
             >
               Прочее
             </li>
           </ul>
         </nav>
-        <div class="header__user-wrapper">
+        <div class="header__user">
           <button
-            class="header__user"
+            class="header__user-button"
             @click="showUserAction = !showUserAction"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-user-off"
-              width="44"
-              height="44"
+              width="30"
+              height="30"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="#00abfb"
@@ -121,22 +123,30 @@
 
 <script>
 export default {
-  data() {
-    return {
-      showUserAction: false,
-    }
-  },
   props: {
     page: String,
   },
+
+  data() {
+    return {
+      showUserAction: false,
+      showMenu: false,
+    }
+  },
+
   methods: {
-    showMenu() {
+    showMenuFunction() {
+      this.showUserAction = false
       const menuButton = document.querySelector('.menu__button')
       const menuList = document.querySelector('.menu__list')
       let expanded = menuButton.getAttribute('aria-expanded') === 'true'
       menuButton.setAttribute('aria-expanded', !expanded)
       menuButton.classList.toggle('menu__button_open')
       menuList.classList.toggle('menu__list_open')
+    },
+    changePage(page) {
+      this.showMenuFunction()
+      this.$emit('changePage', page)
     },
   },
 }
@@ -149,6 +159,7 @@ export default {
   display: grid;
   grid-template-columns: max-content max-content max-content;
   justify-content: space-between;
+  align-items: center;
 }
 .header__logo {
   border: 2.5px solid var(--color-primary3);
@@ -160,16 +171,15 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  align-self: start;
 }
-.header__menu {
-  align-self: center;
+.header__logo_mobile {
+  display: none;
+  height: 40px;
+  text-align: center;
 }
 .menu__list {
   list-style-type: none;
-  display: grid;
-  grid-auto-flow: column;
-  column-gap: 8px;
+  display: flex;
 }
 .menu__item {
   text-decoration: none;
@@ -181,32 +191,23 @@ export default {
 .menu__item_active {
   border-bottom: 2px solid var(--color-primary3);
 }
-.header__user-wrapper {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
 .header__user {
-}
-/* !!! */
-.header__test-img {
-  width: 42px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
 }
 .menu__button {
   display: none;
 }
 .user-dropdown {
   position: absolute;
-  right: 15px;
-  top: 90px;
+  right: 20px;
+  top: 50px;
   background: var(--color-background);
   display: flex;
   flex-direction: column;
   list-style-type: none;
   border: 1px solid var(--color-border);
   border-radius: 5px;
-  /* box-shadow: 0 0 10px 1px var(--color-border); */
   padding: var(--padding-small);
 }
 .user-dropdown__item {
@@ -215,15 +216,17 @@ export default {
 .user-dropdown__item:last-child {
   margin-bottom: 0;
 }
-.user-dropdown__button {
-}
-
-@media (width <= 736px) {
-  .header__logo {
-    /* width: 80px; */
+@media (width < 760px) {
+  .header__inner {
+    padding: var(--padding-small) 0;
+    border-width: 2px;
+    margin: 0;
   }
-  .header__logo-text {
-    /* font-size: var(--text-small); */
+  .header__logo_mobile {
+    display: block;
+  }
+  .header__logo_dekstop {
+    display: none;
   }
   .header__menu {
     grid-row: 1;
@@ -234,18 +237,13 @@ export default {
   .menu__button {
     z-index: 1;
     display: block;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-    justify-self: end;
   }
   .menu__icon {
     display: block;
     stroke: var(--color-text);
   }
   .menu__icon:hover {
-    stroke: var(--color-text);
+    stroke: var(--color-primary3);
   }
   .menu__icon-menu,
   .menu__button_open .menu__icon-cross {
@@ -262,6 +260,7 @@ export default {
     right: 0;
     left: 0;
     padding: var(--padding-middle) 0;
+    padding-left: var(--padding-extra-large);
     background-color: var(--color-background);
   }
   .menu__list_open::after {
@@ -280,11 +279,8 @@ export default {
   .menu__list_open {
     display: block;
   }
-
   .menu__item {
-    margin-left: 100px;
     margin-bottom: var(--margin-small);
-    display: inline-block;
   }
   .menu__item_active {
     border-bottom: none;

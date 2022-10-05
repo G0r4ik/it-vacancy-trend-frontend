@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 class="title">
-      Rating <span>({{ filteredList.length }})</span>
+      List <span>({{ filteredList.length }})</span>
     </h2>
 
     <rating-filters

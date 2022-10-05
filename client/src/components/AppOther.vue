@@ -1,7 +1,18 @@
 <template>
   <div class="other">
     <div class="container">
+      <h2 class="other__title title">Another</h2>
       <div class="other__inner">
+        <p class="other__p">
+          Сайт не несет цели показать актуальные и востребованные технологии.
+          Хоть зачастую количество вакансий корелирует с частотой использования
+          технологии.
+        </p>
+        <p class="other__p">
+          Некоторые технологии с часто используемыми словами в жизни (например:
+          ...) могут нерпвильно считаться, такие технологии помечены специальным
+          символом
+        </p>
         <p class="other__p">
           На сайте каждый день в 3 часа ночи GMT выкладывается количество
           вакансий определенных технологий.
@@ -27,7 +38,11 @@
           Неадекватные цифры? Советы по развитию проекта? Нашли баги? На сайте
           нет вашего родного языка? Пишите на почту.
         </p>
-        <p class="other__p">eforfora@gmail.com</p>
+        <p class="other__p">
+          <a class="other__link" href="mailto:eforfora@gmail.com" type=""
+            >eforfora@gmail.com</a
+          >
+        </p>
       </div>
     </div>
   </div>
@@ -35,10 +50,13 @@
 
 <style>
 .other {
-  height: 90vh;
+  /* height: 90vh; */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.other__title {
+  margin-bottom: var(--padding-small);
 }
 .other__inner {
   border: 1px solid var(--color-border);
@@ -49,5 +67,16 @@
 }
 .other__p {
   margin-bottom: var(--margin-small);
+}
+.other__link {
+  color: var(--color-primary);
+}
+@media (width < 760px) {
+  .other__inner {
+    margin: 0;
+    margin-bottom: var(--margin-small);
+    font-size: var(--text-small);
+    line-height: 90%;
+  }
 }
 </style>

@@ -6,6 +6,7 @@
     "declaration-colon-newline-after": null,
     "value-list-comma-newline-after": null,
     "selector-class-pattern": null,
+    "selector-id-pattern": null,
     "rule-empty-line-before": "never",
     "at-rule-empty-line-before": "never",
     "comment-empty-line-before": "never",

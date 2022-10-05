@@ -32,6 +32,7 @@
 
 <script>
 import AppCategories from './AppCategories.vue'
+import '~n/flatpickr/dist/flatpickr.css'
 import flatpickr from 'flatpickr'
 
 export default {
@@ -46,7 +47,7 @@ export default {
 
   computed: {
     changeCategoryAll() {
-      return this.selectedCategories.length ? 'remove all' : 'show all'
+      return this.selectedCategories.length ? 'clear' : 'show all'
     },
   },
   mounted() {
@@ -122,9 +123,15 @@ export default {
   font-size: var(--text-small);
   transition: all 0.25s;
 }
-@media (max-width: 1000px) {
+@media (max-width: 760px) {
   .filters__top {
     margin-bottom: var(--margin-small);
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+  .select-container__label {
+    margin-bottom: var(--margin-extra-small);
   }
 }
 </style>

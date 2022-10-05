@@ -76,7 +76,7 @@
         </svg>
       </button>
     </div>
-    <label for="listing-per-pages">
+    <label class="pagination__change" for="listing-per-pages">
       <select
         name="listing-per-pages"
         id="listing-per-pages"
@@ -105,6 +105,7 @@ export default {
       paginationItems: [],
       currentPage: 1,
       itemsPerPage: 50,
+      visibleButtons: 3,
     }
   },
 
@@ -136,8 +137,10 @@ export default {
         this.paginationTools.length / this.itemsPerPage
       )
       this.paginationItems = []
-      if (this.pageCount > 5) {
-        this.paginationItems = [1, 2, 3, 4, 5]
+      if (this.pageCount > this.visibleButtons) {
+        for (let i = 1; i <= this.visibleButtons; i++) {
+          this.paginationItems.push(i)
+        }
       } else {
         for (let i = 1; i <= this.pageCount; i++) {
           this.paginationItems.push(i)
@@ -156,23 +159,25 @@ export default {
       this.currentPage = page
 
       this.paginationItems = []
-      for (let i = 1; i <= this.pageCount; i++) this.paginationItems.push(i)
-      if (this.currentPage <= 2) {
+      for (let i = 1; i <= this.pageCount; i++) {
+        this.paginationItems.push(i)
+      }
+      if (this.currentPage <= Math.floor(Math.sqrt(this.visibleButtons))) {
         this.paginationItems = this.paginationItems.slice(
           0,
-          Math.min(5, this.pageCount)
+          Math.min(this.visibleButtons, this.pageCount)
         )
       } else if (
         this.currentPage === this.pageCount ||
         this.currentPage === this.pageCount - 1
       ) {
         this.paginationItems = this.paginationItems.slice(
-          Math.max(-5, -this.pageCount)
+          Math.max(-this.visibleButtons, -this.pageCount)
         )
       } else {
         this.paginationItems = this.paginationItems.slice(
-          this.currentPage - 3,
-          this.currentPage + 2
+          this.currentPage - Math.floor(Math.sqrt(this.visibleButtons)) - 1,
+          this.currentPage + Math.floor(Math.sqrt(this.visibleButtons))
         )
       }
       this.$emit(
@@ -182,6 +187,14 @@ export default {
       )
     },
   },
+  mounted() {
+    this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+    window.addEventListener('resize', () => {
+      this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+      this.changePageWhenClickNumber(this.currentPage)
+    })
+  },
+  emits: ['changePageWhenClickNumber', 'changePerPage'],
 }
 </script>
 
@@ -190,8 +203,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin-bottom: var(--margin-small);
-  padding: 0 var(--padding-extra-small);
 }
 .pagination__inner {
   display: inline-flex;
@@ -220,5 +233,20 @@ export default {
 }
 .pagination__button:disabled svg {
   fill: var(--color-border);
+}
+.pagination__change {
+  margin-top: 5px;
+  font-size: var(--text-small);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagination__change select {
+}
+
+@media (width < 760px) {
+  .pagination__button {
+    /* margin: 0; */
+  }
 }
 </style>
