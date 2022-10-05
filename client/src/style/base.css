@@ -126,3 +126,9 @@ a {
 .flatpickr-weekdays {
   display: none;
 }
+
+@media (width < 760px) {
+  .container {
+    padding: 0 var(--padding-small);
+  }
+}

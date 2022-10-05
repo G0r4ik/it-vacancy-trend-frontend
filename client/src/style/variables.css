@@ -22,11 +22,14 @@
   --margin-small: var(--unit);
   --margin-middle: calc(var(--unit) * 2);
   --margin-large: calc(var(--unit) * 3);
+  --margin-extra-large: calc(var(--unit) * 4);
+
   /* PADDING */
   --padding-extra-small: calc(var(--unit) - 10px);
   --padding-small: var(--unit);
   --padding-middle: calc(var(--unit) * 2);
   --padding-large: calc(var(--unit) * 3);
+  --padding-extra-large: calc(var(--unit) * 4);
   /* FONT-SIZE */
   --text-extra-small: 14px;
   --text-small: 16px;
