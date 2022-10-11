@@ -3,7 +3,12 @@
     <table class="rating-table__inner">
       <thead class="rating-table__thead">
         <tr class="rating-table__row">
-          <th class="rating-table__th" @click="$emit('listSort', 'name_tool')">
+          <th
+            tabindex="0"
+            class="rating-table__th"
+            @click="$emit('listSort', 'name_tool')"
+            @keydown.enter="$emit('listSort', 'name_tool')"
+          >
             Название
             <span class="rating-table__icon-change-sort">
               <svg
@@ -18,8 +23,10 @@
             </span>
           </th>
           <th
+            tabindex="0"
             class="rating-table__th"
             @click="$emit('listSort', 'id_category')"
+            @keydown.enter="$emit('listSort', 'id_category')"
           >
             Категория
             <span class="rating-table__icon-change-sort">
@@ -34,7 +41,12 @@
               </svg>
             </span>
           </th>
-          <th class="rating-table__th" @click="$emit('listSort', 'HeadHunter')">
+          <th
+            tabindex="0"
+            class="rating-table__th"
+            @click="$emit('listSort', 'HeadHunter')"
+            @keydown.enter="$emit('listSort', 'HeadHunter')"
+          >
             HHru
             <span class="rating-table__icon-change-sort">
               <svg
@@ -48,12 +60,12 @@
               </svg>
             </span>
           </th>
-          <th class="rating-table__th"></th>
+          <th tabindex="0" class="rating-table__th"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="rating-table__tbody">
         <tr
-          v-for="(tool, i) of paginatedTools"
+          v-for="tool of paginatedTools"
           :key="tool.id_tool"
           class="rating-table__row"
         >
@@ -69,7 +81,8 @@
             <span>
               {{ tool.name_tool }}
             </span>
-            <span
+            <button
+              tabindex="0"
               class="rating-table__item-star"
               :class="{
                 'rating-table__item-star_active': tool.isFav,
@@ -77,7 +90,7 @@
               @click="$emit('addToFavoriteTools', tool)"
             >
               &#9733;
-            </span>
+            </button>
           </td>
           <td class="rating-table__item">
             <div
@@ -88,25 +101,25 @@
             </div>
           </td>
           <td class="rating-table__item rating-table__item_count">
-            {{ tool.counts.HeadHunter[selectedDate.id_date] }}
+            {{ tool?.counts?.HeadHunter?.[selectedDate.id_date] ?? 0 }}
+            <!-- 'u' -->
           </td>
           <td class="rating-table__item">
-            <svg
-              @click="$emit('addToStudiedTools', tool)"
-              :class="{
-                'rating-table__item-svg_acitve': tool.isStudiedTools
-              }"
-              class="rating-table__item-svg"
-              viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"
-              />
-              <path
-                d="M13.67,22a1,1,0,0,1-.73-.32l-4.67-5a1,1,0,0,1,1.46-1.36l3.94,4.21,8.6-9.21a1,1,0,1,1,1.46,1.36l-9.33,10A1,1,0,0,1,13.67,22Z"
-              />
-            </svg>
+            <button @click="$emit('addToStudiedTools', tool)">
+              <svg
+                :class="{ 'rating-table__item-svg_acitve': tool.isStudied }"
+                class="rating-table__item-svg"
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16,31A15,15,0,1,1,31,16,15,15,0,0,1,16,31ZM16,3A13,13,0,1,0,29,16,13,13,0,0,0,16,3Z"
+                />
+                <path
+                  d="M13.67,22a1,1,0,0,1-.73-.32l-4.67-5a1,1,0,0,1,1.46-1.36l3.94,4.21,8.6-9.21a1,1,0,1,1,1.46,1.36l-9.33,10A1,1,0,0,1,13.67,22Z"
+                />
+              </svg>
+            </button>
           </td>
         </tr>
         <!-- <teleport to="body">
@@ -183,6 +196,8 @@ export default {
   border-bottom: 2px solid var(--color-border);
   padding-top: var(--padding-small);
   font-size: var(--text-small);
+}
+.rating-table__tbody {
 }
 .rating-table__icon-change-sort {
   width: 13px;

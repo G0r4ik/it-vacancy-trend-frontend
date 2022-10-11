@@ -120,8 +120,10 @@ export default {
 
   watch: {
     paginationTools: {
-      handler() {
-        this.changePerPage(this.itemsPerPage, 1)
+      handler(newValue, oldValue) {
+        if (newValue.length !== oldValue.length) {
+          this.changePerPage(this.itemsPerPage, 1)
+        }
       },
       deep: true,
     },
@@ -243,7 +245,6 @@ export default {
 }
 .pagination__change select {
 }
-
 @media (width < 760px) {
   .pagination__button {
     /* margin: 0; */

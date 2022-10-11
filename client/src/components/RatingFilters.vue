@@ -51,26 +51,31 @@ export default {
     },
   },
   mounted() {
-    const dates1 = []
+    const availableDates = []
     for (let i = 0; i < this.dates.length; i++) {
       const idDate = this.dates[i].id_date
       const dateOfCompletion = this.dates[i].date_of_completion
-      dates1.push([idDate, dateOfCompletion])
+      availableDates.push([idDate, dateOfCompletion])
     }
-    const _dates = this.dates
+    const dates = this.dates
     const emit = this.$emit
     flatpickr('#select-date', {
       // altInput: true,
       // altFormat: 'F j, Y',
       // dateFormat: 'y-m-d',
-      minDate: dates1[0][1],
-      defaultDate: this.selectedDate.date_of_completion,
-      maxDate: dates1.at(-1)[1],
-      enable: dates1.map(d => d[1]),
+      minDate: availableDates[0][1],
+      defaultDate: this.selectedDate.date_of_completion, //
+      maxDate: availableDates.at(-1)[1],
+      enable: availableDates.map(d => d[1]),
       onChange: function (s, d, i) {
-        for (let i = 0; i < _dates.length; i++) {
-          if (_dates[i].date_of_completion === d) {
-            emit('changeSelectDate', _dates[i])
+        for (let i = 0; i < dates.length; i++) {
+          console.log(dates[i].date_of_completion, d)
+          const fDate = new Date(dates[i].date_of_completion)
+          const sDate = new Date(d)
+          const firstDate = `${fDate.getFullYear()}${fDate.getMonth()}${fDate.getDay()}`
+          const secondDate = `${sDate.getFullYear()}${sDate.getMonth()}${sDate.getDay()}`
+          if (firstDate === secondDate) {
+            emit('changeSelectDate', dates[i])
             break
           }
         }

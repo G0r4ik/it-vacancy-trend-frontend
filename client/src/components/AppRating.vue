@@ -59,11 +59,11 @@ export default {
       paginatedTools: [],
       currentCategories: [],
       searchInput: '',
+      sortList: '',
       selectedDate: {
         id_date: null,
         date_of_completion: null,
       },
-      listSortVar: null,
       currentList: 'tools',
       directionsForSorting: 'DESC',
       pagination: {
@@ -75,17 +75,24 @@ export default {
   },
   computed: {
     filteredList() {
-      const list = this.tools.filter(t => {
-        return (
-          t.name_tool.toLowerCase().includes(this.searchInput.toLowerCase()) &&
-          this.selectedCategories.includes(t.category.id_category)
+      let list = this.tools.filter(t => {
+        const inputCheck = t.name_tool
+          .toLowerCase()
+          .includes(this.searchInput.toLowerCase())
+        const categoryCheck = this.currentCategories.includes(
+          t.category.id_category
         )
+        return inputCheck && categoryCheck
       })
+
+      if (this.sortList === 'name_tool') list.sort(this.sortName())
+      if (this.sortList === 'id_category') list.sort(this.sortCategory())
+      if (this.sortList === 'HeadHunter') list.sort(this.sortCount())
       if (this.currentList === 'favoritesTools') {
-        return list.filter(t => t.isFav)
+        list = list.filter(t => t.isFav)
       }
       if (this.currentList === 'studiedTools') {
-        return list.filter(t => t.isStudiedTools)
+        list = list.filter(t => t.isStudied)
       }
       return list
     },
@@ -102,23 +109,20 @@ export default {
 
     getTools('Russia', 'HeadHunter').then(res => {
       this.tools = res
+      let favoritesTools = localStorage.getItem('favoritesTools')
+      let studiedTools = localStorage.getItem('studiedTools')
 
-      let favoritesTools =
-        JSON.parse(localStorage.getItem('favoritesTools')) || []
-      let studiedTools = JSON.parse(localStorage.getItem('studiedTools')) || []
+      favoritesTools = favoritesTools !== null ? favoritesTools.split(' ') : 'e'
+      studiedTools = studiedTools !== null ? studiedTools.split(' ') : 'e'
+      console.log(favoritesTools)
       for (let i = 0; i < this.tools.length; i++) {
         this.tools[i].isFav = false
-        this.tools[i].isStudiedTools = false
-
-        for (let j = 0; j < favoritesTools.length; j++) {
-          if (this.tools[i].id_tool === favoritesTools[j].id_tool) {
-            this.tools[i].isFav = true
-          }
+        this.tools[i].isStudied = false
+        if (favoritesTools.includes(String(this.tools[i].id_tool))) {
+          this.tools[i].isFav = true
         }
-        for (let j = 0; j < studiedTools.length; j++) {
-          if (this.tools[i].id_tool === studiedTools[j].id_tool) {
-            this.tools[i].isStudiedTools = true
-          }
+        if (studiedTools.includes(String(this.tools[i].id_tool))) {
+          this.tools[i].isStudied = true
         }
       }
     })
@@ -127,6 +131,7 @@ export default {
   methods: {
     changeSelectDate(selectDate) {
       this.selectedDate = selectDate
+      console.log('bebr')
     },
     changeCurrentList(list) {
       this.currentList = list
@@ -155,66 +160,90 @@ export default {
         this.currentCategories.splice(index, 1)
       }
     },
-    // !!!
-    listSort(v = this.listSortVar, saveSort = false) {
+    sortName() {
+      const directionsForSorting = this.directionsForSorting
+      return function (a, b) {
+        return directionsForSorting === 'DESC'
+          ? a.name_tool.localeCompare(b.name_tool)
+          : b.name_tool.localeCompare(a.name_tool)
+      }
+    },
+    sortCategory() {
+      const directionsForSorting = this.directionsForSorting
+      return function (a, b) {
+        return directionsForSorting === 'DESC'
+          ? a.category.name_category.localeCompare(b.category.name_category)
+          : b.category.name_category.localeCompare(a.category.name_category)
+      }
+    },
+    sortCount() {
+      const directionsForSorting = this.directionsForSorting
+      const id_date = this.selectedDate.id_date
+      return function (a, b) {
+        if (!b.counts.HeadHunter[id_date]) {
+          b.counts.HeadHunter[id_date] = 0
+        }
+        if (!a.counts.HeadHunter[id_date]) {
+          a.counts.HeadHunter[id_date] = 0
+        }
+        return directionsForSorting === 'DESC'
+          ? a?.counts?.HeadHunter?.[id_date] - b?.counts?.HeadHunter?.[id_date]
+          : b?.counts?.HeadHunter?.[id_date] - a?.counts?.HeadHunter?.[id_date]
+      }
+    },
+    listSort(v = this.sortList, saveSort = false) {
+      this.sortList = v
       if (!saveSort) {
+        console.log(this.directionsForSorting)
         this.directionsForSorting =
           this.directionsForSorting === 'DESC' ? 'ASC' : 'DESC'
       }
-      this.listSortVar = v
-      const directionsForSorting = this.directionsForSorting
-
-      const sortName = () => {
-        return function (a, b) {
-          return directionsForSorting === 'DESC'
-            ? a[v].localeCompare(b[v])
-            : b[v].localeCompare(a[v])
-        }
-      }
-      const sortCategory = () => {
-        return function (a, b) {
-          return directionsForSorting === 'DESC'
-            ? a.category.name_category.localeCompare(b.category.name_category)
-            : b.category.name_category.localeCompare(a.category.name_category)
-        }
-      }
-      const id_date = this.selectedDate.id_date
-      const sortCount = () => {
-        return function (a, b) {
-          return directionsForSorting === 'DESC'
-            ? a.counts[v][id_date] - b.counts[v][id_date]
-            : b.counts[v][id_date] - a.counts[v][id_date]
-        }
-      }
-
-      // if (v === 'name_tool') {
-      //   this.lists.tools = this.lists.tools.sort(sortName())
-      //   this.lists.favoritesTools = this.lists.favoritesTools.sort(sortName())
-      //   this.lists.studiedTools = this.lists.studiedTools.sort(sortName())
-      // }
-
-      // if (v === 'id_category') {
-      //   this.lists.tools = this.lists.tools.sort(sortCategory())
-      //   this.lists.favoritesTools = this.lists.favoritesTools.sort(
-      //     sortCategory()
-      //   )
-      //   this.lists.studiedTools = this.lists.studiedTools.sort(sortCategory())
-      // }
-
-      // // if (v === 'Indeed' || v === 'HeadHunter') {
-      // if (v === 'HeadHunter') {
-      //   this.lists.tools = this.lists.tools.sort(sortCount())
-      //   this.lists.favoritesTools = this.lists.favoritesTools.sort(sortCount())
-      //   this.lists.studiedTools = this.lists.studiedTools.sort(sortCount())
-      // }
+      this.sortList = v
     },
     addToFavoriteTools(tool) {
+      if (tool.isFav) {
+        const f = localStorage
+          .getItem('favoritesTools')
+          .split(' ')
+          .filter(t => {
+            console.log(+t, tool.id_tool)
+            return +t !== tool.id_tool
+          })
+          .join(' ')
+        localStorage.setItem('favoritesTools', f)
+      } else {
+        const favoritesTools = localStorage.getItem('favoritesTools')
+        if (favoritesTools === null) {
+          localStorage.setItem('favoritesTools', `${tool.id_tool}`)
+        } else {
+          localStorage.setItem(
+            'favoritesTools',
+            `${favoritesTools} ${tool.id_tool}`
+          )
+        }
+      }
       tool.isFav = !tool.isFav
-      localStorage.setItem('favoritesTools', JSON.stringify('!!!'))
     },
     addToStudiedTools(tool) {
-      tool.isStudiedTools = !tool.isStudiedTools
-      localStorage.setItem('studiedTools', JSON.stringify('!!!'))
+      if (tool.isStudied) {
+        const f = localStorage
+          .getItem('studiedTools')
+          .split(' ')
+          .filter(t => +t !== tool.id_tool)
+          .join(' ')
+        localStorage.setItem('studiedTools', f)
+      } else {
+        const studiedTools = localStorage.getItem('studiedTools')
+        if (studiedTools === null) {
+          localStorage.setItem('studiedTools', `${tool.id_tool}`)
+        } else {
+          localStorage.setItem(
+            'studiedTools',
+            `${studiedTools} ${tool.id_tool}`
+          )
+        }
+      }
+      tool.isStudied = !tool.isStudied
     },
   },
 }
