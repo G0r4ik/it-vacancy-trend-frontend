@@ -16,7 +16,7 @@
 
       <app-categories
         :categories="categories"
-        :selectedCategories="selectedCategories"
+        :currentCategories="currentCategories"
         @changeCategory="$emit('changeCategory', $event)"
       ></app-categories>
 
@@ -40,14 +40,14 @@ export default {
   emits: ['changeCategory', 'changeSearch', 'changeSelectDate'],
   props: {
     categories: Array,
-    selectedCategories: Array,
+    currentCategories: Array,
     dates: Array,
     selectedDate: Object,
   },
 
   computed: {
     changeCategoryAll() {
-      return this.selectedCategories.length ? 'clear' : 'show all'
+      return this.currentCategories.length ? 'clear' : 'show all'
     },
   },
   mounted() {

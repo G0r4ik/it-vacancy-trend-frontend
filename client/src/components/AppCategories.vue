@@ -5,7 +5,7 @@
         v-for="category of filteredCategories"
         class="categories__item"
         :class="
-          selectedCategories.includes(category.id_category) &&
+          currentCategories.includes(category.id_category) &&
           `categories__item_${category.id_category}`
         "
         :key="category.id_category"
@@ -47,7 +47,7 @@ export default {
   },
   props: {
     categories: Array,
-    selectedCategories: Array,
+    currentCategories: Array,
   },
   methods: {},
 }

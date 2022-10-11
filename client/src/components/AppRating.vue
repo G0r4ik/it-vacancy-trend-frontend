@@ -7,7 +7,7 @@
     <rating-filters
       v-if="selectedDate.date_of_completion"
       :categories="categories"
-      :selectedCategories="selectedCategories"
+      :currentCategories="currentCategories"
       :dates="dates"
       :selectedDate="selectedDate"
       @changeCategory="changeCategory"
@@ -57,7 +57,7 @@ export default {
       dates: [],
       tools: [],
       paginatedTools: [],
-      selectedCategories: [],
+      currentCategories: [],
       searchInput: '',
       selectedDate: {
         id_date: null,
@@ -97,7 +97,7 @@ export default {
     })
     getCategories().then(res => {
       this.categories = res
-      this.selectedCategories = res.map(c => c.id_category)
+      this.currentCategories = res.map(c => c.id_category)
     })
 
     getTools('Russia', 'HeadHunter').then(res => {
@@ -144,15 +144,15 @@ export default {
       )
     },
     changeCategory(category) {
-      const index = this.selectedCategories.indexOf(category)
-      if (category === 'all' && !this.selectedCategories.length) {
-        this.selectedCategories = this.categories.map(c => c.id_category)
-      } else if (category === 'all' && this.selectedCategories.length) {
-        this.selectedCategories = []
+      const index = this.currentCategories.indexOf(category)
+      if (category === 'all' && !this.currentCategories.length) {
+        this.currentCategories = this.categories.map(c => c.id_category)
+      } else if (category === 'all' && this.currentCategories.length) {
+        this.currentCategories = []
       } else if (category !== 'all' && index === -1) {
-        this.selectedCategories.push(category)
+        this.currentCategories.push(category)
       } else if (category !== 'all' && index !== -1) {
-        this.selectedCategories.splice(index, 1)
+        this.currentCategories.splice(index, 1)
       }
     },
     // !!!

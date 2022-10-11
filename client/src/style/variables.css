@@ -23,7 +23,6 @@
   --margin-middle: calc(var(--unit) * 2);
   --margin-large: calc(var(--unit) * 3);
   --margin-extra-large: calc(var(--unit) * 4);
-
   /* PADDING */
   --padding-extra-small: calc(var(--unit) - 10px);
   --padding-small: var(--unit);

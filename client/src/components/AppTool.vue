@@ -118,10 +118,9 @@ export default {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgb(0 0 0 / 0.9);
   z-index: 150000;
 }
-
 .technology-comparison {
   display: flex;
   align-items: center;
@@ -131,15 +130,12 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 .technology-comparison__inner {
   position: relative;
-
   max-width: 800px;
   max-height: 500px;
   padding: 50px;
 }
-
 .technology-comparison__cross {
   cursor: pointer;
   position: absolute;

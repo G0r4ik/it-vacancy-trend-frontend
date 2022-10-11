@@ -217,6 +217,7 @@ export default {
   height: 40px;
   border-radius: 20px;
   max-width: 200px;
+  margin: 0 auto;
   /* display: inline-flex; */
   /* !!! */
   display: flex;
@@ -237,9 +238,11 @@ export default {
 .empty-list {
   width: 100%;
   font-size: 56px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: var(--color-border);
-  margin-top: 120px;
+  height: 50vh;
 }
 @media (max-width: 760px) {
   .rating-table__inner {
