@@ -1,56 +1,12 @@
-fastify
-naming component
-css vars
-css width icon
-порядок атрибутов
-Хранить favorite и studied в tool
-server
-container
-поменять НИЧЕГО НЕТ
-selectedCategories
-skeleton
-интуитивно не понятны фильтры
-sort and local
-
-# AppCategories
-
-- слишком много места для категорий
-- не убирается выбор даты
-- кнопка all не стилизована
-- подрыгивание экрана при 100vh+
-
-# AppHeader
-
-- Переключение страниц
-- Переключение языка
-- Аккаунт пользователя
-
-# AppTool AppPagination Tools Table
-
-- Полностью SCRIPT SCRIPT
-
-# BUGS / REFACTORING
-
-- При наличии текста в поиске и убирании из избараного - очищается фильтр
-
-# BACKEND
-
-- При парсинге, дать возможность работать с сервером (создает дату, но не все элементы есть)
-- Авторизация пользователя
-- Добавить не добавленные вещи в БД
-- Переименовать Категории
-
-# BUILD
-
-- Добавить новые npm скрипты: minimize img
-- Удалить неиспользуемые пакеты
-- Вынести в .env
-- Глобальный гит игнор сделать
-- Plugins postcss
-- Webpack svg
-
 # FRONTEND
 
+- naming component
+- css vars
+- css width icon
+- порядок атрибутов
+- container
+- skeleton
+- кнопку добавить рядом с ничего нет
 - Сделать вкладку Сравнить
 - Добавить вывод в виде списка, а не таблицы
 - Подумать над стилизацией _Select_
@@ -62,6 +18,26 @@ sort and local
 - Добавить "Показать следующие"
 - FONST
 - Скачка при появлении скролла
+
+# BACKEND
+
+{ login, email } - dtp dto
+
+- передавать ip или browser
+- При парсинге, дать возможность работать с сервером (создает дату, но не все элементы есть)
+- Авторизация пользователя
+- Добавить не добавленные вещи в БД (fastify)
+- Переименовать Категории
+- несколько категорий
+
+# BUILD
+
+- Добавить новые npm скрипты: minimize img
+- Удалить неиспользуемые пакеты
+- Вынести в .env
+- Глобальный гит игнор сделать
+- Plugins postcss
+- Webpack svg
 
 # ANOTHER
 
@@ -89,13 +65,28 @@ sort and local
 - image-minimizer-webpack-plugin
 - imagemin
 
-#
+# AppFilter
 
-94 со всем
-94 ток с презентом
-61 с префиксом
-49 без всего
-unused uncss purgecss cssmin purify
+- Убрать из фильтра определеныне технологии
 
-\! chcp 1251
+# AppCategories
+
+- слишком много места для категорий
+- не убирается выбор даты
+- кнопка all не стилизована
+
+# AppHeader
+
+- Переключение страниц
+- Переключение языка
+- Аккаунт пользователя
+
+# AppTool AppPagination Tools Table
+
+- Полностью SCRIPT SCRIPT
+
+# BUGS / REFACTORING
+
+####
+
 document.location.href = `${error.response.data.errors[0].captcha_url}&backurl='http://127.0.0.1:5500/index.html'`

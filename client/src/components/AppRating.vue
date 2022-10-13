@@ -47,7 +47,7 @@ import AppPagination from './AppPagination.vue'
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
 // import ToolsList from './ToolsList.vue'
-import { getCategories, getDates, getTools } from '../api'
+import api from '../api'
 
 export default {
   components: { ToolsTable, AppPagination, RatingFilters, RatingSelectList },
@@ -98,23 +98,36 @@ export default {
     },
   },
   mounted() {
-    getDates().then(res => {
+    api.logoutUser()
+    // console.log(
+    //   registrationUser('egor', 'sdsdsd', 'egorgorlushkin0@gmail.com').then(
+    //     res => res.data
+    //   )
+    // )
+    // console.log(
+    //   loginUser(
+    //     'qr515254',
+    //     'sdsdsd',
+    //     'egorgorlushkin2452345345343465@gmail.com'
+    //   ).then(res => res.data)
+    // )
+
+    api.getDates().then(res => {
       this.dates = res
       this.selectedDate = this.dates.at(-1)
     })
-    getCategories().then(res => {
+    api.getCategories().then(res => {
       this.categories = res
       this.currentCategories = res.map(c => c.id_category)
     })
 
-    getTools('Russia', 'HeadHunter').then(res => {
+    api.getTools('Russia', 'HeadHunter').then(res => {
       this.tools = res
       let favoritesTools = localStorage.getItem('favoritesTools')
       let studiedTools = localStorage.getItem('studiedTools')
 
       favoritesTools = favoritesTools !== null ? favoritesTools.split(' ') : 'e'
       studiedTools = studiedTools !== null ? studiedTools.split(' ') : 'e'
-      console.log(favoritesTools)
       for (let i = 0; i < this.tools.length; i++) {
         this.tools[i].isFav = false
         this.tools[i].isStudied = false
@@ -131,7 +144,6 @@ export default {
   methods: {
     changeSelectDate(selectDate) {
       this.selectedDate = selectDate
-      console.log('bebr')
     },
     changeCurrentList(list) {
       this.currentList = list
@@ -194,7 +206,6 @@ export default {
     listSort(v = this.sortList, saveSort = false) {
       this.sortList = v
       if (!saveSort) {
-        console.log(this.directionsForSorting)
         this.directionsForSorting =
           this.directionsForSorting === 'DESC' ? 'ASC' : 'DESC'
       }
@@ -206,7 +217,6 @@ export default {
           .getItem('favoritesTools')
           .split(' ')
           .filter(t => {
-            console.log(+t, tool.id_tool)
             return +t !== tool.id_tool
           })
           .join(' ')

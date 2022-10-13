@@ -34,6 +34,7 @@ const config = {
     alias: {
       '@': path.join(__dirname, 'client/src'),
       '~n': path.join(__dirname, 'node_modules'),
+      '!': path.join(__dirname),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
   },

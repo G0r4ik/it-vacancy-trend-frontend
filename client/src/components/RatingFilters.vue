@@ -69,7 +69,6 @@ export default {
       enable: availableDates.map(d => d[1]),
       onChange: function (s, d, i) {
         for (let i = 0; i < dates.length; i++) {
-          console.log(dates[i].date_of_completion, d)
           const fDate = new Date(dates[i].date_of_completion)
           const sDate = new Date(d)
           const firstDate = `${fDate.getFullYear()}${fDate.getMonth()}${fDate.getDay()}`
