@@ -1,20 +1,22 @@
+require('dotenv').config()
 const express = require('express')
 const needle = require('needle')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const url = require('./helpers/getURL')
 const app = express()
 const p = require('./db')
 app.use(express.json())
 app.use(cookieParser())
+console.log(url)
 app.use(
   cors({
     credentials: true,
-    origin: 'http://localhost:9000',
+    origin: url.client,
   })
 )
 // app.use(require('cors')())
 app.use(require('./router'))
-require('dotenv').config()
 const port = process.env.PORT || 5000
 
 app.listen(port, () => {

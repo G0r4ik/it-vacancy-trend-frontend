@@ -1,10 +1,14 @@
 import axios from 'axios'
 const url = require('!/server/helpers/getURL')
 
+console.log(url)
 const instance = axios.create({
   baseURL: url.server,
   timeout: 0,
   withCredentials: true,
+  headers: {
+    
+  }
 })
 
 class API {

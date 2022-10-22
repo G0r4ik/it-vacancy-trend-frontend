@@ -9,7 +9,7 @@
     "serve": "concurrently \"webpack-dev-server\" \"nodemon ./server/index.js\"",
     "lint": "stylelint --fix \"./client/**/*.{css,vue}\"",
     "start-client": "cross-env NODE_ENV=production webpack",
-    "start-server": "nodemon ./server/index.js"
+    "start-server": "cross-env NODE_ENV=production nodemon ./server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "chart.js": "^3.9.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "flatpickr": "^4.6.13",
@@ -44,7 +45,6 @@
     "colorguard": "^1.2.1",
     "concurrently": "^7.4.0",
     "copy-webpack-plugin": "^11.0.0",
-    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.1.0",
     "doiuse": "^4.4.1",
