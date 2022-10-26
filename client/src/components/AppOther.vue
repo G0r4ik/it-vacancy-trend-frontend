@@ -76,7 +76,7 @@
     margin: 0;
     margin-bottom: var(--margin-small);
     font-size: var(--text-small);
-    line-height: 90%;
+    line-height: 100%;
   }
 }
 </style>

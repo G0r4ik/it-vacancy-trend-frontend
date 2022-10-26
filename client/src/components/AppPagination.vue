@@ -123,6 +123,8 @@ export default {
       handler(newValue, oldValue) {
         if (newValue.length !== oldValue.length) {
           this.changePerPage(this.itemsPerPage, 1)
+        } else {
+          this.changePerPage(this.itemsPerPage, this.currentPage)
         }
       },
       deep: true,

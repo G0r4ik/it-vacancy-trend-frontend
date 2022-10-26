@@ -115,10 +115,10 @@ class UserService {
     )
   }
 
-  async login(login, password, email) {
+  async login(login, password) {
     return p
       .query(
-        `SELECT * FROM users WHERE (user_login = '${login}' OR user_email = '${email}')`
+        `SELECT * FROM users WHERE (user_login = '${login}' OR user_email = '${login}')`
       )
       .then(async results => {
         if (!results.rows.length) {

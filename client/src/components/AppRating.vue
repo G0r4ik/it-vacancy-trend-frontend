@@ -1,9 +1,18 @@
 <template>
   <div class="container">
+    <!-- <h1>hellop</h1> -->
+    <!-- <img src="../assets/test-img.png" alt="" /> -->
     <h2 class="title">
       List <span>({{ filteredList.length }})</span>
     </h2>
-
+    <Skeletor
+      v-if="!categories.length"
+      width="100%"
+      height="200px"
+      as="div"
+      style="margin-bottom: 15px"
+    >
+    </Skeletor>
     <rating-filters
       v-if="selectedDate.date_of_completion"
       :categories="categories"
@@ -20,7 +29,14 @@
       @changeCurrentList="changeCurrentList"
     >
     </rating-select-list>
-
+    <Skeletor
+      v-if="!tools.length"
+      width="300px"
+      height="50px"
+      as="div"
+      style="margin-bottom: 15px"
+    >
+    </Skeletor>
     <app-pagination
       :tools="tools"
       :paginationTools="filteredList"
@@ -28,7 +44,15 @@
       @changePageWhenClickNumber="changePageWhenClickNumber"
     >
     </app-pagination>
-
+    <Skeletor
+      v-if="!tools.length"
+      width="100%"
+      height="70"
+      as="div"
+      v-for="i in 25"
+      style="margin-bottom: 15px"
+    >
+    </Skeletor>
     <tools-table
       v-if="currentList"
       :selectedDate="selectedDate"
@@ -42,6 +66,9 @@
 </template>
 
 <script>
+// import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
+import { Skeletor } from 'vue-skeletor'
+
 import ToolsTable from './ToolsTable.vue'
 import AppPagination from './AppPagination.vue'
 import RatingFilters from './RatingFilters.vue'
@@ -50,7 +77,13 @@ import RatingSelectList from './RatingSelectList.vue'
 import api from '../api'
 
 export default {
-  components: { ToolsTable, AppPagination, RatingFilters, RatingSelectList },
+  components: {
+    ToolsTable,
+    AppPagination,
+    RatingFilters,
+    RatingSelectList,
+    Skeletor,
+  },
   data() {
     return {
       categories: [],
@@ -86,7 +119,10 @@ export default {
       })
 
       if (this.sortList === 'name_tool') list.sort(this.sortName())
-      if (this.sortList === 'id_category') list.sort(this.sortCategory())
+      if (this.sortList === 'id_category') {
+        list.sort(this.sortCategory())
+        console.log(list)
+      }
       if (this.sortList === 'HeadHunter') list.sort(this.sortCount())
       if (this.currentList === 'favoritesTools') {
         list = list.filter(t => t.isFav)

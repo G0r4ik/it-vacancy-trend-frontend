@@ -75,54 +75,49 @@
             </li>
           </ul>
         </nav>
-        <div class="header__user">
-          <button
-            class="header__user-button"
-            @click="showUserAction = !showUserAction"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="#00abfb"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+        <div class="header__other">
+          <ChangeTheme></ChangeTheme>
+          <div class="header__user">
+            <button
+              class="header__user-button"
+              @click="showUserAction = !showUserAction"
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path
-                d="M14.274 10.291a4 4 0 1 0 -5.554 -5.58m-.548 3.453a4.01 4.01 0 0 0 2.62 2.65"
-              />
-              <path
-                d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 1.147 .167m2.685 2.681a4 4 0 0 1 .168 1.152v2"
-              />
-              <line x1="3" y1="3" x2="21" y2="21" />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="#00abfb"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M14.274 10.291a4 4 0 1 0 -5.554 -5.58m-.548 3.453a4.01 4.01 0 0 0 2.62 2.65"
+                />
+                <path
+                  d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 1.147 .167m2.685 2.681a4 4 0 0 1 .168 1.152v2"
+                />
+                <line x1="3" y1="3" x2="21" y2="21" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <ul class="user-dropdown" v-if="showUserAction">
-          <li class="user-dropdown__item">
-            <button class="user-dropdown__button">Войти</button>
-          </li>
-          <li class="user-dropdown__item">
-            <button class="user-dropdown__button">Зарегестрироваться</button>
-          </li>
-          <li class="user-dropdown__item">
-            <button class="user-dropdown__button">Создать новый список</button>
-          </li>
-          <li class="user-dropdown__item">
-            <button class="user-dropdown__button">Выйти</button>
-          </li>
-        </ul>
       </div>
     </div>
   </header>
+  <user-dropdown v-if="showUserAction" :showUserAction="showUserAction">
+  </user-dropdown>
 </template>
 
 <script>
+import UserDropdown from '@/components/UserDropdown.vue'
+import ChangeTheme from './ChangeTheme.vue'
 export default {
+  components: { UserDropdown, ChangeTheme },
+  emits: ['changePage'],
   props: {
     page: String,
   },
@@ -130,7 +125,6 @@ export default {
   data() {
     return {
       showUserAction: false,
-      showMenu: false,
     }
   },
 
@@ -145,7 +139,7 @@ export default {
       menuList.classList.toggle('menu__list_open')
     },
     changePage(page) {
-      this.showMenuFunction()
+      this.showUserAction = false
       this.$emit('changePage', page)
     },
   },
@@ -191,6 +185,10 @@ export default {
 .menu__item_active {
   border-bottom: 2px solid var(--color-primary3);
 }
+.header__other {
+  display: flex;
+  align-items: center;
+}
 .header__user {
   width: 30px;
   height: 30px;
@@ -198,24 +196,7 @@ export default {
 .menu__button {
   display: none;
 }
-.user-dropdown {
-  position: absolute;
-  right: 20px;
-  top: 50px;
-  background: var(--color-background);
-  display: flex;
-  flex-direction: column;
-  list-style-type: none;
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
-  padding: var(--padding-small);
-}
-.user-dropdown__item {
-  margin-bottom: var(--margin-extra-small);
-}
-.user-dropdown__item:last-child {
-  margin-bottom: 0;
-}
+
 @media (width < 760px) {
   .header__inner {
     padding: var(--padding-small) 0;

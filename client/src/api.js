@@ -1,14 +1,11 @@
 import axios from 'axios'
 const url = require('!/server/helpers/getURL')
 
-console.log(url)
 const instance = axios.create({
   baseURL: url.server,
   timeout: 0,
   withCredentials: true,
-  headers: {
-    
-  }
+  headers: {},
 })
 
 class API {
@@ -37,10 +34,12 @@ class API {
     })
     return user.data
   }
+
   loginUser = async (login, password, email) => {
     const user = await instance.post('loginUser', { login, password, email })
     return user.data
   }
+
   logoutUser = async () => {
     await instance.post('logout')
   }

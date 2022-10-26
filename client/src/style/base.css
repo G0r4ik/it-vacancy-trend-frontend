@@ -6,7 +6,7 @@
 body {
   font-family: Inter, Roboto, sans-serif;
   background: var(--color-background);
-  font-size: var(--text-large);
+  font-size: var(--text-middle);
   /* font-size: calc((100vw - 480px) / (1280 - 480) * (24 - 16) + 16px); */
   color: var(--color-text);
 }

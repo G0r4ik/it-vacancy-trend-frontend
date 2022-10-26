@@ -43,3 +43,13 @@
   --container-extra-large: 1400px;
   /* width-icon, height-icon; */
 }
+
+:root.light-theme {
+  --color-background: var(--color_cod-gray-base);
+  --color-text: var(--color_white-base);
+}
+
+:root.dark-theme {
+  --color-text: var(--color_cod-gray-base);
+  --color-background: var(--color_white-base);
+}

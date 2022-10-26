@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack",
     "build": "cross-env NODE_ENV=production webpack",
-    "serve": "concurrently \"webpack-dev-server\" \"nodemon ./server/index.js\"",
+    "serve": "concurrently \"webpack-dev-server --hot \" \"nodemon ./server/index.js\"",
     "lint": "stylelint --fix \"./client/**/*.{css,vue}\"",
     "start-client": "cross-env NODE_ENV=production webpack",
     "start-server": "cross-env NODE_ENV=production nodemon ./server/index.js"
@@ -26,13 +26,16 @@
     "flatpickr": "^4.6.13",
     "jsonwebtoken": "^8.5.1",
     "needle": "^3.1.0",
+    "ngx-skeleton-loader": "^6.0.0",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.19",
     "npm-check": "^6.0.1",
     "npm-check-updates": "^16.1.2",
     "pg": "^8.8.0",
     "postcss-svgo": "^5.1.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vue-loading-skeleton": "^2.0.0-beta.1",
+    "vue-skeletor": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.19.0",

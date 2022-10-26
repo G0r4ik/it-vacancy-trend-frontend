@@ -40,7 +40,10 @@ const config = {
   },
 
   devServer: {
-    static: { directory: path.resolve(__dirname, 'client/src'), watch: true },
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+      watch: true,
+    },
     historyApiFallback: true,
     compress: true,
     port: 9000,
@@ -81,6 +84,7 @@ const config = {
   ].filter(n => n),
 
   optimization: {
+    usedExports: true,
     minimize: !isDev,
     splitChunks: {
       chunks: 'all',
