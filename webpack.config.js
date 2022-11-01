@@ -1,4 +1,5 @@
 const Dotenv = require('dotenv-webpack')
+require('dotenv').config()
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -46,7 +47,7 @@ const config = {
     },
     historyApiFallback: true,
     compress: true,
-    port: 9000,
+    port: process.env.LOCAL_WEBPACK_PORT || 9000,
     hot: true,
   },
 

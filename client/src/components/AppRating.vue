@@ -134,19 +134,29 @@ export default {
     },
   },
   mounted() {
-    api.logoutUser()
+    // api.logoutUser()
     // console.log(
     //   registrationUser('egor', 'sdsdsd', 'egorgorlushkin0@gmail.com').then(
     //     res => res.data
     //   )
     // )
     // console.log(
-    //   loginUser(
-    //     'qr515254',
-    //     'sdsdsd',
-    //     'egorgorlushkin2452345345343465@gmail.com'
-    //   ).then(res => res.data)
+    //   api
+    //     .loginUser('egorgorlushkin0@gmail.com', 'mega0password')
+    //     .then(res => res)
     // )
+
+    // console.log(
+    //   api
+    //     .refreshToken(
+    //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4OCwidXNlcl9lbWFpbCI6ImVnb3Jnb3JsdXNoa2luMEBnbWFpbC5jb20iLCJpc19hY3RpdmUiOmZhbHNlLCJkYXRlX29mX3JlZ2lzdHJhdGlvbiI6IjIwMjItMTAtMzBUMjE6MDA6MDAuMDAwWiIsImlhdCI6MTY2NzI5NDYwNiwiZXhwIjoxNjY5ODg2NjA2fQ.68enP7vHc1YLCyRSmSM9OhHi6OvTfFqiTqv7IReodrY'
+    //     )
+    //     .then(res => res)
+    // )
+
+    // api
+    //   .registrationUser('egorgorlushkin0@gmail.com', 'mega0password')
+    //   .then(res => console.log(res))
 
     api.getDates().then(res => {
       this.dates = res

@@ -1,158 +1,129 @@
-let isGettingDataOfCount = false
-const p = require('./db')
+require('dotenv').config()
+const isGettingDataOfCount = require('./helpers/isGettingDataOfCount')
+const getDataNumberOfVacancies = require('./getDataNumberOfVacancies')
 const userService = require('./services/userServices')
 const url = require('./helpers/getURL')
-require('dotenv').config()
+const queries = require('./sql-query')
+const userDto = require('./dtos/user-dto')
 
 class Controllers {
-  getCategories(req, res) {
-    p.query('SELECT * FROM categories', (e, results) => {
-      try {
-        res.json(results.rows)
-      } catch (error) {
-        console.log('JS ERROR:', error)
-        if (e) console.log(`DATABASE ERROR: ${e}`)
+  async createList(req, res) {}
+  async getLists(req, res) {}
+
+  async getDataNumberOfVacancies(req, res) {
+    res.end()
+    getDataNumberOfVacancies()
+  }
+
+  async getCategories(req, res) {
+    res.json(await queries.getCategories())
+  }
+
+  async getDates(req, res) {
+    const dates = await queries.getDates()
+    res.json(!isGettingDataOfCount.status ? dates : dates.slice(0, -1))
+  }
+
+  async getTools(req, res) {
+    const { region, jobBoard } = req.query
+    const categories = await queries.getCategories()
+    let tools = await queries.getTools()
+    let toolsInCounts = await queries.getCounts(region, jobBoard)
+
+    for (let i = 0; i < tools.length; i++) {
+      for (let j = 0; j < toolsInCounts.length; j++) {
+        if (tools[i].id_tool === toolsInCounts[j].id_tool) {
+          if (!tools[i].counts) tools[i].counts = { [jobBoard]: {} }
+          tools[i].counts[jobBoard][toolsInCounts[j].date_of_completion] =
+            toolsInCounts[j]._count
+        }
       }
+      // const count = await queries.getToolByIdInCount(tools[i].id_tool)
+      // for (let c of count) {
+      //   if (!tools[i].counts) tools[i].counts = { [jobBoard]: {} }
+      //   let date = c.date_of_completion
+      //   let _count = c._count
+      //   tools[i].counts[jobBoard][date] = _count
+      // }
+    }
+
+    tools = tools.map(tool => {
+      const category = categories.find(
+        category => category.id_category === tool.id_category
+      )
+      delete tool.id_category
+      return { ...tool, category }
     })
+    res.status(200).json(tools)
   }
 
-  getDates(req, res) {
-    return p.query('SELECT * FROM date_of_completion', async (e, results) => {
-      try {
-        res.json(
-          !isGettingDataOfCount ? results.rows : results.rows.slice(0, -1)
-        )
-      } catch (error) {
-        console.log(`JS ERROR:${error}`)
-        if (e) console.log(`DATABASE ERROR: ${e}`)
-      }
-    })
-  }
-
-  getTools(req, res) {
-    const region = req.query.region
-    const jobBoard = req.query.jobBoard
-    p.query('SELECT * FROM categories', (e, results) => {
-      const categories = results.rows
-      p.query('SELECT * FROM tools', async (e, results) => {
-        let tools = results.rows
-        p.query(
-          `SELECT * FROM _counts WHERE region = '${region}' AND job_board = '${jobBoard}'`,
-          (e, results) => {
-            let toolsInCounts = results.rows
-            for (let i = 0; i < tools.length; i++) {
-              for (let j = 0; j < toolsInCounts.length; j++) {
-                if (tools[i].id_tool === toolsInCounts[j].id_tool) {
-                  if (!tools[i].counts) tools[i].counts = { [jobBoard]: {} }
-                  tools[i].counts[jobBoard][
-                    toolsInCounts[j].date_of_completion
-                  ] = toolsInCounts[j]._count
-                }
-              }
-            }
-
-            tools = tools.map(tool => {
-              const category = categories.find(
-                category => category.id_category === tool.id_category
-              )
-              delete tool.id_category
-              return { ...tool, category }
-            })
-            res.status(200).json(tools)
-
-            // p.query('SELECT * FROM date_of_completion', async (e, results) => {
-            //   const dates = isGettingDataOfCount ? results.rows.slice(0, -1) : results.rows
-
-            //   await p.query(
-            //     `SELECT * FROM date_of_completion ORDER BY id_date DESC LIMIT 1`,
-            //     (e, results) => {
-            //       if (isGettingDataOfCount) {
-            //         counts = counts.filter(
-            //           t => t.date_of_completion !== results.rows[0].id_date
-            //         )
-            //         console.log('2', counts.length)
-            //       }
-            //       console.log('3', counts.length)
-            //       tools = tools.map(tool => ({ ...tool, counts: {} }))
-            //       dates.map(date => {
-            //         tools = tools.map(tool => {
-            //           const count = counts.filter(
-            //             count =>
-            //               count.id_tool === tool.id_tool &&
-            //               date.id_date === count.date_of_completion
-            //           )
-            //           const [countIndeed, countHeadHunter] = [
-            //             count[0]._count,
-            //             count[1]._count,
-            //           ]
-            //           tool.counts[date.id_date] = {
-            //             countHeadHunter,
-            //             countIndeed,
-            //           }
-            //           return { ...tool }
-            //         })
-            //       })
-
-            //       res.status(200).json(tools)
-            //     }
-            //   )
-
-            //   res.status(200).json(tools)
-            // })
-          }
-        )
-      })
-    })
-  }
-
-  activate(req, res) {
-    const { link: activationLink, user: userLogin } = req.query
-    const result = userService.activate(activationLink, userLogin)
-    if (result) return res.send('Что-то пошло не так')
-    res.redirect(url.client)
-    // return res.send('УСПЕХ')
+  async activateAccount(req, res) {
+    try {
+      const { link } = req.query
+      await userService.activate(link)
+      res.redirect(url.client)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async registrationUser(req, res) {
-    const { login, password, email } = req.body
-    if (await userService.hasUserLoginInDB(login)) {
-      console.log('Уже существует пользователь с таким логином')
-      return res.send('Уже существует пользователь с таким логином')
-    }
-    if (await userService.hasUserMailInDB(email)) {
-      console.log('Уже существует пользователь с такой почтой')
-      return res.send('Уже существует пользователь с такой почтой')
-    }
+    try {
+      const { email, password } = req.body
 
-    const tokens = userService.generateToken({ login, email })
-    userService.registrationUser(tokens, login, password, email)
-    res.cookie('refreshToken', tokens.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-    })
-    return res.send('ok')
+      const userData = await userService.registrationUser(email, password)
+
+      const MAX_AGE_COOKIE = 30 * 24 * 60 * 60 * 1000 // 30d
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: MAX_AGE_COOKIE,
+        httpOnly: true,
+      })
+
+      return res.json(userData)
+    } catch (error) {
+      res.send({ error: error.message })
+    }
   }
 
   async loginUser(req, res) {
-    console.log('Процесс входа')
-    const { refreshToken } = req.cookies
-    console.log(req.cookies)
-    const { email, login, password } = req.body
-    const tokens = userService.generateToken({ login, email })
-    const userData = await userService.login(login, password, email)
-    res.cookie('refreshToken', tokens.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-    })
-    console.log('Попытка входа')
-    res.send(userData)
+    try {
+      // const { refreshToken } = req.cookies
+      // console.log(req.cookies)
+      const { email, password } = req.body
+      const userData = await userService.login(email, password)
+
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      })
+
+      return res.json(userData)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async logout(req, res) {
-    const { refreshToken } = req.cookies
-    const token = await userService.logout(refreshToken)
-    res.clearCookie('refreshToken')
-    res.send('Вы успешно вышли из аккаунта')
+    try {
+      const { refreshToken } = req.cookies
+      await userService.logout(refreshToken)
+      res.clearCookie('refreshToken')
+    } catch (error) {}
+    console.log(error)
+  }
+
+  async refreshToken(req, res) {
+    try {
+      const { refreshToken } = req.cookies
+      const userData = await userService.refreshToken(refreshToken)
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      })
+      return res.json(userData)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

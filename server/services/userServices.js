@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
-const p = require('../db')
 const bcrypt = require('bcrypt')
 const currentDate = require('../helpers/getCurrentDate')
 const uuid = require('uuid')
+const queries = require('../sql-query')
+const url = require('../helpers/getURL')
+const userDtoFunc = require('../dtos/user-dto')
 
 class UserService {
   generateToken(payload) {
@@ -16,23 +18,18 @@ class UserService {
     return { refreshToken, accessToken }
   }
 
-  saveToken(userId, refreshToken) {
-    p.query(`SELECT * FROM auth WHERE id_user = '${userId}'`, (e, results) => {
-      if (results.rows.length) {
-        p.query(
-          `UPDATE auth SET refresh_token = '${refreshToken}'`,
-          (e, results) => {}
-        )
-      } else {
-        p.query(
-          `INSERT INTO auth (id_user, refresh_token) VALUES (${userId}, '${refreshToken}')`,
-          (e, results) => {}
-        )
-      }
-    })
+  async saveToken(userId, refreshToken) {
+    const tokenData = await queries.getUserById(userId)
+    console.log(refreshToken)
+    console.log(tokenData)
+    if (tokenData.length) {
+      queries.updateRefreshToken(refreshToken)
+    } else {
+      queries.createAuth(userId, refreshToken)
+    }
   }
 
-  sendMessage(email, link) {
+  async sendMessage(email, link) {
     let transporter = nodemailer.createTransport({
       service: 'gmail',
       host: 'smtp.gmail.com',
@@ -47,107 +44,86 @@ class UserService {
     })
   }
 
-  async hasUserLoginInDB(login) {
-    return new Promise((res, rej) => {
-      p.query(
-        `SELECT * FROM users WHERE user_login = '${login}'`,
-        (e, results) => {
-          res(!!results.rows.length)
-        }
-      )
-    })
-  }
-
-  async hasUserMailInDB(email) {
-    return new Promise((res, rej) => {
-      p.query(
-        `SELECT * FROM users WHERE user_email = '${email}'`,
-        (e, results) => {
-          res(!!results.rows.length)
-        }
-      )
-    })
-  }
-
-  async registrationUser(tokens, login, password, email) {
+  async registrationUser(email, password) {
+    const hasUser = await queries.getUserByEmail(email)
+    if (hasUser.length) {
+      throw new Error(`Пользователь с почтой ${email} существует`)
+    }
     const hashPassword = await bcrypt.hash(password, 3)
     const activationLink = uuid.v4()
 
-    p.query(
-      `INSERT INTO users(user_email, user_login, user_password,is_active, ip_or_browser, date_of_registration, activation_link)
-          VALUES('${email}','${login}','${hashPassword}', false, 'null', '${currentDate()}', '${activationLink}');
-          `,
-      (e, results) => {
-        p.query(
-          `SELECT currval(pg_get_serial_sequence('users', 'user_id'));`,
-          (e, results) => {
-            const idUser = results.rows[0].currval
-            this.sendMessage(
-              email,
-              `${
-                process.env.NODE_ENV == 'production'
-                  ? process.env.SERVER_ADDRESS
-                  : 'http://localhost:5000'
-              }/activate?link=${activationLink}&user=${login}`
-            )
-            this.saveToken(idUser, tokens.refreshToken)
-            console.log('Регистрация почти прошла =)')
-          }
-        )
-      }
+    const user = await queries.createUser(
+      email,
+      hashPassword,
+      currentDate(),
+      activationLink
     )
+
+    const userDto = userDtoFunc(user[0])
+    const tokens = this.generateToken({ ...userDto })
+
+    const activateUrl = `${url.server}/activateAccount?link=${activationLink}`
+    this.sendMessage(email, activateUrl)
+    this.saveToken(userDto.user_id, tokens.refreshToken)
+    return { user: userDto, ...tokens }
   }
 
-  activate(activationLink, userLogin) {
-    return p.query(
-      `SELECT * FROM users WHERE user_login = '${userLogin}' AND activation_link = '${activationLink}'`,
-      (e, results) => {
-        if (!results.rows.length) {
-          return 'Что-то пошло не так'
-        }
-        p.query(
-          `UPDATE users SET is_active = true WHERE user_login = '${userLogin}' AND activation_link = '${activationLink}'`,
-          e => {
-            return 'УСПЕХ!'
-          }
-        )
-      }
-    )
+  async activate(activationLink) {
+    const user = await queries.getUserByActivationLink(activationLink)
+
+    if (!user.length) throw 'Пользователя не существует или ссылка не активна'
+    await queries.changeUsersStatus(activationLink)
   }
 
-  async login(login, password) {
-    return p
-      .query(
-        `SELECT * FROM users WHERE (user_login = '${login}' OR user_email = '${login}')`
-      )
-      .then(async results => {
-        if (!results.rows.length) {
-          console.log('Проверьте введеные данные')
-          return 'Проверьте введеные данные'
-        }
-        const hashPassword = await bcrypt.compare(
-          password,
-          results.rows[0].user_password
-        )
-        if (!hashPassword) return 'Неправильный пароль'
-        const idUser = results.rows[0].user_id
-        const tokens = this.generateToken({ login, email })
-        this.saveToken(idUser, tokens.refreshToken)
-        return { ...tokens, user: { login, email } }
-      })
-      .catch(e => {
-        // console.log(e)
-      })
-    // const isEmailEquals = await this.hasUserMailInDB(login)
-    // const isLoginEquals = await this.hasUserLoginInDB(login)
-    // if (!isEmailEquals && !isLoginEquals) {
-    //   console.log('Не найдено человека с такими данными')
-    //   return
-    // }
+  async login(email, password) {
+    const user = await queries.getUserByEmail(email)
+    if (!user.length) {
+      throw 'Пользователь не был найден'
+    }
+
+    const hashPassword = await bcrypt.compare(password, user[0].user_password)
+    if (!hashPassword) {
+      throw 'Неправильный пароль'
+    }
+
+    const userDto = userDtoFunc(user[0])
+    const tokens = this.generateToken({ ...userDto })
+    await this.saveToken(userDto.user_id, tokens.refreshToken)
+    return { ...tokens, user: userDto }
   }
 
   async logout(refreshToken) {
-    p.query(`DELETE FROM auth WHERE refresh_token = '${refreshToken}'`)
+    queries.deleteRefreshToken(refreshToken)
+  }
+
+  validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+      return userData
+    } catch (error) {
+      return null
+    }
+  }
+  validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+      return userData
+    } catch (error) {
+      return null
+    }
+  }
+
+  async refreshToken(refreshToken) {
+    if (!refreshToken) throw 'Некоректно'
+    const userData = await this.validateRefreshToken(refreshToken)
+    const tokenFromDb = await queries.getTokenByToken(refreshToken)
+    if (!userData || !tokenFromDb) throw 'Ошибка при авторизации'
+
+    const user = await queries.getUserByEmail(userData.user_email)
+    const userDto = userDtoFunc(user[0])
+    const tokens = this.generateToken({ ...userDto })
+    await this.saveToken(userDto.user_id, tokens.refreshToken)
+    return { ...tokens, user: userDto }
   }
 }
 

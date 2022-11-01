@@ -6,7 +6,9 @@
       </button>
     </li>
     <li class="user-dropdown__item">
-      <button class="user-dropdown__button">Зарегестрироваться</button>
+      <button class="user-dropdown__button" @click="showSignUpModalFunction">
+        Зарегестрироваться
+      </button>
     </li>
     <li class="user-dropdown__item">
       <button class="user-dropdown__button">Создать новый список</button>
@@ -15,15 +17,15 @@
       <button class="user-dropdown__button">Выйти</button>
     </li>
   </ul>
-  <!-- <AuthSignUp
-    v-if="showSignInModal"
+  <AuthSignUp
+    v-if="showSignUpModal"
     @showSignUpModalFunction="showSignUpModalFunction"
-  /> -->
-  <AuthSignIn
+  />
+  <!-- <AuthSignIn
     v-if="showSignInModal"
     @showSignUpModalFunction="showSignUpModalFunction"
     @closeSignInModal="closeSignInModal"
-  />
+  /> -->
 </template>
 
 <script>
@@ -47,8 +49,9 @@ export default {
       this.showSignUpModal = false
     },
     showSignUpModalFunction() {
-      this.showSignInModal = true
-      this.showSignUpModal = false
+      console.log('tur')
+      this.showSignInModal = false
+      this.showSignUpModal = true
     },
     closeSignInModal() {
       this.showSignInModal = false

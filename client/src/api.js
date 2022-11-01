@@ -26,22 +26,28 @@ class API {
     return dates.data
   }
 
-  registrationUser = async (login, password, email) => {
+  registrationUser = async (email, password) => {
     const user = await instance.post('registrationUser', {
-      login,
-      password,
       email,
+      password,
     })
     return user.data
   }
 
-  loginUser = async (login, password, email) => {
-    const user = await instance.post('loginUser', { login, password, email })
+  loginUser = async (email, password) => {
+    const user = await instance.post('loginUser', { email, password })
     return user.data
   }
 
   logoutUser = async () => {
     await instance.post('logout')
+  }
+
+  refreshToken = async refreshToken => {
+    const token = await instance.post('refreshToken', {
+      params: { refreshToken },
+    })
+    return token.data
   }
 }
 

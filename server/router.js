@@ -5,9 +5,17 @@ const controller = require('./controller')
 router.get('/getCategories', controller.getCategories)
 router.get('/getDates', controller.getDates)
 router.get('/getTools', controller.getTools)
+
 router.post('/registrationUser', controller.registrationUser)
+router.get('/activateAccount', controller.activateAccount)
+router.post('/refreshToken', controller.refreshToken)
 router.post('/loginUser', controller.loginUser)
 router.post('/logout', controller.logout)
-router.get('/activate', controller.activate)
+
+
+router.post('/createList', controller.createList)
+router.post('/getLists', controller.getLists)
+
+router.get('/getDataNumberOfVacancies', controller.getDataNumberOfVacancies) // for test
 
 module.exports = router
