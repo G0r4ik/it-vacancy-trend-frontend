@@ -2,23 +2,34 @@ const needle = require('needle')
 const isGettingDataOfCount = require('./helpers/isGettingDataOfCount')
 const currentDate = require('./helpers/getCurrentDate')
 const queries = require('./sql-query')
+const chalk = require('chalk')
+
+async function getString(findTool) {
+  const url = `https://hh.ru/search/vacancy?no_magic=true&area=113&&items_on_page=1&text=${findTool}`
+  let resp = await needle('get', url)
+  const indexOfStart = resp.body.indexOf('bloko-header-3')
+  const findString = resp.body.slice(indexOfStart + 45, indexOfStart + 300)
+
+  if (!findString.includes('аканс') && !fixedOrNotFound(findString)) {
+    return getString(findTool)
+  }
+  return findString
+}
+
+function fixedOrNotFound(findString) {
+  const fixed = findString.includes('исправлен')
+  const notFound = findString.includes('не найдено')
+  return fixed || notFound
+}
 
 async function getCountInPage(tool) {
   const findTool = encodeURIComponent(tool.name_tool)
-  const url = `https://hh.ru/search/vacancy?no_magic=true&area=113&&items_on_page=1&text=${findTool}`
-  let resp = await needle('get', url)
+  const findString = await getString(findTool)
+  console.log(chalk.dim(findString))
 
-  const indexOfStart = resp.body.indexOf('bloko-header-3')
-  const findString = resp.body.slice(indexOfStart + 45, indexOfStart + 300)
-  console.log(findString)
+  if (fixedOrNotFound(findString)) return 0
+
   let countVacancy = ''
-  if (
-    findString.includes('исправлен') ||
-    findString.includes('ничего не найдено')
-  ) {
-    return 0
-  }
-
   const n = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
   for (let i = 0; i < findString.length; i++) {
     if (n.includes(findString[i])) countVacancy += findString[i]
@@ -27,7 +38,7 @@ async function getCountInPage(tool) {
 }
 
 module.exports = async function getDataNumberOfVacancies() {
-  console.log('Start getDataNumberOfVacancies')
+  console.log(chalk.bgYellow('Start getDataNumberOfVacancies'))
   const start = new Date()
   isGettingDataOfCount.changeStatus(true)
 
@@ -38,12 +49,16 @@ module.exports = async function getDataNumberOfVacancies() {
 
   for (const tool of tools) {
     const countVacancy = await getCountInPage(tool)
-    console.log(tool.name_tool, countVacancy)
+    console.log(chalk.magenta(tool.name_tool, countVacancy))
     await queries.setCountsItem(tool.id_tool, lastDateId, countVacancy)
   }
 
   isGettingDataOfCount.changeStatus(false)
-  console.log(`Потрачено минут: ${((new Date() - start) / 60000).toFixed(2)}`)
+  console.log(
+    chalk.bgYellow(
+      `Потрачено минут: ${((new Date() - start) / 60000).toFixed(2)}`
+    )
+  )
 }
 
 // const countVacancy = await axios({
@@ -120,7 +135,7 @@ module.exports = async function getDataNumberOfVacancies() {
 //     // console.log(3)
 //   } catch (error) {
 //     console.log('Произошла ошибка', tool)
-//     console.log(error)
+//     console.log(chalk.red(error))
 //     return getCount(tool)
 //   }
 // }

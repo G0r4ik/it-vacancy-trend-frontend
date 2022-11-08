@@ -146,7 +146,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .header__inner {
   padding: var(--padding-small) 0;
   border-bottom: 5px solid var(--color-border);
@@ -157,10 +157,8 @@ export default {
 }
 .header__logo {
   border: 2.5px solid var(--color-primary3);
-  border-left: 2.5px solid #4be4d7;
-  border-right: 2.5px solid #4be4d7;
   padding: var(--padding-extra-small);
-  border-radius: 10px;
+  border-radius: var(--border-radius-small);
   width: 115px;
   display: flex;
   align-items: center;
@@ -168,7 +166,7 @@ export default {
 }
 .header__logo_mobile {
   display: none;
-  height: 40px;
+  height: var(--icon-height-large);
   text-align: center;
 }
 .menu__list {
@@ -190,13 +188,12 @@ export default {
   align-items: center;
 }
 .header__user {
-  width: 30px;
-  height: 30px;
+  width: var(--icon-width-large);
+  height: var(--icon-height-large);
 }
 .menu__button {
   display: none;
 }
-
 @media (width < 760px) {
   .header__inner {
     padding: var(--padding-small) 0;
@@ -204,7 +201,7 @@ export default {
     margin: 0;
   }
   .header__logo_mobile {
-    display: block;
+    display: flex;
   }
   .header__logo_dekstop {
     display: none;

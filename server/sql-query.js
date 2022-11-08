@@ -79,7 +79,8 @@ class Queries {
   }
 
   async getUserByEmail(email) {
-    return pQuery(qString.getUserByEmail, arguments)
+    const user = await pQuery(qString.getUserByEmail, arguments)
+    return user[0]
   }
 
   async getUserIdByToken(token) {
@@ -91,7 +92,8 @@ class Queries {
   }
 
   async createUser(email, hashPassword, currentDate, activationLink) {
-    return pQuery(qString.createUser, arguments)
+    const user = await pQuery(qString.createUser, arguments)
+    return user[0]
   }
 
   async changeUsersStatus(activationLink) {

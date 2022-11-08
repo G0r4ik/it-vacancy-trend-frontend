@@ -1,18 +1,21 @@
 <template>
   <div class="container">
-    <!-- <h1>hellop</h1> -->
-    <!-- <img src="../assets/test-img.png" alt="" /> -->
-    <h2 class="title">
-      List <span>({{ filteredList.length }})</span>
-    </h2>
-    <Skeletor
+    <h2 class="title list-title">List</h2>
+    <vue-skeleton
+      v-if="!tools.length"
+      width="30px"
+      height="30px"
+      display="inline-block"
+      ml="var(--margin-small)"
+    ></vue-skeleton>
+    <span class="list-count" v-else> ({{ filteredList.length }})</span>
+    <vue-skeleton
       v-if="!categories.length"
       width="100%"
-      height="200px"
-      as="div"
-      style="margin-bottom: 15px"
-    >
-    </Skeletor>
+      height="250px"
+      mb="var(--margin-small)"
+      br="var(--radius)"
+    ></vue-skeleton>
     <rating-filters
       v-if="selectedDate.date_of_completion"
       :categories="categories"
@@ -29,14 +32,13 @@
       @changeCurrentList="changeCurrentList"
     >
     </rating-select-list>
-    <Skeletor
+    <vue-skeleton
       v-if="!tools.length"
       width="300px"
       height="50px"
-      as="div"
-      style="margin-bottom: 15px"
+      mb="var(--margin-small)"
     >
-    </Skeletor>
+    </vue-skeleton>
     <app-pagination
       :tools="tools"
       :paginationTools="filteredList"
@@ -44,19 +46,12 @@
       @changePageWhenClickNumber="changePageWhenClickNumber"
     >
     </app-pagination>
-    <Skeletor
-      v-if="!tools.length"
-      width="100%"
-      height="70"
-      as="div"
-      v-for="i in 25"
-      style="margin-bottom: 15px"
-    >
-    </Skeletor>
     <tools-table
       v-if="currentList"
       :selectedDate="selectedDate"
       :paginatedTools="paginatedTools"
+      :tools="paginatedTools"
+      :dates="dates"
       @addToFavoriteTools="addToFavoriteTools"
       @addToStudiedTools="addToStudiedTools"
       @listSort="listSort"
@@ -66,13 +61,11 @@
 </template>
 
 <script>
-// import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'
-import { Skeletor } from 'vue-skeletor'
-
 import ToolsTable from './ToolsTable.vue'
 import AppPagination from './AppPagination.vue'
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
+import VueSkeleton from './VueSkeleton.vue'
 // import ToolsList from './ToolsList.vue'
 import api from '../api'
 
@@ -82,7 +75,7 @@ export default {
     AppPagination,
     RatingFilters,
     RatingSelectList,
-    Skeletor,
+    VueSkeleton,
   },
   data() {
     return {
@@ -304,3 +297,14 @@ export default {
   },
 }
 </script>
+
+<style>
+.list-title {
+  display: inline-block;
+}
+.list-count {
+  margin-left: var(--margin-extra-small);
+  color: var(--color-primary3);
+  font-size: var(--text-large);
+}
+</style>

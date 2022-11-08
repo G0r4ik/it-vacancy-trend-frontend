@@ -9,7 +9,7 @@
           type="text"
           name="sign-in-login"
           id="sign-in-login"
-          class="sign-in__input sign-in__input_login"
+          class="input sign-in__input sign-in__input_login"
           v-model="loginOrEmail"
         />
       </label>
@@ -22,7 +22,7 @@
           type="text"
           name="sign-in-password"
           id="sign-in-password"
-          class="sign-in__input sign-in__input_password"
+          class="input sign-in__input sign-in__input_password"
           v-model="password"
         />
       </label>
@@ -57,7 +57,7 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style>
 .sign-in {
   position: absolute;
   top: 0;
@@ -81,18 +81,18 @@ export default {
   top: 20px;
   right: 30px;
 }
-.sign-in__cross:before,
-.sign-in__cross:after {
+.sign-in__cross::before,
+.sign-in__cross::after {
   content: '';
   position: absolute;
   width: 24px;
   height: 4px;
   background: gray;
 }
-.sign-in__cross:before {
+.sign-in__cross::before {
   transform: rotate(45deg);
 }
-.sign-in__cross:after {
+.sign-in__cross::after {
   transform: rotate(-45deg);
 }
 .sign-in__title {

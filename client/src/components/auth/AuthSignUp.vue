@@ -9,7 +9,7 @@
           type="email"
           name="sign-up-email"
           id="sign-up-email"
-          class="sign-up__input sign-up__input_email"
+          class="input sign-up__input sign-up__input_email"
           v-model="email"
         />
       </label>
@@ -22,7 +22,7 @@
           type="password"
           name="sign-up-password"
           id="sign-up-password"
-          class="sign-up__input sign-up__input_password"
+          class="input sign-up__input sign-up__input_password"
           v-model="password"
         />
       </label>
@@ -35,7 +35,7 @@
           type="password"
           name="sign-up-re-password"
           id="sign-up-re-password"
-          class="sign-up__input sign-up__input_re-password"
+          class="input sign-up__input sign-up__input_re-password"
           v-model="rePassword"
         />
       </label>
@@ -83,7 +83,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .sign-up {
   position: absolute;
   top: 0;
@@ -107,18 +107,18 @@ export default {
   top: 20px;
   right: 30px;
 }
-.sign-up__cross:before,
-.sign-up__cross:after {
+.sign-up__cross::before,
+.sign-up__cross::after {
   content: '';
   position: absolute;
   width: 24px;
   height: 4px;
   background: gray;
 }
-.sign-up__cross:before {
+.sign-up__cross::before {
   transform: rotate(45deg);
 }
-.sign-up__cross:after {
+.sign-up__cross::after {
   transform: rotate(-45deg);
 }
 .sign-up__title {

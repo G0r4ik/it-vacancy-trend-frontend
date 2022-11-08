@@ -8,7 +8,7 @@
         >
           &#9587;
         </div>
-        <input type="text" name="" id="" />
+        <input type="text" name="" id="" class="input" />
         <div class="selected-tool">
           <div class="selected-tool__item"></div>
         </div>
@@ -110,9 +110,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #myChart {
-  background: yellow;
 }
 .background-modal {
   position: fixed;
@@ -134,7 +133,7 @@ export default {
   position: relative;
   max-width: 800px;
   max-height: 500px;
-  padding: 50px;
+  padding: var(--padding-large);
 }
 .technology-comparison__cross {
   cursor: pointer;

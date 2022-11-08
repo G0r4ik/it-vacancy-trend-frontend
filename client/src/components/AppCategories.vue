@@ -52,8 +52,7 @@ export default {
   methods: {},
 }
 </script>
-
-<style scoped>
+<style>
 .categories {
   list-style: none;
   display: flex;
@@ -64,20 +63,20 @@ export default {
   display: inline-block;
   text-align: left;
   list-style: none;
-  margin: 2.5px 0;
+  margin: var(--margin-extra-extra-small) 0;
   margin-right: var(--margin-small);
-  padding: 2.5px;
+  padding: var(--padding-extra-extra-small);
   cursor: pointer;
+  font-size: var(--text-small);
   border: 2px solid transparent;
-  font-size: var(--text-middle);
 }
 .categories__button {
   display: flex;
   align-items: center;
 }
 .categories__icon {
-  width: 30px;
-  height: 30px;
+  height: var(--icon-height-small);
+  width: var(--icon-width-small);
   margin-right: var(--margin-extra-small);
 }
 .categories__item:last-child {

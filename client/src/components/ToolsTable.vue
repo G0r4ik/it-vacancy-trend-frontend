@@ -77,8 +77,8 @@
               "
               :alt="`Logo ${tool.name_tool}`"
             />
-            <!-- <span @click="isOpenModalFunction(tool)"> -->
-            <span>
+            <!-- <span @click="isOpenCompareModalFunction(tool)"> -->
+            <span @click="isOpenCompareModalFunction(tool)">
               {{ tool.name_tool }}
             </span>
             <button
@@ -122,17 +122,16 @@
             </button>
           </td>
         </tr>
-        <!-- <teleport to="body">
-          <app-tool
+        <teleport to="body">
+          <compare-tool
             :tools="tools"
             :currentTool="toolInModal"
             :dates="dates"
             @closeModal="closeModal"
-            v-if="isOpenModal"
+            v-if="isOpenCompareModal"
           >
-          </app-tool>
+          </compare-tool>
         </teleport>
-      </tbody> -->
       </tbody>
     </table>
 
@@ -141,19 +140,21 @@
 </template>
 
 <script>
-// import appTool from './AppTool.vue'
+import CompareTool from './CompareTool.vue'
 export default {
-  // components: { appTool },
+  components: { CompareTool },
   props: {
     selectedDate: Object,
     paginatedTools: Array,
+    tools: Array,
+    dates: Array,
   },
 
   emits: ['addToFavoriteTools', 'addToStudiedTools', 'listSort'],
 
   data() {
     return {
-      // isOpenModal: false,
+      isOpenCompareModal: false,
     }
   },
   computed: {
@@ -163,18 +164,18 @@ export default {
   },
 
   methods: {
-    // isOpenModalFunction(tool) {
-    //   this.isOpenModal = true
-    //   this.toolInModal = tool
-    // },
-    // closeModal() {
-    //   this.isOpenModal = false
-    // },
+    isOpenCompareModalFunction(tool) {
+      this.isOpenCompareModal = true
+      this.toolInModal = tool
+    },
+    closeModal() {
+      this.isOpenCompareModal = false
+    },
   },
 }
 </script>
 
-<style scoped>
+<style>
 .rating-table {
   overflow: hidden;
   overflow-x: auto;
@@ -200,14 +201,14 @@ export default {
 .rating-table__tbody {
 }
 .rating-table__icon-change-sort {
-  width: 13px;
+  width: var(--icon-width-extra-small);
   display: inline-block;
   fill: var(--color-gray);
   vertical-align: middle;
 }
 .rating-table__item {
   border-bottom: 2px solid var(--color-border);
-  padding: var(--padding-small) var(--padding-extra-small);
+  padding: var(--padding-extra-small) var(--padding-extra-small);
   text-align: center;
   vertical-align: middle;
 }
@@ -215,8 +216,8 @@ export default {
 }
 .rating-table__item-logo {
   vertical-align: middle;
-  width: 30px;
-  height: 30px;
+  width: var(--icon-width-middle);
+  height: var(--icon-height-middle);
   margin-right: var(--margin-small);
 }
 .rating-table__item-star {
@@ -225,16 +226,15 @@ export default {
   font-size: var(--text-middle);
 }
 .rating-table__item-star_active {
-  color: #f6b87e;
+  color: var(--color-star);
 }
 .rating-table__item_category {
   padding: 0 var(--padding-small);
-  height: 40px;
-  border-radius: 20px;
+  height: var(--icon-height-middle);
+  border-radius: var(--border-radius-middle);
   max-width: 200px;
   margin: 0 auto;
   /* display: inline-flex; */
-  /* !!! */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -242,7 +242,7 @@ export default {
 }
 .rating-table__item-svg {
   cursor: pointer;
-  width: 42px;
+  width: var(--icon-width-large);
   border-radius: 50%;
   fill: var(--color-text);
 }

@@ -202,7 +202,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .pagination {
   display: flex;
   align-items: center;
@@ -218,9 +218,9 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 0 var(--margin-extra-small);
-  width: 30px;
-  height: 35px;
-  border-radius: 5px;
+  width: var(--icon-height-middle);
+  height: var(--icon-height-middle);
+  border-radius: var(--border-radius-extra-small);
   font-size: var(--text-small);
   color: var(--color-text);
 }
@@ -239,7 +239,7 @@ export default {
   fill: var(--color-border);
 }
 .pagination__change {
-  margin-top: 5px;
+  margin-top: var(--margin-extra-small);
   font-size: var(--text-small);
   display: flex;
   align-items: center;

@@ -60,7 +60,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .user-dropdown {
   position: absolute;
   right: 20px;
@@ -70,7 +70,7 @@ export default {
   flex-direction: column;
   list-style-type: none;
   border: 1px solid var(--color-border);
-  border-radius: 5px;
+  border-radius: var(--border-radius-extra-small);
   padding: var(--padding-small);
 }
 .user-dropdown__item {

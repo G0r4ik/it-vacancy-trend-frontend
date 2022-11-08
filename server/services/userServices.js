@@ -20,8 +20,6 @@ class UserService {
 
   async saveToken(userId, refreshToken) {
     const tokenData = await queries.getUserById(userId)
-    console.log(refreshToken)
-    console.log(tokenData)
     if (tokenData.length) {
       queries.updateRefreshToken(refreshToken)
     } else {
@@ -59,7 +57,7 @@ class UserService {
       activationLink
     )
 
-    const userDto = userDtoFunc(user[0])
+    const userDto = userDtoFunc(user)
     const tokens = this.generateToken({ ...userDto })
 
     const activateUrl = `${url.server}/activateAccount?link=${activationLink}`
@@ -77,16 +75,12 @@ class UserService {
 
   async login(email, password) {
     const user = await queries.getUserByEmail(email)
-    if (!user.length) {
-      throw 'Пользователь не был найден'
-    }
+    if (!user) throw 'Пользователь не был найден'
 
-    const hashPassword = await bcrypt.compare(password, user[0].user_password)
-    if (!hashPassword) {
-      throw 'Неправильный пароль'
-    }
+    const hashPassword = await bcrypt.compare(password, user.user_password)
+    if (!hashPassword) throw 'Неправильный пароль'
 
-    const userDto = userDtoFunc(user[0])
+    const userDto = userDtoFunc(user)
     const tokens = this.generateToken({ ...userDto })
     await this.saveToken(userDto.user_id, tokens.refreshToken)
     return { ...tokens, user: userDto }
@@ -120,7 +114,7 @@ class UserService {
     if (!userData || !tokenFromDb) throw 'Ошибка при авторизации'
 
     const user = await queries.getUserByEmail(userData.user_email)
-    const userDto = userDtoFunc(user[0])
+    const userDto = userDtoFunc(user)
     const tokens = this.generateToken({ ...userDto })
     await this.saveToken(userDto.user_id, tokens.refreshToken)
     return { ...tokens, user: userDto }

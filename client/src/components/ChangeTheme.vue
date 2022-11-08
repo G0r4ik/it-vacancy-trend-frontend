@@ -7,8 +7,8 @@
       class="switch-checkbox"
     />
     <label for="checkbox" class="switch-label">
-      <span>🌙</span>
-      <span>☀️</span>
+      <span class="switch-label__icon">🌙</span>
+      <span class="switch-label__icon">☀️</span>
       <div
         class="switch-toggle"
         :class="{ 'switch-toggle-checked': userTheme === 'dark-theme' }"
@@ -53,17 +53,15 @@ export default {
       const hasDarkPreference = window.matchMedia(
         '(prefers-color-scheme: dark)'
       ).matches
-      if (hasDarkPreference) {
-        return 'dark-theme'
-      } else {
-        return 'light-theme'
-      }
+
+      if (hasDarkPreference) return 'dark-theme'
+      return 'light-theme'
     },
   },
 }
 </script>
 
-<style scoped>
+<style>
 .change-theme {
   margin-right: var(--margin-small);
 }
@@ -74,24 +72,27 @@ export default {
   align-items: center;
   background: var(--color-border);
   border: 1px solid var(--color-primary3);
-  border-radius: 15px;
+  border-radius: var(--border-radius-middle);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  height: 30px;
   position: relative;
   transition: background 0.5s ease;
   width: 70px;
-  padding: 5px;
+  padding: var(--padding-extra-small);
+}
+.switch-label__icon {
+  pointer-events: none;
+  user-select: none;
 }
 .switch-toggle {
   position: absolute;
   background-color: var(--color-primary3);
   border-radius: 50%;
-  top: 1px;
+  /* top: 2.5px; */
   left: 5px;
-  height: 25px;
-  width: 25px;
+  height: var(--icon-height-middle);
+  width: var(--icon-width-middle);
   transform: translateX(0);
   transition: transform 0.3s ease, background-color 0.5s ease;
 }

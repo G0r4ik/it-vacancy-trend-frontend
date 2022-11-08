@@ -5,6 +5,7 @@ const userService = require('./services/userServices')
 const url = require('./helpers/getURL')
 const queries = require('./sql-query')
 const userDto = require('./dtos/user-dto')
+const chalk = require('chalk')
 
 class Controllers {
   async createList(req, res) {}
@@ -63,7 +64,7 @@ class Controllers {
       await userService.activate(link)
       res.redirect(url.client)
     } catch (error) {
-      console.log(error)
+      console.log(chalk.red(error))
     }
   }
 
@@ -99,7 +100,7 @@ class Controllers {
 
       return res.json(userData)
     } catch (error) {
-      console.log(error)
+      console.log(chalk.red(error))
     }
   }
 
@@ -108,8 +109,9 @@ class Controllers {
       const { refreshToken } = req.cookies
       await userService.logout(refreshToken)
       res.clearCookie('refreshToken')
-    } catch (error) {}
-    console.log(error)
+    } catch (error) {
+      console.log(chalk.red(error))
+    }
   }
 
   async refreshToken(req, res) {
@@ -122,7 +124,7 @@ class Controllers {
       })
       return res.json(userData)
     } catch (error) {
-      console.log(error)
+      console.log(chalk.red(error))
     }
   }
 }

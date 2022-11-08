@@ -84,13 +84,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.flatpickr-weekdays {
+  display: none;
+}
 .filters {
 }
 .filters__inner {
-  padding: 15px;
-  border: 5px solid var(--color-border);
-  border-radius: 15px;
+  padding: var(--padding-small);
+  border: 3px solid var(--color-border);
+  border-radius: var(--border-radius-middle);
   margin-bottom: var(--margin-middle);
 }
 .filters__top {
@@ -110,7 +113,7 @@ export default {
   border: 2px solid var(--color-border);
   background-color: transparent;
   line-height: 1.5;
-  border-radius: 5px;
+  border-radius: var(--border-radius-extra-small);
   color: var(--color-text);
   font-size: var(--text-middle);
   transition: all 0.25s;
@@ -122,7 +125,7 @@ export default {
   line-height: 2;
   padding: 0 var(--padding-small);
   margin-top: var(--margin-small);
-  border-radius: 5px;
+  border-radius: var(--border-radius-extra-small);
   color: var(--color-text);
   font-size: var(--text-small);
   transition: all 0.25s;

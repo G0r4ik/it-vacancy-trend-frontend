@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .select-list {
 }
 .select-list__inner {
@@ -44,13 +44,13 @@ export default {
 }
 .select-list__button {
   background: none;
-  border: 5px solid var(--color-border);
-  border-radius: 8px;
+  border: 3px solid var(--color-border);
+  border-radius: var(--border-radius-small);
   cursor: pointer;
   color: inherit;
   font-weight: 600;
   font-size: var(--text-extra-small);
-  padding: 5px 8px;
+  padding: var(--padding-extra-small) var(--padding-small);
   margin-right: var(--margin-small);
 }
 .select-list__button_active {
