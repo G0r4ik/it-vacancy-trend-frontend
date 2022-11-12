@@ -48,30 +48,30 @@
           <ul class="menu__list">
             <li
               class="menu__item"
-              :class="{ menu__item_active: page === 'rating' }"
+              :class="{ menu__item_active: $route.path === '/rating' }"
               tabindex="0"
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')"
             >
-              Рейтинг
+              <a @click="$router.push('rating')">Рейтинг</a>
             </li>
             <li
               class="menu__item"
-              :class="{ menu__item_active: page === 'compare' }"
+              :class="{ menu__item_active: $route.path === '/compare' }"
               tabindex="0"
               @click="changePage('compare')"
               @keyup.enter="changePage('compare')"
             >
-              Сравнить
+              <a @click="$router.push('/compare')">Сравнить</a>
             </li>
             <li
               class="menu__item"
-              :class="{ menu__item_active: page === 'other' }"
+              :class="{ menu__item_active: $route.path === '/other' }"
               tabindex="0"
               @click="changePage('other')"
               @keyup.enter="changePage('other')"
             >
-              Прочее
+              <a @click="$router.push('/other')">Other</a>
             </li>
           </ul>
         </nav>

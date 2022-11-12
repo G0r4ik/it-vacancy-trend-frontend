@@ -119,16 +119,7 @@ export default {
   transition: all 0.25s;
 }
 .filters__search-input {
-  width: 100%;
-  border: 2px solid var(--color-border);
-  background-color: transparent;
-  line-height: 2;
-  padding: 0 var(--padding-small);
   margin-top: var(--margin-small);
-  border-radius: var(--border-radius-extra-small);
-  color: var(--color-text);
-  font-size: var(--text-small);
-  transition: all 0.25s;
 }
 @media (max-width: 760px) {
   .filters__top {

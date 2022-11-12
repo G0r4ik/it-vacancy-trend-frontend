@@ -111,15 +111,6 @@ export default {
 .sign-in__label_login {
 }
 .sign-in__input {
-  width: 100%;
-  border: 2px solid var(--color-border);
-  background-color: transparent;
-  line-height: 2;
-  padding: 0 var(--padding-small);
-  border-radius: 5px;
-  color: var(--color-text);
-  font-size: var(--text-small);
-  transition: all 0.25s;
 }
 .sign-in__input_login {
 }

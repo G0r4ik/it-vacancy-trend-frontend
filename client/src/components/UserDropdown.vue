@@ -17,10 +17,12 @@
       <button class="user-dropdown__button">Выйти</button>
     </li>
   </ul>
-  <AuthSignUp
-    v-if="showSignUpModal"
+  <modal-wrapper
     @showSignUpModalFunction="showSignUpModalFunction"
-  />
+    v-if="showSignUpModal"
+  >
+    <AuthSignUp> </AuthSignUp>
+  </modal-wrapper>
   <!-- <AuthSignIn
     v-if="showSignInModal"
     @showSignUpModalFunction="showSignUpModalFunction"
@@ -31,8 +33,10 @@
 <script>
 import AuthSignUp from '@/components/auth/AuthSignUp.vue'
 import AuthSignIn from '@/components/auth/AuthSignIn.vue'
+import ModalWrapper from '@/components/modals/ModalWrapper'
+
 export default {
-  components: { AuthSignIn, AuthSignUp },
+  components: { AuthSignIn, AuthSignUp, ModalWrapper },
   props: { showUserAction: Boolean },
 
   data() {

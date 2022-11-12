@@ -122,16 +122,14 @@
             </button>
           </td>
         </tr>
-        <teleport to="body">
-          <compare-tool
+        <ModalWrapper @closeModal="closeModal" v-if="isOpenCompareModal">
+          <modal-compare
             :tools="tools"
             :currentTool="toolInModal"
             :dates="dates"
-            @closeModal="closeModal"
-            v-if="isOpenCompareModal"
           >
-          </compare-tool>
-        </teleport>
+          </modal-compare>
+        </ModalWrapper>
       </tbody>
     </table>
 
@@ -140,9 +138,11 @@
 </template>
 
 <script>
-import CompareTool from './CompareTool.vue'
+import ModalCompare from './modals/ModalCompare.vue'
+import ModalWrapper from '@/components/modals/ModalWrapper'
+
 export default {
-  components: { CompareTool },
+  components: { ModalCompare, ModalWrapper },
   props: {
     selectedDate: Object,
     paginatedTools: Array,
