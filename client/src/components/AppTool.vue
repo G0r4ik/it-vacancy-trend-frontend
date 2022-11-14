@@ -27,16 +27,13 @@ export default {
     currentTool: Object,
     dates: Object,
   },
-  methods: {
-    addCloseFunction(e) {
-      if (e.key === 'Escape') {
-        this.$emit('closeModal')
-      }
-    },
+
+  data() {
+    return {
+      selectedTools: [],
+    }
   },
-  unmounted() {
-    document.removeEventListener('keydown', this.addCloseFunction)
-  },
+
   mounted() {
     document.addEventListener('keydown', this.addCloseFunction)
 
@@ -102,10 +99,17 @@ export default {
       },
     })
   },
-  data() {
-    return {
-      selectedTools: [],
-    }
+
+  unmounted() {
+    document.removeEventListener('keydown', this.addCloseFunction)
+  },
+
+  methods: {
+    addCloseFunction(e) {
+      if (e.key === 'Escape') {
+        this.$emit('closeModal')
+      }
+    },
   },
 }
 </script>

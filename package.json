@@ -37,7 +37,8 @@
     "pg": "^8.8.0",
     "postcss-svgo": "^5.1.0",
     "uuid": "^9.0.0",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",

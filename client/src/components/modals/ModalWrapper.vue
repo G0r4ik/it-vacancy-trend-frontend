@@ -1,5 +1,5 @@
 <template>
-  <focus-trap @deactivate="focusout">
+  <FocusTrap @deactivate="focusout">
     <div class="modal-wrapper" @click="$emit('closeModal')">
       <div class="modal-wrapper__inner" @click.stop>
         <button class="modal-wrapper__cross" @click="$emit('closeModal')">
@@ -8,7 +8,7 @@
         <slot></slot>
       </div>
     </div>
-  </focus-trap>
+  </FocusTrap>
 </template>
 
 <script>

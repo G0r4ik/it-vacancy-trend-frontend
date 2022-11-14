@@ -34,7 +34,6 @@ a {
   color: var(--color-text);
 }
 input {
-  width: 100%;
   border: 2px solid var(--color-border);
   background-color: transparent;
   line-height: 2;
@@ -48,15 +47,6 @@ input {
   max-width: var(--container-large);
   margin: 0 auto;
   padding: 0 var(--padding-middle);
-}
-.input {
-  border: 2px solid var(--color-border);
-  background-color: var(--color-background);
-  line-height: 2;
-  padding: 0 var(--padding-small);
-  border-radius: var(--border-radius-extra-small);
-  color: var(--color-text);
-  font-size: var(--text-small);
 }
 .main {
   margin-top: var(--margin-middle);
@@ -140,6 +130,8 @@ input {
   background: rgb(98% 44% 57% / 0.1);
   color: #fb6f92;
   border: 2px solid #fb6f92;
+}
+:root.light-theme .categories__item {
 }
 .icon {
   width: var(--width-icon);

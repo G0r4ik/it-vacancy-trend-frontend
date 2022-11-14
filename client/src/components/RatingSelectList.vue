@@ -6,21 +6,21 @@
         :class="{ 'select-list__button_active': list === 'tools' }"
         @click="$emit('changeCurrentList', 'tools')"
       >
-        Все
+        All
       </button>
       <button
         class="select-list__button"
         :class="{ 'select-list__button_active': list === 'favoritesTools' }"
         @click="$emit('changeCurrentList', 'favoritesTools')"
       >
-        Избранное
+        Favourites
       </button>
       <button
         class="select-list__button"
         :class="{ 'select-list__button_active': list === 'studiedTools' }"
         @click="$emit('changeCurrentList', 'studiedTools')"
       >
-        Изученное
+        Studied
       </button>
       <!-- <button class="select-list__button">Настроить</button> -->
     </div>
@@ -29,10 +29,10 @@
 
 <script>
 export default {
-  emits: ['changeCurrentList'],
   props: {
     list: String,
   },
+  emits: ['changeCurrentList'],
 }
 </script>
 

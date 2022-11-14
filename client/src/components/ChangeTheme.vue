@@ -18,15 +18,15 @@
 </template>
 <script>
 export default {
-  mounted() {
-    const initUserTheme = this.getTheme() || this.getMediaPreference()
-    this.setTheme(initUserTheme)
-  },
-
   data() {
     return {
       userTheme: 'light-theme',
     }
+  },
+
+  mounted() {
+    const initUserTheme = this.getTheme() || this.getMediaPreference()
+    this.setTheme(initUserTheme)
   },
 
   methods: {
@@ -89,10 +89,9 @@ export default {
   position: absolute;
   background-color: var(--color-primary3);
   border-radius: 50%;
-  /* top: 2.5px; */
   left: 5px;
-  height: var(--icon-height-middle);
   width: var(--icon-width-middle);
+  height: var(--icon-height-middle);
   transform: translateX(0);
   transition: transform 0.3s ease, background-color 0.5s ease;
 }

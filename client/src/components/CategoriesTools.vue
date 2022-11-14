@@ -25,9 +25,15 @@
 
 <script>
 export default {
+  props: {
+    categories: Array,
+    currentCategories: Array,
+  },
+
   data() {
     return {}
   },
+
   computed: {
     filteredCategories() {
       let tmp = [...this.categories].sort(
@@ -45,10 +51,7 @@ export default {
       return res
     },
   },
-  props: {
-    categories: Array,
-    currentCategories: Array,
-  },
+
   methods: {},
 }
 </script>

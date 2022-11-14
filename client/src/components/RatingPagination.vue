@@ -98,6 +98,8 @@ export default {
     paginationTools: Array,
   },
 
+  emits: ['changePageWhenClickNumber', 'changePerPage'],
+
   data() {
     return {
       currentPage: 1,
@@ -129,6 +131,14 @@ export default {
       },
       deep: true,
     },
+  },
+
+  mounted() {
+    this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+    window.addEventListener('resize', () => {
+      this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+      this.changePageWhenClickNumber(this.currentPage)
+    })
   },
 
   methods: {
@@ -191,14 +201,6 @@ export default {
       )
     },
   },
-  mounted() {
-    this.visibleButtons = window.innerWidth > 760 ? 5 : 3
-    window.addEventListener('resize', () => {
-      this.visibleButtons = window.innerWidth > 760 ? 5 : 3
-      this.changePageWhenClickNumber(this.currentPage)
-    })
-  },
-  emits: ['changePageWhenClickNumber', 'changePerPage'],
 }
 </script>
 

@@ -22,9 +22,12 @@ export default {
     dates: Array,
   },
 
-  unmounted() {
-    document.removeEventListener('keydown', this.addCloseFunction)
+  data() {
+    return {
+      selectedTools: [],
+    }
   },
+
   mounted() {
     document.addEventListener('keydown', this.addCloseFunction)
 
@@ -104,11 +107,11 @@ export default {
       },
     })
   },
-  data() {
-    return {
-      selectedTools: [],
-    }
+
+  unmounted() {
+    document.removeEventListener('keydown', this.addCloseFunction)
   },
+
   methods: {
     addCloseFunction(e) {
       if (e.key === 'Escape') {

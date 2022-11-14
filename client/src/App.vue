@@ -1,12 +1,12 @@
 <template>
   <div>
-    <App-Header />
+    <TheHeader />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue'
+import TheHeader from './components/TheHeader.vue'
 import api from './api'
 
 export default {
@@ -40,7 +40,7 @@ export default {
       return tools
     },
   },
-  components: { AppHeader },
+  components: { TheHeader },
 
   mounted() {},
   provide() {

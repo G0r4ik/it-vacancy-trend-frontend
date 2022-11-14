@@ -9,7 +9,7 @@
             @click="$emit('listSort', 'name_tool')"
             @keydown.enter="$emit('listSort', 'name_tool')"
           >
-            Название
+            Name
             <span class="rating-table__icon-change-sort">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@
             @click="$emit('listSort', 'id_category')"
             @keydown.enter="$emit('listSort', 'id_category')"
           >
-            Категория
+            Category
             <span class="rating-table__icon-change-sort">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,6 +63,7 @@
           <th tabindex="0" class="rating-table__th"></th>
         </tr>
       </thead>
+
       <tbody class="rating-table__tbody">
         <tr
           v-for="tool of paginatedTools"
@@ -107,8 +108,8 @@
           <td class="rating-table__item">
             <button @click="$emit('addToStudiedTools', tool)">
               <svg
-                :class="{ 'rating-table__item-svg_acitve': tool.isStudied }"
-                class="rating-table__item-svg"
+                :class="{ 'rating-table__item-studied_acitve': tool.isStudied }"
+                class="rating-table__item-studied"
                 viewBox="0 0 32 32"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -123,31 +124,39 @@
           </td>
         </tr>
         <ModalWrapper @closeModal="closeModal" v-if="isOpenCompareModal">
-          <modal-compare
+          <ModalCompare
             :tools="tools"
             :currentTool="toolInModal"
             :dates="dates"
-          >
-          </modal-compare>
+          />
         </ModalWrapper>
       </tbody>
     </table>
-
-    <div class="empty-list" v-if="listEmpty">Ничего нет</div>
+    <VueSkeleton
+      v-if="!tools.length"
+      width="100vw"
+      height="50px"
+      mb="var(--margin-extra-small)"
+      :count="25"
+    />
+    <div class="empty-list" v-if="listEmpty">There is nothing</div>
   </div>
 </template>
 
 <script>
 import ModalCompare from './modals/ModalCompare.vue'
 import ModalWrapper from '@/components/modals/ModalWrapper'
+import VueSkeleton from './VueSkeleton.vue'
 
 export default {
-  components: { ModalCompare, ModalWrapper },
+  components: { ModalCompare, ModalWrapper, VueSkeleton },
+
   props: {
     selectedDate: Object,
     paginatedTools: Array,
     tools: Array,
     dates: Array,
+    isDataLoaded: Boolean,
   },
 
   emits: ['addToFavoriteTools', 'addToStudiedTools', 'listSort'],
@@ -157,9 +166,10 @@ export default {
       isOpenCompareModal: false,
     }
   },
+
   computed: {
     listEmpty() {
-      return !this.paginatedTools.length
+      return this.isDataLoaded && !this.tools.length
     },
   },
 
@@ -179,6 +189,7 @@ export default {
 .rating-table {
   overflow: hidden;
   overflow-x: auto;
+  min-height: 50vh;
 }
 .rating-table__inner {
   width: 100%;
@@ -230,7 +241,7 @@ export default {
 }
 .rating-table__item_category {
   padding: 0 var(--padding-small);
-  height: var(--icon-height-middle);
+  height: 25px;
   border-radius: var(--border-radius-middle);
   max-width: 200px;
   margin: 0 auto;
@@ -240,13 +251,13 @@ export default {
   align-items: center;
   font-size: var(--text-extra-small);
 }
-.rating-table__item-svg {
+.rating-table__item-studied {
   cursor: pointer;
-  width: var(--icon-width-large);
+  width: var(--icon-width-middle);
   border-radius: 50%;
   fill: var(--color-text);
 }
-.rating-table__item-svg_acitve {
+.rating-table__item-studied_acitve {
   fill: var(--color-background);
   background: var(--color-primary2);
 }

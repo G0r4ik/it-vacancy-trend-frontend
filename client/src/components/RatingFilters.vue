@@ -3,7 +3,7 @@
     <div class="filters__inner">
       <div class="filters__top">
         <label for="select-date" class="select-container__label">
-          Дата:
+          Date:
           <input id="select-date" class="select-date" />
         </label>
         <button
@@ -14,11 +14,11 @@
         </button>
       </div>
 
-      <app-categories
+      <CategoriesTools
         :categories="categories"
         :currentCategories="currentCategories"
         @changeCategory="$emit('changeCategory', $event)"
-      ></app-categories>
+      />
 
       <input
         type="search"
@@ -31,25 +31,26 @@
 </template>
 
 <script>
-import AppCategories from './AppCategories.vue'
+import CategoriesTools from './CategoriesTools.vue'
 import '~n/flatpickr/dist/flatpickr.css'
 import flatpickr from 'flatpickr'
 
 export default {
-  components: { AppCategories },
-  emits: ['changeCategory', 'changeSearch', 'changeSelectDate'],
+  components: { CategoriesTools },
   props: {
     categories: Array,
     currentCategories: Array,
     dates: Array,
     selectedDate: Object,
   },
+  emits: ['changeCategory', 'changeSearch', 'changeSelectDate'],
 
   computed: {
     changeCategoryAll() {
       return this.currentCategories.length ? 'clear' : 'show all'
     },
   },
+
   mounted() {
     const availableDates = []
     for (let i = 0; i < this.dates.length; i++) {

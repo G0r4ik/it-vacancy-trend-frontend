@@ -21,7 +21,7 @@
     @showSignUpModalFunction="showSignUpModalFunction"
     v-if="showSignUpModal"
   >
-    <AuthSignUp> </AuthSignUp>
+    <AuthSignUp />
   </modal-wrapper>
   <!-- <AuthSignIn
     v-if="showSignInModal"
@@ -53,7 +53,6 @@ export default {
       this.showSignUpModal = false
     },
     showSignUpModalFunction() {
-      console.log('tur')
       this.showSignInModal = false
       this.showSignUpModal = true
     },

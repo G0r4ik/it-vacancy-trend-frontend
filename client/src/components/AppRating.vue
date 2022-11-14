@@ -1,22 +1,22 @@
 <template>
   <div class="container">
     <h2 class="title list-title">List</h2>
-    <vue-skeleton
+    <VueSkeleton
       v-if="!tools.length"
       width="30px"
       height="30px"
       display="inline-block"
       ml="var(--margin-small)"
-    ></vue-skeleton>
+    />
     <span class="list-count" v-else> ({{ filteredList.length }})</span>
-    <vue-skeleton
+    <VueSkeleton
       v-if="!categories.length"
       width="100%"
       height="250px"
       mb="var(--margin-small)"
       br="var(--radius)"
-    ></vue-skeleton>
-    <rating-filters
+    />
+    <RatingFilters
       v-if="selectedDate.date_of_completion"
       :categories="categories"
       :currentCategories="currentCategories"
@@ -25,44 +25,44 @@
       @changeCategory="changeCategory"
       @changeSearch="changeSearch"
       @changeSelectDate="changeSelectDate"
-    ></rating-filters>
+    />
 
-    <rating-select-list
+    <RatingSelectList
       :list="currentList"
       @changeCurrentList="changeCurrentList"
-    >
-    </rating-select-list>
-    <vue-skeleton
+    />
+
+    <VueSkeleton
       v-if="!tools.length"
       width="300px"
       height="50px"
       mb="var(--margin-small)"
-    >
-    </vue-skeleton>
-    <app-pagination
+    />
+
+    <RatingPagination
       :tools="tools"
       :paginationTools="filteredList"
       @changePerPage="changePerPage"
       @changePageWhenClickNumber="changePageWhenClickNumber"
-    >
-    </app-pagination>
-    <tools-table
+    />
+
+    <ToolsTable
       v-if="currentList"
       :selectedDate="selectedDate"
       :paginatedTools="paginatedTools"
       :tools="paginatedTools"
       :dates="dates"
+      :isDataLoaded="isDataLoaded"
       @addToFavoriteTools="addToFavoriteTools"
       @addToStudiedTools="addToStudiedTools"
       @listSort="listSort"
-    >
-    </tools-table>
+    />
   </div>
 </template>
 
 <script>
 import ToolsTable from './ToolsTable.vue'
-import AppPagination from './AppPagination.vue'
+import RatingPagination from './RatingPagination.vue'
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
 import VueSkeleton from './VueSkeleton.vue'
@@ -72,17 +72,19 @@ import api from '../api'
 export default {
   components: {
     ToolsTable,
-    AppPagination,
+    RatingPagination,
     RatingFilters,
     RatingSelectList,
     VueSkeleton,
   },
+
   data() {
     return {
       categories: [],
       dates: [],
       tools: [],
       paginatedTools: [],
+      isDataLoaded: false,
       currentCategories: [],
       searchInput: '',
       sortList: '',
@@ -99,6 +101,7 @@ export default {
       // currentJobBoard: 'Indeed',
     }
   },
+
   computed: {
     filteredList() {
       let list = this.tools.filter(t => {
@@ -114,7 +117,6 @@ export default {
       if (this.sortList === 'name_tool') list.sort(this.sortName())
       if (this.sortList === 'id_category') {
         list.sort(this.sortCategory())
-        console.log(list)
       }
       if (this.sortList === 'HeadHunter') list.sort(this.sortCount())
       if (this.currentList === 'favoritesTools') {
@@ -126,6 +128,7 @@ export default {
       return list
     },
   },
+
   mounted() {
     // api.logoutUser()
     // console.log(
@@ -177,6 +180,7 @@ export default {
           this.tools[i].isStudied = true
         }
       }
+      this.isDataLoaded = true
     })
   },
 

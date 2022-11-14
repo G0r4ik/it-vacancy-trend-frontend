@@ -53,7 +53,7 @@
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')"
             >
-              <a @click="$router.push('rating')">Рейтинг</a>
+              <a @click="$router.push('rating')">Rating</a>
             </li>
             <li
               class="menu__item"
@@ -62,7 +62,7 @@
               @click="changePage('compare')"
               @keyup.enter="changePage('compare')"
             >
-              <a @click="$router.push('/compare')">Сравнить</a>
+              <a @click="$router.push('/compare')">Compare</a>
             </li>
             <li
               class="menu__item"
@@ -76,7 +76,7 @@
           </ul>
         </nav>
         <div class="header__other">
-          <ChangeTheme></ChangeTheme>
+          <ChangeTheme />
           <div class="header__user">
             <button
               class="header__user-button"
@@ -108,8 +108,7 @@
       </div>
     </div>
   </header>
-  <user-dropdown v-if="showUserAction" :showUserAction="showUserAction">
-  </user-dropdown>
+  <UserDropdown v-if="showUserAction" :showUserAction="showUserAction" />
 </template>
 
 <script>
@@ -117,10 +116,12 @@ import UserDropdown from '@/components/UserDropdown.vue'
 import ChangeTheme from './ChangeTheme.vue'
 export default {
   components: { UserDropdown, ChangeTheme },
-  emits: ['changePage'],
+
   props: {
     page: String,
   },
+
+  emits: ['changePage'],
 
   data() {
     return {
@@ -166,7 +167,7 @@ export default {
 }
 .header__logo_mobile {
   display: none;
-  height: var(--icon-height-large);
+  height: 30px;
   text-align: center;
 }
 .menu__list {
