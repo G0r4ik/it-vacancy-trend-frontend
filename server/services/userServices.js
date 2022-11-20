@@ -8,9 +8,13 @@ const url = require('../helpers/getURL')
 const userDtoFunc = require('../dtos/user-dto')
 
 class UserService {
+  async getLists() {
+    return await queries.getCategories()
+  }
+
   generateToken(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: '30m',
+      expiresIn: '30s',
     })
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
       expiresIn: '30d',

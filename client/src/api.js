@@ -8,7 +8,17 @@ const instance = axios.create({
   headers: {},
 })
 
+instance.interceptors.request.use(config => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+  return config
+})
+
 class API {
+  getLists = async () => {
+    const c = await instance.get('getLists', {})
+    return c.data
+  }
+
   getTools = async (region, jobBoard) => {
     const tools = await instance.get('getTools', {
       params: { region, jobBoard },

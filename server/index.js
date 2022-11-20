@@ -20,4 +20,4 @@ app.listen(port, () => {
 
 setInterval(() => {
   getDataNumberOfVacancies()
-}, 60 * 60 * 1000)
+}, INTERVAL_OF_GET_VACANCEIS)

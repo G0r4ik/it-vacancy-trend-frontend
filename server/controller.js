@@ -9,7 +9,11 @@ const chalk = require('chalk')
 
 class Controllers {
   async createList(req, res) {}
-  async getLists(req, res) {}
+  async getLists(req, res) {
+    // const { date } = req.query
+    const lists = await userService.getLists()
+    res.json(lists)
+  }
 
   async getDataNumberOfVacancies(req, res) {
     res.end()

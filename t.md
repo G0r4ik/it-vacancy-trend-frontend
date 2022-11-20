@@ -1,5 +1,7 @@
 # FRONTEND
 
+centry
+
 - Vuex
 - Router
 - container

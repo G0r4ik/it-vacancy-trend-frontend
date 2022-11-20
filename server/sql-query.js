@@ -34,6 +34,10 @@ const qString = {
 }
 
 class Queries {
+  async getLists() {
+    return pQuery(qString.getLists)
+  }
+
   async getTools() {
     return pQuery(qString.getTools)
   }

@@ -53,7 +53,7 @@
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')"
             >
-              <a @click="$router.push('rating')">Rating</a>
+              <router-link to="/rating">Rating</router-link>
             </li>
             <li
               class="menu__item"
@@ -62,7 +62,7 @@
               @click="changePage('compare')"
               @keyup.enter="changePage('compare')"
             >
-              <a @click="$router.push('/compare')">Compare</a>
+              <router-link to="/compare">Compare</router-link>
             </li>
             <li
               class="menu__item"
@@ -71,7 +71,7 @@
               @click="changePage('other')"
               @keyup.enter="changePage('other')"
             >
-              <a @click="$router.push('/other')">Other</a>
+              <router-link to="/other">Other</router-link>
             </li>
           </ul>
         </nav>
