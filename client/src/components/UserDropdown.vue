@@ -1,5 +1,5 @@
 <template>
-  <ul class="user-dropdown" v-if="showUserAction">
+  <ul v-if="showUserAction" class="user-dropdown">
     <li class="user-dropdown__item">
       <button class="user-dropdown__button" @click="showSignInModalFunction">
         Войти
@@ -18,8 +18,8 @@
     </li>
   </ul>
   <modal-wrapper
-    @showSignUpModalFunction="showSignUpModalFunction"
     v-if="showSignUpModal"
+    @showSignUpModalFunction="showSignUpModalFunction"
   >
     <AuthSignUp />
   </modal-wrapper>

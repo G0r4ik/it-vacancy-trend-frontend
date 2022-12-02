@@ -16,7 +16,7 @@
 
       <CategoriesTools
         :categories="categories"
-        :currentCategories="currentCategories"
+        :current-categories="currentCategories"
         @changeCategory="$emit('changeCategory', $event)"
       />
 

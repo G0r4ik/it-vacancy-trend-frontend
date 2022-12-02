@@ -4,11 +4,11 @@
     <label for="sign-up-email" class="sign-up__label sign-up__label_email">
       Email:
       <input
+        id="sign-up-email"
+        v-model="email"
         type="email"
         name="sign-up-email"
-        id="sign-up-email"
         class="input sign-up__input sign-up__input_email"
-        v-model="email"
       />
     </label>
     <label
@@ -17,11 +17,11 @@
     >
       Password:
       <input
+        id="sign-up-password"
+        v-model="password"
         type="password"
         name="sign-up-password"
-        id="sign-up-password"
         class="input sign-up__input sign-up__input_password"
-        v-model="password"
       />
     </label>
     <label
@@ -30,20 +30,20 @@
     >
       Repeat the password:
       <input
+        id="sign-up-re-password"
+        v-model="rePassword"
         type="password"
         name="sign-up-re-password"
-        id="sign-up-re-password"
         class="input sign-up__input sign-up__input_re-password"
-        v-model="rePassword"
       />
     </label>
-    <small class="sign-up__error" v-if="error">{{ error }}</small>
-    <button @click.prevent="singUp" type="submit" class="sign-up__send">
+    <small v-if="error" class="sign-up__error">{{ error }}</small>
+    <button type="submit" class="sign-up__send" @click.prevent="singUp">
       SignUp
     </button>
     <button
-      @click.prevent="$emit('showSignInModalFunction')"
       class="sign-up__button"
+      @click.prevent="$emit('showSignInModalFunction')"
     >
       есть аккаунт?
     </button>
@@ -54,6 +54,7 @@
 import api from '../../api'
 
 export default {
+  emits: ['showSignInModalFunction'],
   data() {
     return {
       email: '',

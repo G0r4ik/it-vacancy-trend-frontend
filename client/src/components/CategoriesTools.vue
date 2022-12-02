@@ -3,12 +3,12 @@
     <ul class="categories">
       <li
         v-for="category of filteredCategories"
+        :key="category.id_category"
         class="categories__item"
         :class="
           currentCategories.includes(category.id_category) &&
           `categories__item_${category.id_category}`
         "
-        :key="category.id_category"
         @click="$emit('changeCategory', category.id_category)"
       >
         <button class="categories__button">
@@ -29,6 +29,7 @@ export default {
     categories: Array,
     currentCategories: Array,
   },
+  emits: ['changeCategory'],
 
   data() {
     return {}

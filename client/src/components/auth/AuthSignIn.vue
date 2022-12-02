@@ -6,11 +6,11 @@
       <label for="sign-in-login" class="sign-in__label sign-in__label_login">
         Email or login:
         <input
+          id="sign-in-login"
+          v-model="loginOrEmail"
           type="text"
           name="sign-in-login"
-          id="sign-in-login"
           class="input sign-in__input sign-in__input_login"
-          v-model="loginOrEmail"
         />
       </label>
       <label
@@ -19,19 +19,19 @@
       >
         Password:
         <input
+          id="sign-in-password"
+          v-model="password"
           type="text"
           name="sign-in-password"
-          id="sign-in-password"
           class="input sign-in__input sign-in__input_password"
-          v-model="password"
         />
       </label>
-      <button @click.prevent="singIn" type="submit" class="sign-in__send">
+      <button type="submit" class="sign-in__send" @click.prevent="singIn">
         SignUp
       </button>
       <button
-        @click.prevent="$emit('showSignInModalFunction')"
         class="sign-in__button"
+        @click.prevent="$emit('showSignInModalFunction')"
       >
         Нет аккаунта? Создайте его
       </button>
@@ -43,6 +43,7 @@
 import api from '@/api'
 
 export default {
+  emits: ['showSignInModalFunction', 'closeSignInModal'],
   data() {
     return {
       loginOrEmail: '',

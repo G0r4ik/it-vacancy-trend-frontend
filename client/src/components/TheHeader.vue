@@ -17,11 +17,11 @@
             @click="showMenuFunction"
           >
             <svg
+              id="cross"
               class="menu__icon menu__icon-cross"
               aria-hidden="true"
               width="32"
               height="32"
-              id="cross"
               viewBox="0 0 32 32"
             >
               <path
@@ -31,11 +31,11 @@
               />
             </svg>
             <svg
+              id="menu"
               class="menu__icon menu__icon-menu"
               aria-hidden="true"
               width="32"
               height="32"
-              id="menu"
               viewBox="0 0 32 32"
             >
               <path
@@ -108,7 +108,7 @@
       </div>
     </div>
   </header>
-  <UserDropdown v-if="showUserAction" :showUserAction="showUserAction" />
+  <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" />
 </template>
 
 <script>

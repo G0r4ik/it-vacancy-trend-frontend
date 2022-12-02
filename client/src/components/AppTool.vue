@@ -8,7 +8,7 @@
         >
           &#9587;
         </div>
-        <input type="text" name="" id="" class="input" />
+        <input id="" type="text" name="" class="input" />
         <div class="selected-tool">
           <div class="selected-tool__item"></div>
         </div>
@@ -27,6 +27,7 @@ export default {
     currentTool: Object,
     dates: Object,
   },
+  emits: ['closeModal'],
 
   data() {
     return {

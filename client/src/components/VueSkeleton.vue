@@ -1,5 +1,10 @@
 <template>
-  <div v-for="index in count || 1" class="skeleton" :style="styles"></div>
+  <div
+    v-for="index in count || 1"
+    :key="index"
+    class="skeleton"
+    :style="styles"
+  ></div>
 </template>
 
 <script>

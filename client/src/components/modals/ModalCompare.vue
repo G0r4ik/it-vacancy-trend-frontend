@@ -24,7 +24,7 @@ export default {
     currentTool: Object,
     dates: Array,
   },
-emits: ['closeModal'],
+  emits: ['closeModal'],
 
   data() {
     return {

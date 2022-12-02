@@ -1,10 +1,10 @@
 <template>
   <div class="change-theme">
     <input
-      @change="toggleTheme"
       id="checkbox"
       type="checkbox"
       class="switch-checkbox"
+      @change="toggleTheme"
     />
     <label for="checkbox" class="switch-label">
       <span class="switch-label__icon">🌙</span>

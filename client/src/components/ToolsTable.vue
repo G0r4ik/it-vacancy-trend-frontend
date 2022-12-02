@@ -123,10 +123,10 @@
             </button>
           </td>
         </tr>
-        <ModalWrapper @closeModal="closeModal" v-if="isOpenCompareModal">
+        <ModalWrapper v-if="isOpenCompareModal" @closeModal="closeModal">
           <ModalCompare
             :tools="tools"
-            :currentTool="toolInModal"
+            :current-tool="toolInModal"
             :dates="dates"
           />
         </ModalWrapper>
@@ -139,7 +139,7 @@
       mb="var(--margin-extra-small)"
       :count="25"
     />
-    <div class="empty-list" v-if="!tools.length && isDataLoaded">
+    <div v-if="!tools.length && isDataLoaded" class="empty-list">
       There is nothing
     </div>
   </div>
