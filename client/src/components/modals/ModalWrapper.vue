@@ -15,8 +15,8 @@
 import { FocusTrap } from 'focus-trap-vue'
 
 export default {
-  emits: ['closeModal'],
   components: { FocusTrap },
+  emits: ['closeModal'],
   data() {
     return {
       lastActiveFocusElement: '',

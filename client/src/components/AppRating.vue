@@ -8,7 +8,7 @@
       display="inline-block"
       ml="var(--margin-small)"
     />
-    <span class="list-count" v-else> ({{ filteredList.length }})</span>
+    <span v-else class="list-count"> ({{ filteredList.length }})</span>
     <VueSkeleton
       v-if="!categories.length"
       width="100%"
@@ -17,46 +17,47 @@
       br="var(--radius)"
     />
     <RatingFilters
-      v-if="selectedDate.date_of_completion"
+      v-if="dates.length"
       :categories="categories"
-      :currentCategories="currentCategories"
+      :current-categories="currentCategories"
       :dates="dates"
-      :selectedDate="selectedDate"
+      :selected-date="selectedDate"
       @changeCategory="changeCategory"
       @changeSearch="changeSearch"
-      @changeSelectDate="changeSelectDate"
+      @changeSelectedDate="changeSelectedDate"
     />
-
     <RatingSelectList
       :list="currentList"
       @changeCurrentList="changeCurrentList"
     />
-
     <VueSkeleton
       v-if="!tools.length"
       width="300px"
       height="50px"
       mb="var(--margin-small)"
     />
-
-    <RatingPagination
-      :tools="tools"
-      :paginationTools="filteredList"
-      @changePerPage="changePerPage"
-      @changePageWhenClickNumber="changePageWhenClickNumber"
-    />
+    <rating-pagination
+      :pagination-tools="filteredList"
+      :model-value="pagination"
+      @update:modelValue="pagination = $event"
+    ></rating-pagination>
 
     <ToolsTable
       v-if="currentList"
-      :selectedDate="selectedDate"
-      :paginatedTools="paginatedTools"
-      :tools="paginatedTools"
+      :selected-date="selectedDate"
+      :pagination-tools="paginationTools"
+      :tools="paginationTools"
       :dates="dates"
-      :isDataLoaded="isDataLoaded"
+      :is-data-loaded="isDataLoaded"
       @addToFavoriteTools="addToFavoriteTools"
       @addToStudiedTools="addToStudiedTools"
       @listSort="listSort"
     />
+    <rating-pagination
+      :pagination-tools="filteredList"
+      :model-value="pagination"
+      @update:modelValue="pagination = $event"
+    ></rating-pagination>
   </div>
 </template>
 
@@ -80,29 +81,39 @@ export default {
 
   data() {
     return {
+      pagination: { page: 1, itemsPerPage: 50 },
       categories: [],
-      dates: [],
-      tools: [],
-      paginatedTools: [],
-      isDataLoaded: false,
+      selectedDate: {
+        id_date: null,
+        date_of_complition: null,
+      },
       currentCategories: [],
       searchInput: '',
       sortList: '',
-      selectedDate: {
-        id_date: null,
-        date_of_completion: null,
-      },
       currentList: 'tools',
       directionsForSorting: 'DESC',
-      pagination: {
-        start: null,
-        end: null,
-      },
       // currentJobBoard: 'Indeed',
     }
   },
 
   computed: {
+    tools() {
+      return this.$store.getters.tools
+    },
+    dates() {
+      return this.$store.getters.dates
+    },
+    isDataLoaded() {
+      return this.$store.getters.isToolsLoaded
+    },
+    paginationTools() {
+      console.log()
+      return this.filteredList.slice(
+        (this.pagination.page - 1) * this.pagination.itemsPerPage,
+        (this.pagination.page - 1) * this.pagination.itemsPerPage +
+          this.pagination.itemsPerPage
+      )
+    },
     filteredList() {
       let list = this.tools.filter(t => {
         const inputCheck = t.name_tool
@@ -129,8 +140,17 @@ export default {
     },
   },
 
+  // WHY BOTTOM
+  watch: {
+    dates(newValue) {
+      this.selectedDate = newValue.at(-1)
+    },
+  },
+  // WHY TOP
+
   mounted() {
     // api.logoutUser()
+
     // console.log(
     //   registrationUser('egor', 'sdsdsd', 'egorgorlushkin0@gmail.com').then(
     //     res => res.data
@@ -154,38 +174,21 @@ export default {
     //   .registrationUser('egorgorlushkin0@gmail.com', 'mega0password')
     //   .then(res => console.log(res))
 
-    api.getDates().then(res => {
-      this.dates = res
-      this.selectedDate = this.dates.at(-1)
-    })
+    // this.selectedDate = this.lastDate
     api.getCategories().then(res => {
       this.categories = res
       this.currentCategories = res.map(c => c.id_category)
     })
-
-    api.getTools('Russia', 'HeadHunter').then(res => {
-      this.tools = res
-      let favoritesTools = localStorage.getItem('favoritesTools')
-      let studiedTools = localStorage.getItem('studiedTools')
-
-      favoritesTools = favoritesTools !== null ? favoritesTools.split(' ') : 'e'
-      studiedTools = studiedTools !== null ? studiedTools.split(' ') : 'e'
-      for (let i = 0; i < this.tools.length; i++) {
-        this.tools[i].isFav = false
-        this.tools[i].isStudied = false
-        if (favoritesTools.includes(String(this.tools[i].id_tool))) {
-          this.tools[i].isFav = true
-        }
-        if (studiedTools.includes(String(this.tools[i].id_tool))) {
-          this.tools[i].isStudied = true
-        }
-      }
-      this.isDataLoaded = true
-    })
   },
 
   methods: {
-    changeSelectDate(selectDate) {
+    async getDates() {
+      this.dates = await this.$store.getters.dates
+    },
+    async getLast() {
+      this.selectedDate = await this.dates
+    },
+    changeSelectedDate(selectDate) {
       this.selectedDate = selectDate
     },
     changeCurrentList(list) {
@@ -193,15 +196,6 @@ export default {
     },
     changeSearch(e) {
       this.searchInput = e.target.value
-    },
-    changePerPage(start, end) {
-      this.paginatedTools = this.filteredList.slice(start, end)
-    },
-    changePageWhenClickNumber(currentPage, itemsPerPage) {
-      this.paginatedTools = this.filteredList.slice(
-        (currentPage - 1) * itemsPerPage,
-        (currentPage - 1) * itemsPerPage + itemsPerPage
-      )
     },
     changeCategory(category) {
       const index = this.currentCategories.indexOf(category)

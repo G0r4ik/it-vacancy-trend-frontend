@@ -43,7 +43,7 @@ export default {
     dates: Array,
     selectedDate: Object,
   },
-  emits: ['changeCategory', 'changeSearch', 'changeSelectDate'],
+  emits: ['changeCategory', 'changeSearch', 'changeSelectedDate'],
 
   computed: {
     changeCategoryAll() {
@@ -64,18 +64,22 @@ export default {
       // altInput: true,
       // altFormat: 'F j, Y',
       // dateFormat: 'y-m-d',
-      minDate: availableDates[0][1],
+      minDate: availableDates.reduce((acc, item) =>
+        Math.min(acc.id_date, item.id_date)
+      )[0],
       defaultDate: this.selectedDate.date_of_completion, //
-      maxDate: availableDates.at(-1)[1],
+      maxDate: availableDates.reduce((acc, item) =>
+        Math.max(acc.id_date, item.id_date)
+      )[0],
       enable: availableDates.map(d => d[1]),
       onChange: function (s, d, i) {
         for (let i = 0; i < dates.length; i++) {
           const fDate = new Date(dates[i].date_of_completion)
           const sDate = new Date(d)
-          const firstDate = `${fDate.getFullYear()}${fDate.getMonth()}${fDate.getDay()}`
-          const secondDate = `${sDate.getFullYear()}${sDate.getMonth()}${sDate.getDay()}`
+          const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
+          const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
           if (firstDate === secondDate) {
-            emit('changeSelectDate', dates[i])
+            emit('changeSelectedDate', dates[i])
             break
           }
         }

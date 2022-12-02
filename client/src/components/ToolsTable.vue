@@ -66,7 +66,7 @@
 
       <tbody class="rating-table__tbody">
         <tr
-          v-for="tool of paginatedTools"
+          v-for="tool of paginationTools"
           :key="tool.id_tool"
           class="rating-table__row"
         >
@@ -133,13 +133,15 @@
       </tbody>
     </table>
     <VueSkeleton
-      v-if="!tools.length"
-      width="100vw"
+      v-if="!isDataLoaded"
+      width="100%"
       height="50px"
       mb="var(--margin-extra-small)"
       :count="25"
     />
-    <div class="empty-list" v-if="listEmpty">There is nothing</div>
+    <div class="empty-list" v-if="!tools.length && isDataLoaded">
+      There is nothing
+    </div>
   </div>
 </template>
 
@@ -153,10 +155,11 @@ export default {
 
   props: {
     selectedDate: Object,
-    paginatedTools: Array,
+    paginationTools: Array,
     tools: Array,
     dates: Array,
     isDataLoaded: Boolean,
+    isDataEmpty: Boolean,
   },
 
   emits: ['addToFavoriteTools', 'addToStudiedTools', 'listSort'],
@@ -167,11 +170,7 @@ export default {
     }
   },
 
-  computed: {
-    listEmpty() {
-      return this.isDataLoaded && !this.tools.length
-    },
-  },
+  computed: {},
 
   methods: {
     isOpenCompareModalFunction(tool) {
@@ -190,6 +189,7 @@ export default {
   overflow: hidden;
   overflow-x: auto;
   min-height: 50vh;
+  margin-bottom: var(--margin-small);
 }
 .rating-table__inner {
   width: 100%;

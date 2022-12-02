@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination" v-if="pageCount">
+  <div v-if="pageCount" class="pagination">
     <div class="pagination__inner">
       <button
         class="pagination__button"
@@ -34,11 +34,11 @@
         </svg>
       </button>
       <button
+        v-for="page of paginationItems"
+        :key="page"
         class="pagination__button"
         :class="{ pagination__button_current: currentPage === page }"
         :disabled="page > pageCount"
-        v-for="page of paginationItems"
-        :key="page"
         @click="changePageWhenClickNumber(page)"
       >
         {{ page }}
@@ -78,12 +78,13 @@
     </div>
     <label class="pagination__change" for="listing-per-pages">
       <select
-        name="listing-per-pages"
         id="listing-per-pages"
+        v-model="itemsPerPage"
+        name="listing-per-pages"
         @change="changePerPage"
       >
         <option value="25">25</option>
-        <option value="50" selected="selected">50</option>
+        <option value="50">50</option>
         <option value="100">100</option>
         <option value="1000">All</option>
       </select>
@@ -94,17 +95,14 @@
 <script>
 export default {
   props: {
-    tools: Array,
     paginationTools: Array,
+    modelValue: Object,
   },
 
-  emits: ['changePageWhenClickNumber', 'changePerPage'],
+  emits: ['update:modelValue'],
 
   data() {
     return {
-      currentPage: 1,
-      pageCount: null,
-      paginationItems: [],
       currentPage: 1,
       itemsPerPage: 50,
       visibleButtons: 3,
@@ -118,6 +116,34 @@ export default {
     isLastPage() {
       return this.currentPage === this.pageCount
     },
+    pageCount() {
+      return Math.ceil(this.paginationTools.length / this.itemsPerPage)
+    },
+    paginationItems() {
+      const paginationTool = []
+      for (let i = 1; i <= this.pageCount; i++) {
+        paginationTool.push(i)
+      }
+
+      if (this.currentPage <= Math.floor(Math.sqrt(this.visibleButtons))) {
+        return paginationTool.slice(
+          0,
+          Math.min(this.visibleButtons, this.pageCount)
+        )
+      } else if (
+        this.currentPage === this.pageCount ||
+        this.currentPage === this.pageCount - 1
+      ) {
+        return paginationTool.slice(
+          Math.max(-this.visibleButtons, -this.pageCount)
+        )
+      } else {
+        return paginationTool.slice(
+          this.currentPage - Math.floor(Math.sqrt(this.visibleButtons)) - 1,
+          this.currentPage + Math.floor(Math.sqrt(this.visibleButtons))
+        )
+      }
+    },
   },
 
   watch: {
@@ -128,6 +154,37 @@ export default {
         } else {
           this.changePerPage(this.itemsPerPage, this.currentPage)
         }
+      },
+      deep: true,
+    },
+    modelValue: {
+      handler(newValue, oldValue) {
+        this.currentPage = this.modelValue.page
+        this.itemsPerPage = this.modelValue.itemsPerPage
+      },
+      deep: true,
+    },
+
+    currentPage: {
+      handler() {
+        const currentPage = this.currentPage
+        const itemsPerPage = this.itemsPerPage
+        this.$emit('update:modelValue', {
+          page: currentPage,
+          itemsPerPage: itemsPerPage,
+        })
+      },
+      deep: true,
+    },
+    itemsPerPage: {
+      handler() {
+        this.changePerPage(this.itemsPerPage, 1)
+        const currentPage = this.currentPage
+        const itemsPerPage = this.itemsPerPage
+        this.$emit('update:modelValue', {
+          page: currentPage,
+          itemsPerPage: itemsPerPage,
+        })
       },
       deep: true,
     },
@@ -147,58 +204,13 @@ export default {
       if (e.target) this.itemsPerPage = e.target.value
       if (!e.target) this.itemsPerPage = +e
 
-      this.pageCount = Math.ceil(
-        this.paginationTools.length / this.itemsPerPage
-      )
-      this.paginationItems = []
-      if (this.pageCount > this.visibleButtons) {
-        for (let i = 1; i <= this.visibleButtons; i++) {
-          this.paginationItems.push(i)
-        }
-      } else {
-        for (let i = 1; i <= this.pageCount; i++) {
-          this.paginationItems.push(i)
-        }
-      }
-
       if (this.currentPage > this.pageCount && this.currentPage !== 1) {
         this.currentPage = this.pageCount || 1
-        this.$emit('changePerPage', 0, this.itemsPerPage)
       } else {
-        const start = (this.currentPage - 1) * this.itemsPerPage
-        this.$emit('changePerPage', start, start + this.itemsPerPage)
       }
     },
     changePageWhenClickNumber(page) {
       this.currentPage = page
-
-      this.paginationItems = []
-      for (let i = 1; i <= this.pageCount; i++) {
-        this.paginationItems.push(i)
-      }
-      if (this.currentPage <= Math.floor(Math.sqrt(this.visibleButtons))) {
-        this.paginationItems = this.paginationItems.slice(
-          0,
-          Math.min(this.visibleButtons, this.pageCount)
-        )
-      } else if (
-        this.currentPage === this.pageCount ||
-        this.currentPage === this.pageCount - 1
-      ) {
-        this.paginationItems = this.paginationItems.slice(
-          Math.max(-this.visibleButtons, -this.pageCount)
-        )
-      } else {
-        this.paginationItems = this.paginationItems.slice(
-          this.currentPage - Math.floor(Math.sqrt(this.visibleButtons)) - 1,
-          this.currentPage + Math.floor(Math.sqrt(this.visibleButtons))
-        )
-      }
-      this.$emit(
-        'changePageWhenClickNumber',
-        this.currentPage,
-        +this.itemsPerPage
-      )
     },
   },
 }
@@ -211,6 +223,7 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: var(--margin-small);
+  margin-top: var(--margin-small);
 }
 .pagination__inner {
   display: inline-flex;
@@ -248,6 +261,13 @@ export default {
   justify-content: center;
 }
 .pagination__change select {
+  padding-top: 4px;
+  text-align-last: center;
+  text-align: center;
+}
+.pagination__change option {
+  text-align-last: center;
+  text-align: center;
 }
 @media (width < 760px) {
   .pagination__button {

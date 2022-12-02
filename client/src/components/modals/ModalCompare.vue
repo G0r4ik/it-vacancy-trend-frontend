@@ -6,9 +6,12 @@
     <div class="technology-comparison__chart">
       <canvas id="myChart" width="800" height="300"></canvas>
     </div>
-    <a class="technology-comparison__button" @click="goToCompare(currentTool)">
-      сравнить с другими технологиями
-    </a>
+    <button
+      class="technology-comparison__button"
+      @click="goToCompare(currentTool)"
+    >
+      compare with other technologies
+    </button>
   </div>
 </template>
 
@@ -21,6 +24,7 @@ export default {
     currentTool: Object,
     dates: Array,
   },
+emits: ['closeModal'],
 
   data() {
     return {
@@ -93,8 +97,8 @@ export default {
             grid: { display: false },
             grace: '100%',
             // ticks: { stepSize: 1 },
-            beginAtZero: true,
-            min: 0,
+            // beginAtZero: true,
+            // min: 0,
             // max: Math.floor((maxValue + (maxValue / 5)).toFixed(1)),
             // max: maxValue,
           },

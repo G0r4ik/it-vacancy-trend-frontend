@@ -14,29 +14,29 @@ instance.interceptors.request.use(config => {
 })
 
 class API {
-  getLists = async () => {
+  async getLists() {
     const c = await instance.get('getLists', {})
     return c.data
   }
 
-  getTools = async (region, jobBoard) => {
+  async getTools(region, jobBoard) {
     const tools = await instance.get('getTools', {
       params: { region, jobBoard },
     })
     return tools.data
   }
 
-  getCategories = async () => {
+  async getCategories() {
     const categories = await instance.get('getCategories')
     return categories.data
   }
 
-  getDates = async () => {
+  async getDates() {
     const dates = await instance.get('getDates')
     return dates.data
   }
 
-  registrationUser = async (email, password) => {
+  async registrationUser(email, password) {
     const user = await instance.post('registrationUser', {
       email,
       password,
@@ -44,16 +44,16 @@ class API {
     return user.data
   }
 
-  loginUser = async (email, password) => {
+  async loginUser(email, password) {
     const user = await instance.post('loginUser', { email, password })
     return user.data
   }
 
-  logoutUser = async () => {
+  async logoutUser() {
     await instance.post('logout')
   }
 
-  refreshToken = async refreshToken => {
+  async refreshToken(refreshToken) {
     const token = await instance.post('refreshToken', {
       params: { refreshToken },
     })

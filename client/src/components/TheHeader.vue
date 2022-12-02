@@ -117,10 +117,6 @@ import ChangeTheme from './ChangeTheme.vue'
 export default {
   components: { UserDropdown, ChangeTheme },
 
-  props: {
-    page: String,
-  },
-
   emits: ['changePage'],
 
   data() {
