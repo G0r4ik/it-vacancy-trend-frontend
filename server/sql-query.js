@@ -1,11 +1,12 @@
-const p = require('./db')
+const pool = require('./database')
 
 // async function getTools2() {
 //   return p.query(queries.getTools).then(results => results.rows)
 // }
 
-async function pQuery(query, arguments = []) {
-  return (await p.query(query, [...arguments])).rows
+async function pQuery(query, ...arguments_) {
+  const resp = await pool.query(query, [...arguments_])
+  return resp.rows
 }
 
 const qString = {
@@ -18,7 +19,6 @@ const qString = {
 
   deleteRefreshToken: `DELETE FROM auth WHERE refresh_token = $1`,
   updateRefreshToken: `UPDATE auth SET refresh_token = $1`,
-  getTokenByUserId: `SELECT * FROM auth WHERE id_user = $1`,
 
   getLastDate: `SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1`,
   createNewDate: `INSERT INTO date_of_completion(date_of_completion) VALUES($1)`,
@@ -42,8 +42,8 @@ class Queries {
     return pQuery(qString.getTools)
   }
 
-  async getToolByIdInCount(id_tool) {
-    return pQuery(qString.getToolByIdInCount, arguments)
+  async getToolByIdInCount(toolId) {
+    return pQuery(qString.getToolByIdInCount, toolId)
   }
 
   async getCategories() {
@@ -51,65 +51,72 @@ class Queries {
   }
 
   async getCounts(region, jobBoard) {
-    return pQuery(qString.getCounts, arguments)
+    return pQuery(qString.getCounts, region, jobBoard)
   }
 
-  async setCountsItem(id_tool, lastDateId, countVacancy) {
-    return pQuery(qString.setCountsItem, arguments)
+  async setCountsItem(toolId, lastDateId, countVacancy) {
+    return pQuery(qString.setCountsItem, toolId, lastDateId, countVacancy)
   }
 
   async deleteRefreshToken(refreshToken) {
-    return pQuery(qString.deleteRefreshToken, arguments)
+    return pQuery(qString.deleteRefreshToken, refreshToken)
   }
 
   async updateRefreshToken(refreshToken) {
-    return pQuery(qString.updateRefreshToken, arguments)
+    return pQuery(qString.updateRefreshToken, refreshToken)
   }
 
   async getLastDate() {
-    return pQuery(qString.getLastDate, arguments)
+    return pQuery(qString.getLastDate)
   }
 
   async createNewDate(date) {
-    return pQuery(qString.createNewDate, arguments)
+    return pQuery(qString.createNewDate, date)
   }
 
   async getUserById(userId) {
-    return pQuery(qString.getUserById, arguments)
+    return pQuery(qString.getUserById, userId)
   }
 
   async getUserByActivationLink(activationLink) {
-    return pQuery(qString.getUserByActivationLink, arguments)
+    return pQuery(qString.getUserByActivationLink, activationLink)
   }
 
   async getUserByEmail(email) {
-    const user = await pQuery(qString.getUserByEmail, arguments)
+    const user = await pQuery(qString.getUserByEmail, email)
     return user[0]
   }
 
   async getUserIdByToken(token) {
-    return pQuery(qString.getUserIdByToken, arguments)
+    return pQuery(qString.getUserIdByToken, token)
   }
 
   async createAuth(userId, refreshToken) {
-    return pQuery(qString.createAuth, arguments)
+    return pQuery(qString.createAuth, userId, refreshToken)
   }
 
   async createUser(email, hashPassword, currentDate, activationLink) {
-    const user = await pQuery(qString.createUser, arguments)
+    const user = await pQuery(
+      qString.createUser,
+      email,
+      hashPassword,
+      currentDate,
+      activationLink
+    )
     return user[0]
   }
 
   async changeUsersStatus(activationLink) {
-    return pQuery(qString.changeUsersStatus, arguments)
+    return pQuery(qString.changeUsersStatus, activationLink)
   }
 
   async getDates() {
-    return (await p.query(`SELECT * FROM date_of_completion`)).rows
+    const resp = await pool.query(`SELECT * FROM date_of_completion`)
+    return resp.rows
   }
 
   async getTokenByToken(token) {
-    return pQuery(qString.getTokenByToken, arguments)
+    return pQuery(qString.getTokenByToken, token)
   }
 }
 

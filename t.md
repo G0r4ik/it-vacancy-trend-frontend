@@ -40,6 +40,8 @@ centry
 
 # BUGS / REFACTORING
 
+- z-index
+
 # Не забывать
 
 - skeletonить всё

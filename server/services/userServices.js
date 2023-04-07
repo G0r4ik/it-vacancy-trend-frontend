@@ -1,15 +1,16 @@
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const bcrypt = require('bcrypt')
-const currentDate = require('../helpers/getCurrentDate')
 const uuid = require('uuid')
+const currentDate = require('../helpers/getCurrentDate')
 const queries = require('../sql-query')
 const url = require('../helpers/getURL')
-const userDtoFunc = require('../dtos/user-dto')
+const userDtoFunction = require('../dtos/user-dto')
 
 class UserService {
   async getLists() {
-    return await queries.getCategories()
+    const a = await queries.getCategories()
+    return a
   }
 
   generateToken(payload) {
@@ -24,7 +25,7 @@ class UserService {
 
   async saveToken(userId, refreshToken) {
     const tokenData = await queries.getUserById(userId)
-    if (tokenData.length) {
+    if (tokenData.length > 0) {
       queries.updateRefreshToken(refreshToken)
     } else {
       queries.createAuth(userId, refreshToken)
@@ -32,7 +33,7 @@ class UserService {
   }
 
   async sendMessage(email, link) {
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
@@ -48,32 +49,30 @@ class UserService {
 
   async registrationUser(email, password) {
     const hasUser = await queries.getUserByEmail(email)
-    if (hasUser.length) {
+    if (hasUser.length > 0) {
       throw new Error(`Пользователь с почтой ${email} существует`)
     }
     const hashPassword = await bcrypt.hash(password, 3)
     const activationLink = uuid.v4()
-
     const user = await queries.createUser(
       email,
       hashPassword,
       currentDate(),
       activationLink
     )
-
-    const userDto = userDtoFunc(user)
+    const userDto = userDtoFunction(user)
     const tokens = this.generateToken({ ...userDto })
-
     const activateUrl = `${url.server}/activateAccount?link=${activationLink}`
     this.sendMessage(email, activateUrl)
-    this.saveToken(userDto.user_id, tokens.refreshToken)
+    this.saveToken(userDto.userId, tokens.refreshToken)
     return { user: userDto, ...tokens }
   }
 
   async activate(activationLink) {
     const user = await queries.getUserByActivationLink(activationLink)
 
-    if (!user.length) throw 'Пользователя не существует или ссылка не активна'
+    if (user.length > 0)
+      throw 'Пользователя не существует или ссылка не активна'
     await queries.changeUsersStatus(activationLink)
   }
 
@@ -84,9 +83,9 @@ class UserService {
     const hashPassword = await bcrypt.compare(password, user.user_password)
     if (!hashPassword) throw 'Неправильный пароль'
 
-    const userDto = userDtoFunc(user)
+    const userDto = userDtoFunction(user)
     const tokens = this.generateToken({ ...userDto })
-    await this.saveToken(userDto.user_id, tokens.refreshToken)
+    await this.saveToken(userDto.userId, tokens.refreshToken)
     return { ...tokens, user: userDto }
   }
 
@@ -98,15 +97,16 @@ class UserService {
     try {
       const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
       return userData
-    } catch (error) {
+    } catch {
       return null
     }
   }
+
   validateRefreshToken(token) {
     try {
       const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET)
       return userData
-    } catch (error) {
+    } catch {
       return null
     }
   }
@@ -114,13 +114,13 @@ class UserService {
   async refreshToken(refreshToken) {
     if (!refreshToken) throw 'Некоректно'
     const userData = await this.validateRefreshToken(refreshToken)
-    const tokenFromDb = await queries.getTokenByToken(refreshToken)
-    if (!userData || !tokenFromDb) throw 'Ошибка при авторизации'
+    const tokenFromDatabase = await queries.getTokenByToken(refreshToken)
+    if (!userData || !tokenFromDatabase) throw 'Ошибка при авторизации'
 
     const user = await queries.getUserByEmail(userData.user_email)
-    const userDto = userDtoFunc(user)
+    const userDto = userDtoFunction(user)
     const tokens = this.generateToken({ ...userDto })
-    await this.saveToken(userDto.user_id, tokens.refreshToken)
+    await this.saveToken(userDto.userId, tokens.refreshToken)
     return { ...tokens, user: userDto }
   }
 }

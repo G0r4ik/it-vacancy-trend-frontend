@@ -1,12 +1,18 @@
 const needle = require('needle')
+const chalk = require('chalk')
 const isGettingDataOfCount = require('./helpers/isGettingDataOfCount')
 const currentDate = require('./helpers/getCurrentDate')
 const queries = require('./sql-query')
-const chalk = require('chalk')
+
+function fixedOrNotFound(findString) {
+  const fixed = findString.includes('исправлен')
+  const notFound = findString.includes('не найдено')
+  return fixed || notFound
+}
 
 async function getString(findTool) {
   const url = `https://hh.ru/search/vacancy?no_magic=true&area=113&&items_on_page=1&text=${findTool}`
-  let resp = await needle('get', url)
+  const resp = await needle('get', url)
   const indexOfStart = resp.body.indexOf('bloko-header-3')
   const findString = resp.body.slice(indexOfStart + 45, indexOfStart + 300)
 
@@ -14,12 +20,6 @@ async function getString(findTool) {
     return getString(findTool)
   }
   return findString
-}
-
-function fixedOrNotFound(findString) {
-  const fixed = findString.includes('исправлен')
-  const notFound = findString.includes('не найдено')
-  return fixed || notFound
 }
 
 async function getCountInPage(tool) {
@@ -30,10 +30,10 @@ async function getCountInPage(tool) {
   if (fixedOrNotFound(findString)) return 0
 
   let countVacancy = ''
-  const n = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-  for (let i = 0; i < findString.length; i++) {
-    if (n.includes(findString[i])) countVacancy += findString[i]
-    if (findString[i] === 'в') return +countVacancy
+  const n = new Set(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'])
+  for (const element of findString) {
+    if (n.has(element)) countVacancy += element
+    if (element === 'в') return +countVacancy
   }
 }
 
@@ -44,19 +44,19 @@ module.exports = async function getDataNumberOfVacancies() {
 
   await queries.createNewDate(currentDate())
   let lastDateId = await queries.getLastDate()
-  lastDateId = lastDateId[0].id_date
-  let tools = await queries.getTools()
+  lastDateId = lastDateId[0].dateId
+  const tools = await queries.getTools()
 
   for (const tool of tools) {
     const countVacancy = await getCountInPage(tool)
     console.log(chalk.magenta(tool.name_tool, countVacancy))
-    await queries.setCountsItem(tool.id_tool, lastDateId, countVacancy)
+    await queries.setCountsItem(tool.toolId, lastDateId, countVacancy)
   }
 
   isGettingDataOfCount.changeStatus(false)
   console.log(
     chalk.bgYellow(
-      `Потрачено минут: ${((new Date() - start) / 60000).toFixed(2)}`
+      `Потрачено минут: ${((Date.now() - start) / 60_000).toFixed(2)}`
     )
   )
 }
@@ -75,13 +75,13 @@ module.exports = async function getDataNumberOfVacancies() {
 //       `INSERT INTO _counts(
 //     job_board,
 //     region,
-//     id_tool,
+//     toolId,
 //     date_of_completion,
 //     _count)
 //     VALUES(
 //       'Indeed',
 //       'Global',
-//     ${tool.id_tool},
+//     ${tool.toolId},
 //     (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
 //     0
 //     )`
@@ -117,13 +117,13 @@ module.exports = async function getDataNumberOfVacancies() {
 //             `INSERT INTO _counts(
 //               job_board,
 //               region,
-//           id_tool,
+//           toolId,
 //           date_of_completion,
 //           _count)
 //           VALUES(
 //             'Indeed',
 //             'Global',
-//           ${tool.id_tool},
+//           ${tool.toolId},
 //           (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
 //           ${result2})`
 //           )

@@ -1,14 +1,14 @@
 require('dotenv').config()
+const chalk = require('chalk')
 const isGettingDataOfCount = require('./helpers/isGettingDataOfCount')
 const getDataNumberOfVacancies = require('./getDataNumberOfVacancies')
 const userService = require('./services/userServices')
 const url = require('./helpers/getURL')
 const queries = require('./sql-query')
-const userDto = require('./dtos/user-dto')
-const chalk = require('chalk')
 
 class Controllers {
-  async createList(req, res) {}
+  // async createList(req, res) {}
+
   async getLists(req, res) {
     // const { date } = req.query
     const lists = await userService.getLists()
@@ -26,35 +26,28 @@ class Controllers {
 
   async getDates(req, res) {
     const dates = await queries.getDates()
-    res.json(!isGettingDataOfCount.status ? dates : dates.slice(0, -1))
+    res.json(isGettingDataOfCount.status ? dates.slice(0, -1) : dates)
   }
 
   async getTools(req, res) {
     const { region, jobBoard } = req.query
     const categories = await queries.getCategories()
     let tools = await queries.getTools()
-    let toolsInCounts = await queries.getCounts(region, jobBoard)
+    const toolsInCounts = await queries.getCounts(region, jobBoard)
 
-    for (let i = 0; i < tools.length; i++) {
-      for (let j = 0; j < toolsInCounts.length; j++) {
-        if (tools[i].id_tool === toolsInCounts[j].id_tool) {
-          if (!tools[i].counts) tools[i].counts = { [jobBoard]: {} }
-          tools[i].counts[jobBoard][toolsInCounts[j].date_of_completion] =
-            toolsInCounts[j]._count
+    for (const tool of tools) {
+      for (const toolsInCount of toolsInCounts) {
+        if (tool.toolId === toolsInCount.toolId) {
+          if (!tool.counts) tool.counts = { [jobBoard]: {} }
+          tool.counts[jobBoard][toolsInCount.date_of_completion] =
+            toolsInCount.count
         }
       }
-      // const count = await queries.getToolByIdInCount(tools[i].id_tool)
-      // for (let c of count) {
-      //   if (!tools[i].counts) tools[i].counts = { [jobBoard]: {} }
-      //   let date = c.date_of_completion
-      //   let _count = c._count
-      //   tools[i].counts[jobBoard][date] = _count
-      // }
     }
 
     tools = tools.map(tool => {
       const category = categories.find(
-        category => category.id_category === tool.id_category
+        category2 => category2.id_category === tool.id_category
       )
       delete tool.id_category
       return { ...tool, category }

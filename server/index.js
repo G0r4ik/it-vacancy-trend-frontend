@@ -3,8 +3,8 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const getDataNumberOfVacancies = require('./getDataNumberOfVacancies')
-
 const url = require('./helpers/getURL')
+
 const port = process.env.PORT || process.env.LOCAL_SERVER_PORT
 const INTERVAL_OF_GET_VACANCEIS = 24 * 60 * 60 * 1000 // 1 day
 

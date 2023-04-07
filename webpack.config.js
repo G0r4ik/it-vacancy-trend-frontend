@@ -1,40 +1,38 @@
 const Dotenv = require('dotenv-webpack')
 require('dotenv').config()
-const path = require('path')
+const path = require('node:path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack')
-const isDev = process.env.NODE_ENV === 'production' ? false : true
+
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const config = {
-  cache: !isDev,
-  mode: isDev ? 'development' : 'production',
-  devtool: isDev ? 'eval-cheap-source-map' : false, // inline-source-map'
+  cache: !isDevelopment,
+  mode: isDevelopment ? 'development' : 'production',
+  devtool: isDevelopment ? 'eval-cheap-source-map' : false, // inline-source-map'
   context: path.resolve(__dirname),
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: isDev ? '[name].js' : '[name].[contenthash:10].js',
-    chunkFilename: isDev ? '[name].js' : '[name].[contenthash:10].js',
-    // publicPath: './', // dont work dev server
+    filename: isDevelopment ? '[name].js' : '[name].[contenthash:10].js',
+    chunkFilename: isDevelopment ? '[name].js' : '[name].[contenthash:10].js',
     clean: true,
   },
 
   entry: {
-    index: path.resolve(__dirname, 'client/src/index.js'),
+    index: path.resolve(__dirname, 'client/src/config/index.js'),
   },
 
   resolve: {
     alias: {
       '@': path.join(__dirname, 'client/src'),
-      '~n': path.join(__dirname, 'node_modules'),
       '!': path.join(__dirname),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
@@ -58,7 +56,7 @@ const config = {
     }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'client/src/index.html'),
+      template: path.resolve(__dirname, 'client/src/config/index.html'),
       title: 'App',
     }),
     new VueLoaderPlugin(),
@@ -82,11 +80,11 @@ const config = {
       __VUE_PROD_DEVTOOLS__: false,
     }),
     // !isDev && new BundleAnalyzerPlugin(),
-  ].filter(n => n),
+  ].filter(Boolean),
 
   optimization: {
     usedExports: true,
-    minimize: !isDev,
+    minimize: !isDevelopment,
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
@@ -152,7 +150,7 @@ const config = {
         loader: 'vue-loader',
       },
       {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)$/,
         type: 'asset',
         generator: {
           filename: 'media/[name].[hash:8][ext]',
@@ -192,7 +190,7 @@ const config = {
       {
         test: /\.css$/i,
         use: [
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
@@ -212,11 +210,11 @@ const config = {
         ],
       },
 
-      //scss
+      // scss
       {
         test: /\.s[ac]ss$/i,
         use: [
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
 
           {
             loader: 'css-loader',
@@ -250,8 +248,8 @@ const config = {
       //     'svgo-loader',
       //   ],
       // },
-      //{
-      //test: /\.svg$/,
+      // {
+      // test: /\.svg$/,
 
       // use: [
       //   {
@@ -264,8 +262,8 @@ const config = {
       // 'svgo-loader',
       // ],
       // loader: 'svg-inline-loader',
-      //},
-      //svg
+      // },
+      // svg
       // {
       //   test: /\.(?:svg)$/i,
       //   generator: {
@@ -284,7 +282,7 @@ const config = {
       //   loader: 'vue-svg-loader',
       // },
 
-      //svg
+      // svg
       // {
       //   test: /\.(?:svg)$/i,
       //   generator: {
@@ -354,13 +352,3 @@ const config = {
 }
 
 module.exports = config
-
-//  ProvidePlugin           svg          webp-img           critical css         order css
-
-//287
-
-// {
-//   test: /\.vue$/,
-//   resourceQuery: /type=style/,
-//   sideEffects: true,
-// },
