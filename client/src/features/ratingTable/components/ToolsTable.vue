@@ -34,7 +34,7 @@
       <tbody class="rating-table__tbody">
         <tr
           v-for="tool of paginationTools"
-          :key="tool.toolId"
+          :key="tool.id_tool"
           class="rating-table__row">
           <td class="rating-table__item rating-table__item_name">
             <img
@@ -65,7 +65,7 @@
             </div>
           </td>
           <td class="rating-table__item rating-table__item_count">
-            {{ tool?.counts?.HeadHunter?.[selectedDate.dateId] ?? 0 }}
+            {{ tool?.counts?.HeadHunter?.[selectedDate.id_date] ?? 0 }}
             <!-- 'u' -->
           </td>
           <td class="rating-table__item">
@@ -88,7 +88,7 @@
     <AppSkeleton
       v-if="!isDataLoaded"
       width="100%"
-      height="50px"
+      height="calc(var(--unit) * 10)"
       mb="var(--unit)"
       :count="25" />
     <div v-if="tools.length === 0 && isDataLoaded" class="empty-list">
@@ -100,7 +100,7 @@
 <script>
 // import ModalCompare from './modals/ModalCompare.vue'
 import ModalCompare from './ModalCompare.vue'
-import ModalWrapper from '@/shared/components/ModalWrapper.vue'
+import ModalWrapper from '@client/shared/components/ModalWrapper.vue'
 
 export default {
   components: { ModalCompare, ModalWrapper },
@@ -159,7 +159,7 @@ export default {
   font-weight: 600;
   color: var(--color-gray);
   cursor: pointer;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: var(--border-width-small) solid var(--color-border);
 }
 .rating-table__tbody {
 }
@@ -169,7 +169,7 @@ export default {
 .rating-table__icon-change-sort svg,
 .rating-table__th svg {
   display: inline-block;
-  width: 24px;
+  width: var(--icon-size);
   vertical-align: middle;
   /* width: var(--icon-width-extra-small);
   fill: var(--color-gray);
@@ -179,7 +179,7 @@ export default {
   padding: var(--unit) var(--unit);
   text-align: center;
   vertical-align: middle;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: var(--border-width-small) solid var(--color-border);
 }
 .rating-table__item_name {
 }
@@ -202,8 +202,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 200px;
-  height: 25px;
+  max-width: var(--width-ratin-item-category);
+  height: var(--height-table-item);
   padding: 0 var(--unit);
   margin: 0 auto;
   font-size: var(--text-extra-small);
@@ -225,7 +225,7 @@ export default {
   justify-content: center;
   width: 100%;
   height: 50vh;
-  font-size: 56px;
+  font-size: var(--text-extra-extra-large);
   color: var(--color-border);
 }
 @media (width <= 760px) {

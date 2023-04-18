@@ -2,17 +2,12 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
-const currentDate = require('../helpers/getCurrentDate')
-const queries = require('../sql-query')
-const url = require('../helpers/getURL')
-const userDtoFunction = require('../dtos/user-dto')
+// const currentDate = require('../helpers/getCurrentDate')
+const queries = require('./sql.js')
+// const url = require('../shared/consts')
+// const userDtoFunction = require('../dtos/user-dto')
 
 class UserService {
-  async getLists() {
-    const a = await queries.getCategories()
-    return a
-  }
-
   generateToken(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
       expiresIn: '30s',

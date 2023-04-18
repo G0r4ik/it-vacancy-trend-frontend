@@ -218,7 +218,7 @@ export default {
   font-size: var(--text-small);
 }
 .pagination__change select {
-  padding-top: 4px;
+  padding-top: var(--unit);
   text-align: center;
   text-align-last: center;
 }

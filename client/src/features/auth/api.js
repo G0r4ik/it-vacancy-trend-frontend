@@ -1,4 +1,4 @@
-import instance from '@/config/api'
+import instance from '@client/config/api'
 
 class API {
   async registrationUser(email, password) {

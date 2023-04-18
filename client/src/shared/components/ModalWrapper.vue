@@ -59,8 +59,8 @@ export default {
 }
 .modal-wrapper__cross {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: calc(var(--unit * 2));
+  right: calc(var(--unit * 2));
   z-index: 1;
   cursor: pointer;
 }

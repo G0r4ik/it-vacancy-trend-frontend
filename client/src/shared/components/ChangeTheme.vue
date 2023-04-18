@@ -66,9 +66,8 @@ export default {
   padding: var(--unit);
   cursor: pointer;
   background: var(--color-border);
-  border: 1px solid var(--color-primary3);
   border-radius: var(--border-radius-middle);
-  transition: background 0.5s ease;
+  transition: background var(--transition-main) ease;
 }
 .switch-theme__icon {
   pointer-events: none;
@@ -78,12 +77,13 @@ export default {
   position: absolute;
   width: var(--icon-width-middle);
   height: var(--icon-height-middle);
-  background-color: var(--color-primary3);
+  background-color: var(--color-primary2);
   border-radius: 50%;
-  transition: transform 0.3s ease, background-color 0.5s ease;
+  transition: transform var(--transition-small) ease,
+    background-color var(--transition-main) ease;
   transform: translateX(0);
 }
 .change-theme__toggle-checked {
-  transform: translateX(35px);
+  transform: translateX(calc(var(--width-change-theme) / 2));
 }
 </style>

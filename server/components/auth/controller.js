@@ -1,65 +1,12 @@
-require('dotenv').config()
 const chalk = require('chalk')
-const isGettingDataOfCount = require('./helpers/isGettingDataOfCount')
-const getDataNumberOfVacancies = require('./getDataNumberOfVacancies')
-const userService = require('./services/userServices')
-const url = require('./helpers/getURL')
-const queries = require('./sql-query')
+const { client } = require('../../shared/consts')
 
 class Controllers {
-  // async createList(req, res) {}
-
-  async getLists(req, res) {
-    // const { date } = req.query
-    const lists = await userService.getLists()
-    res.json(lists)
-  }
-
-  async getDataNumberOfVacancies(req, res) {
-    res.end()
-    getDataNumberOfVacancies()
-  }
-
-  async getCategories(req, res) {
-    res.json(await queries.getCategories())
-  }
-
-  async getDates(req, res) {
-    const dates = await queries.getDates()
-    res.json(isGettingDataOfCount.status ? dates.slice(0, -1) : dates)
-  }
-
-  async getTools(req, res) {
-    const { region, jobBoard } = req.query
-    const categories = await queries.getCategories()
-    let tools = await queries.getTools()
-    const toolsInCounts = await queries.getCounts(region, jobBoard)
-
-    for (const tool of tools) {
-      for (const toolsInCount of toolsInCounts) {
-        if (tool.toolId === toolsInCount.toolId) {
-          if (!tool.counts) tool.counts = { [jobBoard]: {} }
-          tool.counts[jobBoard][toolsInCount.date_of_completion] =
-            toolsInCount.count
-        }
-      }
-    }
-
-    tools = tools.map(tool => {
-      const category = categories.find(
-        category2 => category2.id_category === tool.id_category
-      )
-      delete tool.id_category
-      return { ...tool, category }
-    })
-    res.status(200).json(tools)
-  }
-
   async activateAccount(req, res) {
     try {
       const { link } = req.query
       await userService.activate(link)
-      res.redirect(url.client)
+      res.redirect(client)
     } catch (error) {
       console.log(chalk.red(error))
     }

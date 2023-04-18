@@ -19,7 +19,6 @@
   --color-star: #f6b87e;
   /* UNIT */
   --unit: 5px;
-  --width-change-theme: 70px;
   /* FONT-SIZE */
   --text-extra-small: 14px;
   --text-small: 16px;
@@ -43,9 +42,29 @@
   --icon-height-large: 30px;
   /* BORDER-RADIUS */
   --radius: 5px;
-  --border-radius-extra-small: var(--radius);
-  --border-radius-small: calc(var(--radius) * 2);
   --border-radius-middle: calc(var(--radius) * 3);
+  --border-radius-small: calc(var(--radius) * 2);
+  --border-radius-extra-small: var(--radius);
+  /* Border */
+  --border-width: 3px;
+  --border-width-small: 2px;
+  --border-width-extra-small: 1px;
+  /* Width */
+  --width-compare-tools: 800px;
+  --width-auth: 400px;
+  --width-ratin-item-category: 200px;
+  --width-header: 115px;
+  --width-change-theme: 70px;
+  --icon-size: 24px;
+  /* Height */
+  --height-compare-tools: 500px;
+  --height-menu-list: 100px;
+  --height-logo-mobile: 30px;
+  --height-table-item: 25px;
+  /* Transition */
+  --transition-skeleton: 1.5s;
+  --transition-main: 0.5s;
+  --transition-small: 0.3s;
 }
 :root.light-theme {
   --color-background: var(--color_white-base);

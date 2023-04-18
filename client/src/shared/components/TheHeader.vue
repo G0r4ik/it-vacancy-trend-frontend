@@ -46,7 +46,7 @@
           </ul>
         </nav>
         <div class="header__other">
-          <AppChangeTheme />
+          <ChangeTheme />
           <div class="header__user">
             <button
               class="header__user-button"
@@ -100,20 +100,20 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: var(--unit) 0;
-  border-bottom: 5px solid var(--color-border);
+  border-bottom: var(--radius) solid var(--color-border);
 }
 .header__logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 115px;
+  width: var(--width-header);
   padding: var(--unit);
-  border: 2.5px solid var(--color-primary3);
+  border: calc(var(--radius) / 2) solid var(--color-primary3);
   border-radius: var(--border-radius-small);
 }
 .header__logo_mobile {
   display: none;
-  height: 30px;
+  height: var(--height-logo-mobile);
   text-align: center;
 }
 .menu__list {
@@ -128,7 +128,7 @@ export default {
   cursor: pointer;
 }
 .menu__item_active {
-  border-bottom: 2px solid var(--color-primary3);
+  border-bottom: var(--border-width-small) solid var(--color-primary3);
 }
 .header__other {
   display: flex;
@@ -145,7 +145,7 @@ export default {
   .header__inner {
     padding: var(--unit) 0;
     margin: 0;
-    border-width: 2px;
+    border-width: var(--border-width-small);
   }
   .header__logo_mobile {
     display: flex;
@@ -193,7 +193,7 @@ export default {
     top: 100%;
     left: 0;
     width: 100%;
-    height: 100px;
+    height: var(--height-menu-list);
     content: '';
     background-image: linear-gradient(
       to bottom,

@@ -63,7 +63,7 @@
   margin: var(--unit);
   font-family: monospace;
   line-height: 150%;
-  border: 1px solid var(--color-border);
+  border: var(--border-width-extra-small) solid var(--color-border);
 }
 .other__p {
   margin-bottom: var(--unit);

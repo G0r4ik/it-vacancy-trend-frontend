@@ -126,7 +126,7 @@ export default {
 <style>
 .technology-comparison {
   width: 800px;
-  padding: 50px;
+  padding: calc(var(--unit) * 10);
   background-color: var(--color-background);
 }
 .technology-comparison__name-tool {
@@ -145,7 +145,7 @@ export default {
   margin-left: auto;
   font-size: var(--text-extra-small);
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--border-radius-extra-small);
 }
 </style>

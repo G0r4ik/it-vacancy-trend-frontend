@@ -78,10 +78,10 @@ export default {
 <style>
 .sign-up {
   position: relative;
-  width: 400px;
+  width: var(--width-auth);
   padding: var(--unit);
   background: var(--color-background);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-extra-small) solid var(--color-border);
 }
 .sign-up__title {
   margin-bottom: calc(var(--unit) * 2);
@@ -108,8 +108,8 @@ export default {
   padding: var(--unit) var(--unit);
   margin: 0 auto;
   font-size: var(--text-small);
-  border: 2px solid var(--color-border);
-  border-radius: 5px;
+  border: var(--border-width-small) solid var(--color-border);
+  border-radius: var(--radius);
 }
 .sign-up__error {
   color: red;

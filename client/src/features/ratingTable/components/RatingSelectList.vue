@@ -47,7 +47,7 @@ export default {
   color: inherit;
   cursor: pointer;
   background: none;
-  border: 3px solid var(--color-border);
+  border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius-small);
 }
 .select-list__button_active {

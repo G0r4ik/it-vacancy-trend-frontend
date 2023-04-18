@@ -32,8 +32,9 @@ const config = {
 
   resolve: {
     alias: {
-      '@': path.join(__dirname, 'client/src'),
-      '!': path.join(__dirname),
+      '@client': path.join(__dirname, 'client/src'),
+      '@server': path.join(__dirname, 'server'),
+      '@': path.join(__dirname),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
   },

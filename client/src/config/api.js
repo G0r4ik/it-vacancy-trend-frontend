@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = require('!/server/helpers/getURL')
+const url = require('@server/shared/consts')
 
 const instance = axios.create({
   baseURL: url.server,

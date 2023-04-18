@@ -1,8 +1,8 @@
 const needle = require('needle')
 const chalk = require('chalk')
-const isGettingDataOfCount = require('./helpers/isGettingDataOfCount')
-const currentDate = require('./helpers/getCurrentDate')
-const queries = require('./sql-query')
+const isGettingDataOfCount = require('./helprers')
+const currentDate = require('../../shared/helpers/getCurrentDate')
+const queries = require('./sql')
 
 function fixedOrNotFound(findString) {
   const fixed = findString.includes('исправлен')
@@ -44,13 +44,15 @@ module.exports = async function getDataNumberOfVacancies() {
 
   await queries.createNewDate(currentDate())
   let lastDateId = await queries.getLastDate()
-  lastDateId = lastDateId[0].dateId
+  console.log(lastDateId)
+  lastDateId = lastDateId[0].id_date // 507
   const tools = await queries.getTools()
-
+  console.log(lastDateId)
   for (const tool of tools) {
     const countVacancy = await getCountInPage(tool)
     console.log(chalk.magenta(tool.name_tool, countVacancy))
-    await queries.setCountsItem(tool.toolId, lastDateId, countVacancy)
+    console.log(tool.id_tool, lastDateId, countVacancy)
+    await queries.setCountsItem(tool.id_tool, lastDateId, countVacancy)
   }
 
   isGettingDataOfCount.changeStatus(false)
@@ -75,13 +77,13 @@ module.exports = async function getDataNumberOfVacancies() {
 //       `INSERT INTO _counts(
 //     job_board,
 //     region,
-//     toolId,
+//     id_tool,
 //     date_of_completion,
 //     _count)
 //     VALUES(
 //       'Indeed',
 //       'Global',
-//     ${tool.toolId},
+//     ${tool.id_tool},
 //     (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
 //     0
 //     )`
@@ -117,13 +119,13 @@ module.exports = async function getDataNumberOfVacancies() {
 //             `INSERT INTO _counts(
 //               job_board,
 //               region,
-//           toolId,
+//           id_tool,
 //           date_of_completion,
 //           _count)
 //           VALUES(
 //             'Indeed',
 //             'Global',
-//           ${tool.toolId},
+//           ${tool.id_tool},
 //           (SELECT id_date FROM date_of_completion ORDER BY id_date DESC LIMIT 1),
 //           ${result2})`
 //           )

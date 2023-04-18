@@ -31,7 +31,7 @@
 
 <script>
 import AuthSignUp from './AuthSignUp.vue'
-import ModalWrapper from '@/shared/components/ModalWrapper'
+import ModalWrapper from '@client/shared/components/ModalWrapper'
 // import AuthSignIn from './AuthSignIn.vue'
 
 export default {
@@ -65,14 +65,14 @@ export default {
 <style>
 .user-dropdown {
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: calc(var(--unit) * 10);
+  right: calc(var(--unit) * 4);
   display: flex;
   flex-direction: column;
   padding: var(--unit);
   list-style-type: none;
   background: var(--color-background);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--border-radius-extra-small);
 }
 .user-dropdown__item {

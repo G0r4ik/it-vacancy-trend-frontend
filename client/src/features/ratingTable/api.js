@@ -1,4 +1,4 @@
-import instance from '@/config/api.js'
+import instance from '@client/config/api.js'
 
 class API {
   async getLists() {

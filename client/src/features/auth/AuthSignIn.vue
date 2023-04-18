@@ -17,7 +17,7 @@
         class="sign-in__label sing-in__label_password">
         Password:
         <input
-          id="sign-in-password"
+          id="sign-in-password`"
           v-model="password"
           type="text"
           name="sign-in-password"
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+// import api from './api'
 import api from './api'
 
 export default {
@@ -67,22 +68,21 @@ export default {
 }
 .sign-in__inner {
   position: relative;
-  width: 400px;
+  width: var(--width-auth);
   padding: var(--unit);
   background: var(--color-background);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-extra-small) solid var(--color-border);
 }
 .sign-in__cross {
   position: absolute;
-  top: 20px;
-  right: 30px;
+  top: calc(var(--unit) * 4);
+  right: calc(var(--unit) * 6);
   cursor: pointer;
 }
 .sign-in__cross::before,
 .sign-in__cross::after {
   position: absolute;
-  width: 24px;
-  height: 4px;
+  width: var(--icon-size);
   content: '';
   background: gray;
 }
@@ -103,24 +103,14 @@ export default {
 .sign-in__input {
   margin-top: var(--unit);
 }
-.sign-in__label_login {
-}
-.sign-in__input {
-}
-.sign-in__input_login {
-}
-.sing-in__label_password {
-}
-.sign-in__input_password {
-}
 .sign-in__send,
 .sign-in__button {
   display: block;
   padding: var(--unit) var(--unit);
   margin: 0 auto;
   font-size: var(--text-small);
-  border: 2px solid var(--color-border);
-  border-radius: 5px;
+  border: var(--border-width-small) solid var(--color-border);
+  border-radius: var(--radius);
 }
 .sign-in__send {
   margin-top: var(--unit);

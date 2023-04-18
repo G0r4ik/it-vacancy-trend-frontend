@@ -4,8 +4,8 @@
     <h2 class="title list-title">List</h2>
     <AppSkeleton
       v-if="tools.length === 0"
-      width="30px"
-      height="30px"
+      width="calc(var(--unit) * 6);"
+      height="calc(var(--unit) * 6);"
       display="inline-block"
       ml="var(--unit)" />
     <span v-else class="list-count"> ({{ filteredList.length }})</span>
@@ -30,7 +30,7 @@
     <AppSkeleton
       v-if="tools.length === 0"
       width="300px"
-      height="50px"
+      height="calc(var(--unit) * 10)"
       mb="var(--unit)" />
     <AppPagination
       :pagination-tools="filteredList"
@@ -58,7 +58,7 @@
 <script>
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
-import TheHeader from '@/shared/components/TheHeader.vue'
+import TheHeader from '@client/shared/components/TheHeader.vue'
 import ToolsTable from './ToolsTable.vue'
 import api from '../api'
 import { useStore } from '../store'
@@ -76,7 +76,7 @@ export default {
       pagination: { page: 1, itemsPerPage: 50 },
       categories: [],
       selectedDate: {
-        dateId: null,
+        id_date: null,
         date_of_complition: null,
       },
       currentCategories: [],
@@ -217,17 +217,17 @@ export default {
     },
     sortCount() {
       const { directionsForSorting, selectedDate } = this
-      const { dateId } = selectedDate
+      const { id_date } = selectedDate
       return function (a, b) {
-        if (!b.counts.HeadHunter[dateId]) {
-          b.counts.HeadHunter[dateId] = 0
+        if (!b.counts.HeadHunter[id_date]) {
+          b.counts.HeadHunter[id_date] = 0
         }
-        if (!a.counts.HeadHunter[dateId]) {
-          a.counts.HeadHunter[dateId] = 0
+        if (!a.counts.HeadHunter[id_date]) {
+          a.counts.HeadHunter[id_date] = 0
         }
         return directionsForSorting === 'DESC'
-          ? a.counts.HeadHunter[dateId] - b.counts.HeadHunter[dateId]
-          : b.counts.HeadHunter[dateId] - a.counts.HeadHunter[dateId]
+          ? a.counts.HeadHunter[id_date] - b.counts.HeadHunter[id_date]
+          : b.counts.HeadHunter[id_date] - a.counts.HeadHunter[id_date]
       }
     },
     listSort(v = this.sortList, saveSort = false) {
@@ -243,17 +243,17 @@ export default {
         const f = localStorage
           .getItem('favoritesTools')
           .split(' ')
-          .filter(t => +t !== tool.toolId)
+          .filter(t => +t !== tool.id_tool)
           .join(' ')
         localStorage.setItem('favoritesTools', f)
       } else {
         const favoritesTools = localStorage.getItem('favoritesTools')
         if (favoritesTools === null) {
-          localStorage.setItem('favoritesTools', `${tool.toolId}`)
+          localStorage.setItem('favoritesTools', `${tool.id_tool}`)
         } else {
           localStorage.setItem(
             'favoritesTools',
-            `${favoritesTools} ${tool.toolId}`
+            `${favoritesTools} ${tool.id_tool}`
           )
         }
       }
@@ -264,15 +264,18 @@ export default {
         const f = localStorage
           .getItem('studiedTools')
           .split(' ')
-          .filter(t => +t !== tool.toolId)
+          .filter(t => +t !== tool.id_tool)
           .join(' ')
         localStorage.setItem('studiedTools', f)
       } else {
         const studiedTools = localStorage.getItem('studiedTools')
         if (studiedTools === null) {
-          localStorage.setItem('studiedTools', `${tool.toolId}`)
+          localStorage.setItem('studiedTools', `${tool.id_tool}`)
         } else {
-          localStorage.setItem('studiedTools', `${studiedTools} ${tool.toolId}`)
+          localStorage.setItem(
+            'studiedTools',
+            `${studiedTools} ${tool.id_tool}`
+          )
         }
       }
       tool.isStudied = !tool.isStudied

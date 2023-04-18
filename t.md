@@ -1,8 +1,12 @@
 # FRONTEND
 
+// async getLists() {
+// const a = await queries.getCategories()
+// return a
+// }
+
 centry
 
-- Vuex
 - Router
 - container
 - Светлая тема

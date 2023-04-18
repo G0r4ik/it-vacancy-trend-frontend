@@ -132,14 +132,14 @@ export default {
 }
 .technology-comparison__inner {
   position: relative;
-  max-width: 800px;
-  max-height: 500px;
+  max-width: var(--width-compare-tools);
+  max-height: var(--height-compare-tools);
   padding: var(--unit);
 }
 .technology-comparison__cross {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: calc(var(--unit) * 2);
+  right: calc(var(--unit) * 2);
   cursor: pointer;
 }
 </style>

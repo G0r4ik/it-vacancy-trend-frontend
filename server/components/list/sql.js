@@ -1,4 +1,4 @@
-const pool = require('./database')
+const pool = require('../../config/database')
 
 // async function getTools2() {
 //   return p.query(queries.getTools).then(results => results.rows)
@@ -42,8 +42,8 @@ class Queries {
     return pQuery(qString.getTools)
   }
 
-  async getToolByIdInCount(toolId) {
-    return pQuery(qString.getToolByIdInCount, toolId)
+  async getToolByIdInCount(id_tool) {
+    return pQuery(qString.getToolByIdInCount, id_tool)
   }
 
   async getCategories() {
@@ -54,8 +54,8 @@ class Queries {
     return pQuery(qString.getCounts, region, jobBoard)
   }
 
-  async setCountsItem(toolId, lastDateId, countVacancy) {
-    return pQuery(qString.setCountsItem, toolId, lastDateId, countVacancy)
+  async setCountsItem(id_tool, lastDateId, countVacancy) {
+    return pQuery(qString.setCountsItem, id_tool, lastDateId, countVacancy)
   }
 
   async deleteRefreshToken(refreshToken) {

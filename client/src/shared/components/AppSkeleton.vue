@@ -22,7 +22,16 @@ export default {
 
   computed: {
     styles() {
-      const { mt = 0, mr = 0, mb = 0, ml = 0, display = 'block', br = 0, width, height } = this
+      const {
+        mt = 0,
+        mr = 0,
+        mb = 0,
+        ml = 0,
+        display = 'block',
+        br = 0,
+        width,
+        height,
+      } = this
       const margin = `${mt} ${mr} ${mb} ${ml}`
       return `width: ${width}; height: ${height}; display: ${display}; margin: ${margin}; border-radius: ${br}`
     },
@@ -50,7 +59,7 @@ export default {
     rgb(37 22 22 / 0)
   );
   transform: translateX(-100%);
-  animation: shimmer 1.5s infinite;
+  animation: shimmer var(--transition-skeleton) infinite;
 }
 @keyframes shimmer {
   100% {
