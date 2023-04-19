@@ -16,7 +16,6 @@ for (const router of Object.values(routes)) app.use(router)
 app.listen(PORT, () => {
   console.log(`SERVER WORKING. PORT: ${PORT}`)
 })
-
 setInterval(() => {
   getDataNumberOfVacancies()
 }, INTERVAL_OF_GET_VACANCEIS)

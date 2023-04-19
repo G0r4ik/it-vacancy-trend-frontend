@@ -36,16 +36,6 @@ export default {
     const maxValue = Math.max(
       Object.values(this.currentTool.counts).map(item => item.countHeadHunter)
     )
-    // for (const count in this.currentTool.counts) {
-    //   // if (Object.hasOwnProperty.call(this.currentTool.counts, count)) {
-    //   //   countsHeadHunter.push(this.currentTool.counts[count].countHeadHunter)
-    //   //   countsIndeed.push(this.currentTool.counts[count].countIndeed)
-    //   // }
-    // }
-    // maxValue =
-    //   Math.round(maxValue / Math.ceil(10 ** (String(maxValue).length - 2))) *
-    //     10 ** (String(maxValue).length - 2) +
-    //   10 ** (String(maxValue).length - 1)
     this.createChar(maxValue)
   },
 
@@ -56,10 +46,16 @@ export default {
   methods: {
     createChar() {
       const context = document.querySelector('#myChart').getContext('2d')
+
+      const sortedDates = [...this.dates].sort(
+        (a, b) =>
+          new Date(a.date_of_completion) - new Date(b.date_of_completion)
+      )
+      // eslint-disable-next-line no-new
       new Chart(context, {
         type: 'line',
         data: {
-          labels: this.dates.map(date => {
+          labels: sortedDates.map(date => {
             const date2 = new Date(date.date_of_completion)
             const day = String(date2.getDate()).padStart(2, '0')
             const month = String(date2.getMonth() + 1).padStart(2, '0')
@@ -142,6 +138,7 @@ export default {
 }
 .technology-comparison__button {
   padding: var(--unit) var(--unit);
+  margin-top: var(--unit);
   margin-left: auto;
   font-size: var(--text-extra-small);
   background: transparent;

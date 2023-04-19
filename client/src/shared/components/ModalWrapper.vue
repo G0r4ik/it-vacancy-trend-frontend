@@ -46,7 +46,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 15;
+  z-index: var(--z-index-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,7 +61,7 @@ export default {
   position: absolute;
   top: calc(var(--unit * 2));
   right: calc(var(--unit * 2));
-  z-index: 1;
+  z-index: var(--z-index-overlay);
   cursor: pointer;
 }
 </style>

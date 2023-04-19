@@ -15,6 +15,8 @@ module.exports = {
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   plugins: ['promise', 'unicorn'],
   rules: {
+    camelcase: 'off',
+    //
     'class-methods-use-this': 'off', // ну не знаю
     // Только для node js
     'n/no-unsupported-features/es-syntax': 'off',

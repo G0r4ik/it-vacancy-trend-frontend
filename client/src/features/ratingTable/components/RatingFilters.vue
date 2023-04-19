@@ -57,13 +57,13 @@ export default {
     }
     const { dates, $emit, selectedDate } = this
 
+    const maxDate = this.dates.at(-1).date_of_completion
+    const minDate = this.dates[0].date_of_completion
+
     flatpickr('#select-date', {
-      // altInput: true,
-      // altFormat: 'F j, Y',
-      // dateFormat: 'y-m-d',
-      minDate: Math.min(...availableDates.map(item => item.id_date)),
+      minDate,
+      maxDate,
       defaultDate: selectedDate.date_of_completion,
-      maxDate: Math.max(...availableDates.map(item => item.id_date)),
       enable: availableDates.map(d => d[1]),
       onChange(s, d) {
         for (const date of dates) {
@@ -86,8 +86,6 @@ export default {
 .flatpickr-weekdays {
   display: none;
 }
-.filters {
-}
 .filters__inner {
   padding: var(--unit);
   margin-bottom: calc(var(--unit) * 2);
@@ -102,8 +100,6 @@ export default {
 }
 .filters__top-all {
   border-bottom: var(--border-width-small) solid var(--color-border);
-}
-.select-container__label {
 }
 .select-date {
   width: 150px;

@@ -11,27 +11,18 @@ export default {
   props: {
     width: { type: String, default: '100px' },
     height: { type: String, default: '100px' },
-    display: { type: String, default: '100px' },
-    br: { type: String, default: '100px' },
-    mt: { type: String, default: '100px' },
-    mr: { type: String, default: '100px' },
-    mb: { type: String, default: '100px' },
-    ml: { type: String, default: '100px' },
+    display: { type: String, default: 'block' },
+    br: { type: String, default: '15px' },
+    mt: { type: String, default: '0' },
+    mr: { type: String, default: '0' },
+    mb: { type: String, default: '0' },
+    ml: { type: String, default: '0' },
     count: { type: Number, default: 1 },
   },
 
   computed: {
     styles() {
-      const {
-        mt = 0,
-        mr = 0,
-        mb = 0,
-        ml = 0,
-        display = 'block',
-        br = 0,
-        width,
-        height,
-      } = this
+      const { mt, mr, mb, ml, display, br, width, height } = this
       const margin = `${mt} ${mr} ${mb} ${ml}`
       return `width: ${width}; height: ${height}; display: ${display}; margin: ${margin}; border-radius: ${br}`
     },

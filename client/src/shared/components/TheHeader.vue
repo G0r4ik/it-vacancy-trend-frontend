@@ -160,7 +160,7 @@ export default {
     display: grid;
   }
   .menu__button {
-    z-index: 1;
+    z-index: var(--z-index-overlay);
     display: block;
   }
   .menu__icon {

@@ -36,7 +36,6 @@
 </template>
 
 <script>
-// import api from './api'
 import api from './api'
 
 export default {
@@ -50,7 +49,6 @@ export default {
   methods: {
     singIn() {
       api.loginUser(this.loginOrEmail, this.password)
-      // this.$emit('')
     },
   },
 }

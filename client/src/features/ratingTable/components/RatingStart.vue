@@ -1,20 +1,24 @@
 <template>
-  <TheHeader />
   <div class="container">
     <h2 class="title list-title">List</h2>
-    <AppSkeleton
-      v-if="tools.length === 0"
-      width="calc(var(--unit) * 6);"
-      height="calc(var(--unit) * 6);"
-      display="inline-block"
-      ml="var(--unit)" />
-    <span v-else class="list-count"> ({{ filteredList.length }})</span>
+
+    <span class="list-count">
+      <AppSkeleton
+        v-if="tools.length === 0"
+        width="50px"
+        height="30px"
+        display="inline-block"
+        ml="var(--unit)" />
+      <span v-else>({{ filteredList.length }})</span>
+    </span>
+
     <AppSkeleton
       v-if="categories.length === 0"
       width="100%"
-      height="250px"
+      height="180px"
       mb="var(--unit)"
       br="var(--radius)" />
+
     <RatingFilters
       v-if="dates.length > 0"
       :categories="categories"
@@ -38,7 +42,6 @@
       @update:model-value="pagination = $event" />
 
     <ToolsTable
-      v-if="currentList"
       :selected-date="selectedDate"
       :pagination-tools="paginationTools"
       :tools="paginationTools"
@@ -58,27 +61,18 @@
 <script>
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
-import TheHeader from '@client/shared/components/TheHeader.vue'
 import ToolsTable from './ToolsTable.vue'
 import api from '../api'
 import { useStore } from '../store'
 
 export default {
-  components: {
-    ToolsTable,
-    RatingFilters,
-    RatingSelectList,
-    TheHeader,
-  },
+  components: { ToolsTable, RatingFilters, RatingSelectList },
 
   data() {
     return {
       pagination: { page: 1, itemsPerPage: 50 },
       categories: [],
-      selectedDate: {
-        id_date: null,
-        date_of_complition: null,
-      },
+      selectedDate: { id_date: null, date_of_complition: null },
       currentCategories: [],
       searchInput: '',
       sortList: '',
@@ -139,28 +133,7 @@ export default {
   mounted() {
     useStore().loadTools()
     useStore().loadDates()
-    // api.logoutUser()
-    // console.log(
-    //   registrationUser('egor', 'sdsdsd', 'egorgorlushkin0@gmail.com').then(
-    //     res => res.data
-    //   )
-    // )
-    // console.log(
-    //   api
-    //     .loginUser('egorgorlushkin0@gmail.com', 'mega0password')
-    //     .then(res => res)
-    // )
-    // console.log(
-    //   api
-    //     .refreshToken(
-    //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4OCwidXNlcl9lbWFpbCI6ImVnb3Jnb3JsdXNoa2luMEBnbWFpbC5jb20iLCJpc19hY3RpdmUiOmZhbHNlLCJkYXRlX29mX3JlZ2lzdHJhdGlvbiI6IjIwMjItMTAtMzBUMjE6MDA6MDAuMDAwWiIsImlhdCI6MTY2NzI5NDYwNiwiZXhwIjoxNjY5ODg2NjA2fQ.68enP7vHc1YLCyRSmSM9OhHi6OvTfFqiTqv7IReodrY'
-    //     )
-    //     .then(res => res)
-    // )
-    // api
-    //   .registrationUser('egorgorlushkin0@gmail.com', 'mega0password')
-    //   .then(res => console.log(res))
-    // this.selectedDate = this.lastDate
+
     api
       .getCategories()
       .then(result => {

@@ -32,7 +32,6 @@
 <script>
 import AuthSignUp from './AuthSignUp.vue'
 import ModalWrapper from '@client/shared/components/ModalWrapper'
-// import AuthSignIn from './AuthSignIn.vue'
 
 export default {
   components: { AuthSignUp, ModalWrapper },

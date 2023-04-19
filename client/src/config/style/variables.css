@@ -19,6 +19,14 @@
   --color-star: #f6b87e;
   /* UNIT */
   --unit: 5px;
+  /* z-index */
+  --z-index-hidden: -1;
+  --z-index-base: 1;
+  --z-index-overlay: 2;
+  --z-index-modal: 3;
+  --z-index-dropdown: 4;
+  --z-index-tooltip: 5;
+  --z-index-topmost: 9999;
   /* FONT-SIZE */
   --text-extra-small: 14px;
   --text-small: 16px;

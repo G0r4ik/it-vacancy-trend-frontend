@@ -61,10 +61,18 @@ export default {
   methods: {
     createChart(countsHeadHunter, maxValue, countsIndeed) {
       const context = document.querySelector('#myChart').getContext('2d')
+
+      const sortedDates = [...this.dates].sort(
+        (a, b) =>
+          new Date(a.date_of_completion) - new Date(b.date_of_completion)
+      )
+      console.log(sortedDates)
+
+      // eslint-disable-next-line no-new
       new Chart(context, {
         type: 'line',
         data: {
-          labels: this.dates.map(date => date.date_of_completion),
+          labels: sortedDates,
           datasets: [
             {
               label: 'HHru',
@@ -116,7 +124,7 @@ export default {
 }
 .background-modal {
   position: fixed;
-  z-index: 150000;
+  z-index: var(--z-index-overlay);
   width: 100vw;
   height: 100vh;
   background: rgb(0 0 0 / 0.9);
