@@ -1,9 +1,11 @@
 import axios from 'axios'
 
-const url = require('@server/shared/consts')
+const isProduction = process.env.NODE_ENV === 'production'
+const SERVER_LOCAL = `http://localhost:${process.env.LOCAL_SERVER_PORT}`
+const server = isProduction ? process.env.SERVER_ADDRESS : SERVER_LOCAL
 
 const instance = axios.create({
-  baseURL: url.server,
+  baseURL: server,
   headers: {},
   timeout: 0,
   withCredentials: true,

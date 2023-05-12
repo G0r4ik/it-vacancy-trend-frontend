@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PageCompare from '../pages/PageCompare.vue'
 import PageOther from '../pages/PageOther.vue'
-import PageRating from '../pages/PageRating.vue'
+import PageToolsList from '../pages/PageToolsList.vue'
 
 const routes = [
-  { path: '/', component: PageRating, alias: '/rating' },
+  { path: '/', component: PageToolsList, alias: '/rating' },
   { path: '/other', component: PageOther },
   { path: '/compare', component: PageCompare },
 ]

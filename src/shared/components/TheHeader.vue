@@ -21,27 +21,30 @@
           <ul class="menu__list">
             <li
               class="menu__item"
-              :class="{ menu__item_active: $route.path === '/rating' }"
               tabindex="0"
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')">
-              <router-link to="/rating">Rating</router-link>
+              <router-link to="/rating" active-class="menu__item_active">
+                Rating
+              </router-link>
             </li>
             <li
               class="menu__item"
-              :class="{ menu__item_active: $route.path === '/compare' }"
               tabindex="0"
               @click="changePage('compare')"
               @keyup.enter="changePage('compare')">
-              <router-link to="/compare">Compare</router-link>
+              <router-link to="/compare" active-class="menu__item_active">
+                Compare
+              </router-link>
             </li>
             <li
               class="menu__item"
-              :class="{ menu__item_active: $route.path === '/other' }"
               tabindex="0"
               @click="changePage('other')"
               @keyup.enter="changePage('other')">
-              <router-link to="/other">Other</router-link>
+              <router-link to="/other" active-class="menu__item_active">
+                Other
+              </router-link>
             </li>
           </ul>
         </nav>
@@ -58,14 +61,14 @@
       </div>
     </div>
   </header>
-  <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" />
+  <!-- <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" /> -->
 </template>
 
 <script>
-import UserDropdown from '../../features/auth/UserDropdown.vue'
+// import UserDropdown from '@/features/auth/UserDropdown.vue'
 
 export default {
-  components: { UserDropdown },
+  // components: { UserDropdown },
 
   emits: ['changePage'],
 
@@ -128,7 +131,9 @@ export default {
   cursor: pointer;
 }
 .menu__item_active {
+  padding-bottom: var(--unit);
   border-bottom: var(--border-width-small) solid var(--color-primary3);
+  border-radius: 5px;
 }
 .header__other {
   display: flex;

@@ -1,5 +1,4 @@
 <template>
-  <TheHeader />
   <div class="other">
     <div class="container">
       <h2 class="other__title title">Another</h2>
@@ -48,6 +47,10 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {}
+</script>
 
 <style>
 .other {

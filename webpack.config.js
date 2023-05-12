@@ -27,14 +27,12 @@ const config = {
   },
 
   entry: {
-    index: path.resolve(__dirname, 'client/src/config/index.js'),
+    index: path.resolve(__dirname, 'src/config/index.js'),
   },
 
   resolve: {
     alias: {
-      '@client': path.join(__dirname, 'client/src'),
-      '@server': path.join(__dirname, 'server'),
-      '@': path.join(__dirname),
+      '@': path.join(__dirname, 'src'),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
   },
@@ -57,14 +55,14 @@ const config = {
     }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'client/src/config/index.html'),
+      template: path.resolve(__dirname, 'src/config/index.html'),
       title: 'App',
     }),
     new VueLoaderPlugin(),
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'client/src/public'),
+          from: path.resolve(__dirname, 'src/public'),
           to: path.resolve(__dirname, 'dist/public'),
           info: { minimized: true },
           noErrorOnMissing: true,

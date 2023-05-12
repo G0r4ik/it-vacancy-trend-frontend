@@ -100,7 +100,7 @@
 <script>
 // import ModalCompare from './modals/ModalCompare.vue'
 import ModalCompare from './ModalCompare.vue'
-import ModalWrapper from '@client/shared/components/ModalWrapper.vue'
+import ModalWrapper from '@/shared/components/ModalWrapper.vue'
 
 export default {
   components: { ModalCompare, ModalWrapper },

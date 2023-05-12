@@ -1,13 +1,13 @@
 <template>
   <TheHeader />
-  <RatingStart />
+  <AppRating />
 </template>
 
 <script>
-import RatingStart from '../features/ratingTable/components/RatingStart.vue'
+import { AppRating } from '../features/ToolsList'
 import TheHeader from '../shared/components/TheHeader.vue'
 
 export default {
-  components: { RatingStart, TheHeader },
+  components: { AppRating, TheHeader },
 }
 </script>
