@@ -1,5 +1,4 @@
 const Dotenv = require('dotenv-webpack')
-require('dotenv').config()
 const path = require('node:path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -49,7 +48,7 @@ const config = {
   },
 
   plugins: [
-    new Dotenv(),
+    new Dotenv({ systemvars: true }),
     new MiniCssExtractPlugin({
       filename: '[name]-[chunkhash:7].css',
     }),

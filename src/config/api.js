@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
 import axios from 'axios'
 const isProduction = process.env.NODE_ENV === 'production'
 console.log(process.env.NODE_ENV, process.env.LOCAL_SERVER_PORT, process.env)
