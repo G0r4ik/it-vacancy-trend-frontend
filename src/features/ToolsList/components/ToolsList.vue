@@ -153,6 +153,8 @@ export default {
     },
     changeSelectedDate(selectDate) {
       this.selectedDate = selectDate
+      useStore().loadTools(selectDate.id_date)
+      // FIXME ЗАПРОС
     },
     changeCurrentList(list) {
       this.currentList = list

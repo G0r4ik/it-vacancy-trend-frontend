@@ -66,7 +66,6 @@ export default {
         (a, b) =>
           new Date(a.date_of_completion) - new Date(b.date_of_completion)
       )
-      console.log(sortedDates)
 
       // eslint-disable-next-line no-new
       new Chart(context, {

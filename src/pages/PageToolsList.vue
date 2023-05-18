@@ -1,13 +1,13 @@
 <template>
   <TheHeader />
-  <AppRating />
+  <ToolsList />
 </template>
 
 <script>
-import { AppRating } from '../features/ToolsList'
+import { ToolsList } from '../features/ToolsList'
 import TheHeader from '../shared/components/TheHeader.vue'
 
 export default {
-  components: { AppRating, TheHeader },
+  components: { ToolsList, TheHeader },
 }
 </script>

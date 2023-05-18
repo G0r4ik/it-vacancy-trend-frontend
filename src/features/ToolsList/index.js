@@ -1,3 +1,3 @@
-import AppRating from './components/AppRating.vue'
+import ToolsList from './components/ToolsList.vue'
 
-export { AppRating }
+export { ToolsList }

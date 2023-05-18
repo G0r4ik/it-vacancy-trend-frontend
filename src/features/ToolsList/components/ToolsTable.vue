@@ -148,10 +148,6 @@ export default {
   border-spacing: 0;
   border-collapse: collapse;
 }
-.rating-table__thead {
-}
-.rating-table__row {
-}
 .rating-table__th {
   padding-top: var(--unit);
   padding-bottom: var(--unit);

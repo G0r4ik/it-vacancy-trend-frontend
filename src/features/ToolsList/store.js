@@ -10,9 +10,9 @@ export const useStore = defineStore('store', {
   }),
 
   actions: {
-    loadTools() {
+    loadTools(dateId) {
       api
-        .getTools('Russia', 'HeadHunter')
+        .getTools('Russia', 'HeadHunter', dateId)
         .then(res => {
           this.tools = res
           this.isToolsLoaded = true
@@ -36,5 +36,3 @@ export const useStore = defineStore('store', {
     },
   },
 })
-
-// export default createStore({})

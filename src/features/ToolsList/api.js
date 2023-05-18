@@ -6,9 +6,9 @@ class API {
     return c.data
   }
 
-  async getTools(region, jobBoard) {
+  async getTools(region, jobBoard, dateId) {
     const tools = await instance.get('getTools', {
-      params: { region, jobBoard },
+      params: { region, jobBoard, dateId },
     })
     return tools.data
   }
@@ -18,8 +18,15 @@ class API {
     return categories.data
   }
 
-  async getDates() {
-    const dates = await instance.get('getDates')
+  async getDates(id_date) {
+    const dates = await instance.get('getDates', { params: { id_date } })
+    return dates.data
+  }
+
+  async getCountOfCurrentItem(idTool) {
+    const dates = await instance.get('getCountOfCurrentItem', {
+      params: { idTool },
+    })
     return dates.data
   }
 }

@@ -16,6 +16,7 @@
 
 <script>
 import Chart from 'chart.js/auto'
+import api from '../api'
 
 export default {
   props: {
@@ -31,11 +32,17 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     document.addEventListener('keydown', this.addCloseFunction)
     const maxValue = Math.max(
       Object.values(this.currentTool.counts).map(item => item.countHeadHunter)
     )
+    const counts = await api.getCountOfCurrentItem(this.currentTool.id_tool)
+    for (const current of counts) {
+      this.currentTool.counts.HeadHunter[current.date_of_completion] =
+        current.count_of_item
+    }
+
     this.createChar(maxValue)
   },
 
@@ -46,11 +53,11 @@ export default {
   methods: {
     createChar() {
       const context = document.querySelector('#myChart').getContext('2d')
-
       const sortedDates = [...this.dates].sort(
         (a, b) =>
           new Date(a.date_of_completion) - new Date(b.date_of_completion)
       )
+
       // eslint-disable-next-line no-new
       new Chart(context, {
         type: 'line',
