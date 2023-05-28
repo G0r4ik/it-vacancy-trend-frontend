@@ -16,6 +16,11 @@ export const useStore = defineStore('store', {
         .then(res => {
           this.tools = res
           this.isToolsLoaded = true
+          const idsOfFav = localStorage.getItem('favoritesTools').split(' ')
+          console.log(idsOfFav)
+          for (const tool of this.tools) {
+            if (idsOfFav.includes(String(tool.id_tool))) tool.isFav = true
+          }
           return res
         })
         .catch(error => {

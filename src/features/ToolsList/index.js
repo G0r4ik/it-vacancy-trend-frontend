@@ -1,3 +1,1 @@
-import ToolsList from './components/ToolsList.vue'
-
-export { ToolsList }
+export { default as ToolsList } from './components/ToolsList.vue'

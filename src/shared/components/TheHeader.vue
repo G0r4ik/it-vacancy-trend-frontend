@@ -133,7 +133,7 @@ export default {
 .menu__item_active {
   padding-bottom: var(--unit);
   border-bottom: var(--border-width-small) solid var(--color-primary3);
-  border-radius: 5px;
+  border-radius: 2px;
 }
 .header__other {
   display: flex;
@@ -179,6 +179,7 @@ export default {
   .menu__button_open .menu__icon-cross {
     display: block;
   }
+
   .menu__icon-cross,
   .menu__button_open .menu__icon-menu {
     display: none;

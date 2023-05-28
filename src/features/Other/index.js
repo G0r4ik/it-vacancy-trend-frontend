@@ -1,3 +1,1 @@
-import AppOther from './AppOther.vue'
-
-export { AppOther }
+export { default as AppOther } from './AppOther.vue'

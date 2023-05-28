@@ -1,3 +1,4 @@
 > 0.1%,
 not ie 11,
-not OperaMini all
+not OperaMini all,
+not android 4.4.3-4.4.4

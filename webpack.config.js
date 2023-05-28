@@ -6,14 +6,13 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const config = {
-  cache: !isDevelopment,
   mode: isDevelopment ? 'development' : 'production',
   devtool: isDevelopment ? 'eval-cheap-source-map' : false, // inline-source-map'
   context: path.resolve(__dirname),
@@ -77,7 +76,7 @@ const config = {
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: false,
     }),
-    // !isDev && new BundleAnalyzerPlugin(),
+    !isDevelopment && new BundleAnalyzerPlugin(),
   ].filter(Boolean),
 
   optimization: {
