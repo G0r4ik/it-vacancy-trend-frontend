@@ -23,11 +23,20 @@ class API {
     return dates.data
   }
 
-  async getCountOfCurrentItem(idTool) {
-    const dates = await instance.get('getCountOfCurrentItem', {
-      params: { idTool },
+  async getCountOfCurrentItem(idTool, signal) {
+    try {
+      const dates = await instance.get('getCountOfCurrentItem', {
+        signal,
+        params: { idTool },
+      })
+      return dates.data
+    } catch {}
+  }
+
+  async setCategory(idTool, idCategory) {
+    await instance.get('aaaa2', {
+      params: { idTool, idCategory },
     })
-    return dates.data
   }
 }
 

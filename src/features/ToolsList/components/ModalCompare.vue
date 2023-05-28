@@ -1,117 +1,218 @@
 <template>
-  <div class="technology-comparison">
-    <h5 class="technology-comparison__name-tool">
-      {{ currentTool.name_tool }}
-    </h5>
-    <div class="technology-comparison__chart">
-      <canvas id="myChart" width="800" height="300"></canvas>
-    </div>
+  <ModalWrapper @close-modal="$emit('closeModal')">
+    <div class="technology-comparison">
+      <IconChevron
+        class="technology-comparison__go-prev"
+        @click="$emit('openNewItemInModal', 'prev')" />
+      <IconChevron
+        class="technology-comparison__go-next"
+        @click="$emit('openNewItemInModal', 'next')" />
+      <h5 class="technology-comparison__name-tool">
+        {{ currentTool.name_tool }}
+      </h5>
+      <AppSkeleton
+        v-if="!isLoaded"
+        width="100%"
+        height="260px"
+        display="inline-block"
+        br="0"
+        ml="var(--unit)" />
+      <div v-show="isLoaded" class="technology-comparison__chart">
+        <canvas id="myChart" ref="myChart" width="800" height="300"></canvas>
+      </div>
+      <button
+        class="technology-comparison__button"
+        @click="goToCompare(currentTool)">
+        compare with other technologies
+      </button>
+      <br />
+      <hr />
+      <button
+        v-for="category of currentTool.categories"
+        :key="category.id_category"
+        class="categories__item"
+        :class="`categories__item_${category.id_category}`">
+        {{ category.name_category }}
+      </button>
+      <!-- <strong>Этих фильтров нет:</strong>
     <button
-      class="technology-comparison__button"
-      @click="goToCompare(currentTool)">
-      compare with other technologies
-    </button>
-  </div>
+      v-for="category of categories"
+      :key="category.id_category"
+      @click="load(category.id_category)"
+      class="categories__item"
+      :class="`categories__item_${category.id_category}`">
+      {{ category.name_category }}
+    </button> -->
+      <br />
+    </div>
+  </ModalWrapper>
 </template>
 
 <script>
 import Chart from 'chart.js/auto'
 import api from '../api'
+import ModalWrapper from '../../../shared/components/ModalWrapper.vue'
+import { shallowRef } from 'vue'
 
 export default {
+  components: { ModalWrapper },
   props: {
+    categories: { type: Array, default: () => [] },
+    page: { type: Number, default: 1 },
     tools: { type: Array, default: () => [] },
     currentTool: { type: Object, default: Object },
     dates: { type: Array, default: () => [] },
   },
-  emits: ['closeModal'],
-
+  emits: ['closeModal', 'openNewItemInModal'],
   data() {
     return {
       selectedTools: [],
+      chartNode: null,
+      chart: null,
+      isLoaded: false,
+      lastController: null,
     }
   },
+  watch: {
+    async currentTool() {
+      const copy = { ...this.currentTool }
+      const controller = new AbortController()
+      if (!this.isLoaded) {
+        this.lastController.abort()
+      }
+      this.isLoaded = false
+      this.lastController = controller
+      const counts = await api.getCountOfCurrentItem(
+        this.currentTool.id_tool,
+        controller.signal
+      )
+      if (!counts) return
+      this.isLoaded = true
+      for (const current of counts) {
+        copy.counts.HeadHunter[current.date_of_completion] =
+          current.count_of_item
+      }
 
-  async mounted() {
-    document.addEventListener('keydown', this.addCloseFunction)
-    const maxValue = Math.max(
-      Object.values(this.currentTool.counts).map(item => item.countHeadHunter)
-    )
-    const counts = await api.getCountOfCurrentItem(this.currentTool.id_tool)
-    for (const current of counts) {
-      this.currentTool.counts.HeadHunter[current.date_of_completion] =
-        current.count_of_item
-    }
-
-    this.createChar(maxValue)
-  },
-
-  unmounted() {
-    document.removeEventListener('keydown', this.addCloseFunction)
-  },
-
-  methods: {
-    createChar() {
-      const context = document.querySelector('#myChart').getContext('2d')
       const sortedDates = [...this.dates].sort(
         (a, b) =>
           new Date(a.date_of_completion) - new Date(b.date_of_completion)
       )
 
-      // eslint-disable-next-line no-new
-      new Chart(context, {
-        type: 'line',
-        data: {
-          labels: sortedDates.map(date => {
-            const date2 = new Date(date.date_of_completion)
-            const day = String(date2.getDate()).padStart(2, '0')
-            const month = String(date2.getMonth() + 1).padStart(2, '0')
-            const year = String(date2.getFullYear()).padStart(2, '0')
-            return `${year}-${month}-${day}`
-          }),
-          datasets: [
-            {
-              label: 'HHru',
-              data: Object.values(this.currentTool.counts.HeadHunter),
-              borderColor: ['rgba(255, 99, 132, 1)'],
-              fill: false,
-              // tension: 0.1,
-            },
-            // {
-            //   label: 'Indeed',
-            //   data: countsIndeed,
-            //   borderColor: ['rgba(54, 162, 235, 1)'],
-            //   borderWidth: 10,
-            // },
-          ],
+      this.chart.data.labels = sortedDates.map(date => {
+        const date2 = new Date(date.date_of_completion)
+        const day = String(date2.getDate()).padStart(2, '0')
+        const month = String(date2.getMonth() + 1).padStart(2, '0')
+        const year = String(date2.getFullYear()).padStart(2, '0')
+        return `${year}-${month}-${day}`
+      })
+      this.chart.data.datasets = [
+        {
+          label: 'HHru',
+          data: Object.values(copy.counts.HeadHunter),
+          borderColor: ['rgba(255, 99, 132, 1)'],
+          fill: false,
+          // tension: 0.1,
         },
-        stepped: true,
-        options: {
-          responsive: true,
-          elements: { point: { radius: 0, hoverRadius: 10, hitRadius: 50 } },
-          scales: {
-            x: {
-              beginAtZero: true,
-              grid: { display: false },
-              ticks: { display: false },
+        // {
+        //   label: 'Indeed',
+        //   data: countsIndeed,
+        //   borderColor: ['rgba(54, 162, 235, 1)'],
+        //   borderWidth: 10,
+        // },
+      ]
+
+      this.chart.update()
+    },
+  },
+  async mounted() {
+    document.body.addEventListener('keydown', event => {
+      console.log(1)
+      if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
+      if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
+    })
+    this.chartNode = this.$refs.myChart
+    document.addEventListener('keydown', this.addCloseFunction)
+    const counts = await api.getCountOfCurrentItem(this.currentTool.id_tool)
+    this.isLoaded = true
+    this.createChar(counts)
+  },
+
+  unmounted() {
+    document.removeEventListener('keydown', this.addCloseFunction)
+  },
+  methods: {
+    async load(id_category) {
+      console.log(
+        `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
+      )
+      // await api.setCategory(this.currentTool.id_tool, id_category)
+    },
+    async createChar(counts) {
+      const copy = { ...this.currentTool }
+      for (const current of counts) {
+        copy.counts.HeadHunter[current.date_of_completion] =
+          current.count_of_item
+      }
+      const context = this.chartNode
+      const sortedDates = [...this.dates].sort(
+        (a, b) =>
+          new Date(a.date_of_completion) - new Date(b.date_of_completion)
+      )
+      // eslint-disable-next-line no-new
+      this.chart = shallowRef(
+        new Chart(context, {
+          type: 'line',
+          data: {
+            labels: sortedDates.map(date => {
+              const date2 = new Date(date.date_of_completion)
+              const day = String(date2.getDate()).padStart(2, '0')
+              const month = String(date2.getMonth() + 1).padStart(2, '0')
+              const year = String(date2.getFullYear()).padStart(2, '0')
+              return `${year}-${month}-${day}`
+            }),
+            datasets: [
+              {
+                label: 'HHru',
+                data: Object.values(copy.counts.HeadHunter),
+                borderColor: ['rgba(255, 99, 132, 1)'],
+                fill: false,
+                // tension: 0.1,
+              },
+              // {
+              //   label: 'Indeed',
+              //   data: countsIndeed,
+              //   borderColor: ['rgba(54, 162, 235, 1)'],
+              //   borderWidth: 10,
+              // },
+            ],
+          },
+          stepped: true,
+          options: {
+            animation: { duration: 0 },
+            responsive: true,
+            elements: {
+              point: { radius: 0, hoverRadius: 10, hitRadius: 50 },
+              // line: { tension: 0.5 },
             },
-            y: {
-              grid: { display: false },
-              grace: '100%',
-              // ticks: { stepSize: 1 },
-              // beginAtZero: true,
-              // min: 0,
-              // max: Math.floor((maxValue + (maxValue / 5)).toFixed(1)),
-              // max: maxValue,
+            scales: {
+              x: {
+                beginAtZero: true,
+                grid: { display: false },
+                ticks: { display: false },
+              },
+              y: {
+                grid: { display: false },
+                grace: '100%',
+                // ticks: { stepSize: 5000 },
+                beginAtZero: true,
+                // min: 0,
+                // max: Math.floor((maxValue + (maxValue / 5)).toFixed(1)),
+                // max: maxValue,
+              },
             },
           },
-          // elements: {
-          //   line: {
-          //     // tension: 0.5,
-          // },
-          // },
-        },
-      })
+        })
+      )
     },
     addCloseFunction(event) {
       if (event.key === 'Escape') {
@@ -128,9 +229,26 @@ export default {
 
 <style>
 .technology-comparison {
+  position: relative;
   width: 800px;
   padding: calc(var(--unit) * 10);
   background-color: var(--color-background);
+}
+.technology-comparison__go-prev,
+.technology-comparison__go-next {
+  position: absolute;
+  top: 50%;
+  width: var(--icon-width-middle);
+  height: var(--icon-width-middle);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.technology-comparison__go-prev {
+  left: 0;
+  transform: rotate(180deg);
+}
+.technology-comparison__go-next {
+  right: 0;
 }
 .technology-comparison__name-tool {
   margin-bottom: var(--unit);

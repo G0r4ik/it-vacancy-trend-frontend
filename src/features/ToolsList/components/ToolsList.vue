@@ -25,6 +25,7 @@
       :current-categories="currentCategories"
       :dates="dates"
       :selected-date="selectedDate"
+      :search-input="searchInput"
       @change-category="changeCategory"
       @change-search="changeSearch"
       @change-selected-date="changeSelectedDate" />
@@ -42,14 +43,19 @@
       @update:model-value="pagination = $event" />
 
     <ToolsTable
+      :filtered-list="filteredList"
+      :page="pagination.page"
+      :items-per-page="pagination.itemsPerPage"
       :selected-date="selectedDate"
       :pagination-tools="paginationTools"
       :tools="paginationTools"
       :dates="dates"
       :is-data-loaded="isDataLoaded"
+      :categories="categories"
       @add-to-favorite-tools="addToFavoriteTools"
       @add-to-studied-tools="addToStudiedTools"
-      @list-sort="listSort" />
+      @list-sort="listSort"
+      @clear-filters="clearFilters" />
 
     <AppPagination
       :pagination-tools="filteredList"
@@ -104,9 +110,9 @@ export default {
         const inputCheck = t.name_tool
           .toLowerCase()
           .includes(this.searchInput.toLowerCase())
-        const categoryCheck = this.currentCategories.includes(
-          t.category.id_category
-        )
+        const categoryCheck = this.currentCategories.some(category => {
+          return t.categories.find(cat => cat.id_category === category)
+        })
         return inputCheck && categoryCheck
       })
       if (this.sortList === 'name_tool') list.sort(this.sortName())
@@ -145,6 +151,10 @@ export default {
   },
 
   methods: {
+    clearFilters() {
+      this.searchInput = ''
+      this.currentCategories = this.categories.map(item => item.id_category)
+    },
     async getDates() {
       this.dates = await useStore().dates
     },

@@ -60,7 +60,7 @@ export default {
 
   methods: {
     createChart(countsHeadHunter, maxValue, countsIndeed) {
-      const context = document.querySelector('#myChart').getContext('2d')
+      // const context = document.querySelector('#myChart').getContext('2d')
 
       const sortedDates = [...this.dates].sort(
         (a, b) =>

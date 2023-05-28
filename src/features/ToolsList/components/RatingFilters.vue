@@ -22,6 +22,7 @@
         type="search"
         class="filters__search-input"
         placeholder="Введите технологию"
+        :value="searchInput"
         @input="$emit('changeSearch', $event)" />
     </div>
   </div>
@@ -35,6 +36,7 @@ import CategoriesTools from './CategoriesTools.vue'
 export default {
   components: { CategoriesTools },
   props: {
+    searchInput: { type: String, default: '' },
     categories: { type: Array, default: () => [] },
     currentCategories: { type: Array, default: () => [] },
     dates: { type: Array, default: () => [] },

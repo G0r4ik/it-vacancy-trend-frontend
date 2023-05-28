@@ -11,14 +11,7 @@
             Name
             <IconChevronUpDown />
           </th>
-          <th
-            tabindex="0"
-            class="rating-table__th"
-            @click="$emit('listSort', 'id_category')"
-            @keydown.enter="$emit('listSort', 'id_category')">
-            Category
-            <IconChevronUpDown />
-          </th>
+          <th tabindex="0" class="rating-table__th">Category</th>
           <th
             tabindex="0"
             class="rating-table__th"
@@ -33,7 +26,7 @@
 
       <tbody class="rating-table__tbody">
         <tr
-          v-for="tool of paginationTools"
+          v-for="(tool, idx) of paginationTools"
           :key="tool.id_tool"
           class="rating-table__row">
           <td class="rating-table__item rating-table__item_name">
@@ -44,7 +37,7 @@
               "
               :alt="`Logo ${tool.name_tool}`" />
             <!-- <span @click="isOpenCompareModalFunction(tool)"> -->
-            <span @click="isOpenCompareModalFunction(tool)">
+            <span @click="isOpenCompareModalFunction(tool, idx)">
               {{ tool.name_tool }}
             </span>
             <button
@@ -58,15 +51,17 @@
             </button>
           </td>
           <td class="rating-table__item">
+            <!-- {{ category }} -->
             <div
+              v-for="category of tool.categories"
+              :key="category.id_category"
               class="rating-table__item_category"
-              :class="'categories__item_' + tool.category.id_category">
-              {{ tool.category.name_category }}
+              :class="`categories__item_${category.id_category}`">
+              {{ category.name_category }}
             </div>
           </td>
           <td class="rating-table__item rating-table__item_count">
             {{ tool?.counts?.HeadHunter?.[selectedDate.id_date] ?? 0 }}
-            <!-- 'u' -->
           </td>
           <td class="rating-table__item">
             <button @click="$emit('addToStudiedTools', tool)">
@@ -79,9 +74,13 @@
         </tr>
         <ModalWrapper v-if="isOpenCompareModal" @close-modal="closeModal">
           <ModalCompare
+            :filtered-list="filteredList"
+            :categories="categories"
             :tools="tools"
+            :page="page"
             :current-tool="toolInModal"
-            :dates="dates" />
+            :dates="dates"
+            @open-new-item-in-modal="openNewItemInModal" />
         </ModalWrapper>
       </tbody>
     </table>
@@ -92,7 +91,10 @@
       mb="var(--unit)"
       :count="25" />
     <div v-if="tools.length === 0 && isDataLoaded" class="empty-list">
-      There is nothing
+      <div class="empty-list__span">There is nothing</div>
+      <button class="empty-list__button" @click="$emit('clearFilters')">
+        Clear filters
+      </button>
     </div>
   </div>
 </template>
@@ -106,6 +108,10 @@ export default {
   components: { ModalCompare, ModalWrapper },
 
   props: {
+    filteredList: { type: Array, default: () => [] },
+    page: { type: Number, default: 1 },
+    itemsPerPage: { type: Number, default: 1 },
+    categories: { type: Array, default: () => [] },
     selectedDate: { type: Object, default: Object },
     paginationTools: { type: Array, default: () => [] },
     tools: { type: Array, default: () => [] },
@@ -114,20 +120,35 @@ export default {
     isDataEmpty: Boolean,
   },
 
-  emits: ['addToFavoriteTools', 'addToStudiedTools', 'listSort'],
+  emits: [
+    'addToFavoriteTools',
+    'addToStudiedTools',
+    'listSort',
+    'clearFilters',
+  ],
 
   data() {
     return {
       isOpenCompareModal: false,
+      indexOfTool: null,
+      toolInModal: null,
     }
   },
 
-  computed: {},
-
   methods: {
-    isOpenCompareModalFunction(tool) {
+    openNewItemInModal(item) {
+      if (item === 'prev') this.indexOfTool--
+      if (item === 'next') this.indexOfTool++
+      if (this.indexOfTool >= this.filteredList.length) this.indexOfTool = 0
+      console.log('end')
+      if (this.indexOfTool < 0) this.indexOfTool = this.filteredList.length - 1
+      this.toolInModal = this.filteredList[this.indexOfTool]
+    },
+    isOpenCompareModalFunction(tool, index) {
       this.isOpenCompareModal = true
       this.toolInModal = tool
+
+      this.indexOfTool = (this.page - 1) * this.itemsPerPage + index
     },
     closeModal() {
       this.isOpenCompareModal = false
@@ -157,8 +178,6 @@ export default {
   cursor: pointer;
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
-.rating-table__tbody {
-}
 .rating-table__icon-change-sort {
   display: flex;
 }
@@ -177,8 +196,6 @@ export default {
   vertical-align: middle;
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
-.rating-table__item_name {
-}
 .rating-table__item-logo {
   width: var(--icon-width-middle);
   height: var(--icon-height-middle);
@@ -194,14 +211,15 @@ export default {
   color: var(--color-star);
 }
 .rating-table__item_category {
-  /* display: inline-flex; */
-  display: flex;
+  display: inline-flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   max-width: var(--width-ratin-item-category);
   height: var(--height-table-item);
   padding: 0 var(--unit);
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  margin: 0 calc(var(--unit) / 2);
   font-size: var(--text-extra-small);
   border-radius: var(--border-radius-middle);
 }
@@ -217,12 +235,28 @@ export default {
 }
 .empty-list {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 50vh;
-  font-size: var(--text-extra-extra-large);
   color: var(--color-border);
+}
+.empty-list__span {
+  font-size: var(--text-extra-extra-large);
+}
+.empty-list__button {
+  padding: 0 var(--unit);
+  font-weight: 700;
+  border: var(--border-width-small) solid var(--color-border);
+  border-radius: var(--border-radius-middle);
+  transition: 0.3s;
+}
+.empty-list__button:hover {
+  color: var(--color-text);
+  border-color: var(--color-text);
+  opacity: 0.8;
+  transition: 0.3s;
 }
 @media (width <= 760px) {
   .rating-table__inner {
