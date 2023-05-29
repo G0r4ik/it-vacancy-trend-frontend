@@ -51,7 +51,6 @@ export default {
   },
 
   mounted() {
-    console.log('mounted')
     const availableDates = []
     for (let i = 0; i < this.dates.length; i++) {
       const { id_date } = this.dates[i]
@@ -62,7 +61,6 @@ export default {
 
     const maxDate = this.dates.at(-1).date_of_completion
     const minDate = this.dates[0].date_of_completion
-    console.log(selectedDate)
     flatpickr('#select-date', {
       minDate,
       maxDate,

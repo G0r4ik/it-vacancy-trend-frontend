@@ -24,7 +24,7 @@
               tabindex="0"
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')">
-              <router-link to="/rating" active-class="menu__item_active">
+              <router-link to="/" active-class="menu__item_active">
                 Rating
               </router-link>
             </li>

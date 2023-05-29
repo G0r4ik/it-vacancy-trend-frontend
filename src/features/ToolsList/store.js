@@ -16,7 +16,9 @@ export const useStore = defineStore('store', {
         .then(res => {
           this.tools = res
           this.isToolsLoaded = true
-          const idsOfFav = localStorage.getItem('favoritesTools').split(' ')
+          const favTool = localStorage.getItem('favoritesTools')
+          if (!favTool) return res
+          const idsOfFav = favTool.split(' ')
           for (const tool of this.tools) {
             if (idsOfFav.includes(String(tool.id_tool))) tool.isFav = true
           }
