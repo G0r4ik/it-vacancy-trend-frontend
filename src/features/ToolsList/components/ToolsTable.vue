@@ -61,7 +61,7 @@
             </div>
           </td>
           <td class="rating-table__item rating-table__item_count">
-            {{ tool?.counts?.HeadHunter?.[selectedDate.id_date] ?? 0 }}
+            {{ tool.counts.HeadHunter[selectedDate.id_date] ?? 0 }}
           </td>
           <td class="rating-table__item">
             <button @click="$emit('addToStudiedTools', tool)">
@@ -140,14 +140,12 @@ export default {
       if (item === 'prev') this.indexOfTool--
       if (item === 'next') this.indexOfTool++
       if (this.indexOfTool >= this.filteredList.length) this.indexOfTool = 0
-      console.log('end')
       if (this.indexOfTool < 0) this.indexOfTool = this.filteredList.length - 1
       this.toolInModal = this.filteredList[this.indexOfTool]
     },
     isOpenCompareModalFunction(tool, index) {
       this.isOpenCompareModal = true
       this.toolInModal = tool
-
       this.indexOfTool = (this.page - 1) * this.itemsPerPage + index
     },
     closeModal() {

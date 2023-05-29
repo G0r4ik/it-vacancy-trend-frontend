@@ -179,7 +179,6 @@ export default {
   .menu__button_open .menu__icon-cross {
     display: block;
   }
-
   .menu__icon-cross,
   .menu__button_open .menu__icon-menu {
     display: none;

@@ -15,12 +15,14 @@
     <AppSkeleton
       v-if="categories.length === 0"
       width="100%"
-      height="180px"
+      height="175px"
       mb="var(--unit)"
       br="var(--radius)" />
 
     <RatingFilters
-      v-if="dates.length > 0"
+      v-if="
+        dates.length > 0 && selectedDate.id_date && currentCategories.length > 0
+      "
       :categories="categories"
       :current-categories="currentCategories"
       :dates="dates"

@@ -1,40 +1,39 @@
 <template>
-  <ModalWrapper @close-modal="$emit('closeModal')">
-    <div class="technology-comparison">
-      <IconChevron
-        class="technology-comparison__go-prev"
-        @click="$emit('openNewItemInModal', 'prev')" />
-      <IconChevron
-        class="technology-comparison__go-next"
-        @click="$emit('openNewItemInModal', 'next')" />
-      <h5 class="technology-comparison__name-tool">
-        {{ currentTool.name_tool }}
-      </h5>
-      <AppSkeleton
-        v-if="!isLoaded"
-        width="100%"
-        height="260px"
-        display="inline-block"
-        br="0"
-        ml="var(--unit)" />
-      <div v-show="isLoaded" class="technology-comparison__chart">
-        <canvas id="myChart" ref="myChart" width="800" height="300"></canvas>
-      </div>
-      <button
-        class="technology-comparison__button"
-        @click="goToCompare(currentTool)">
-        compare with other technologies
-      </button>
-      <br />
-      <hr />
-      <button
-        v-for="category of currentTool.categories"
-        :key="category.id_category"
-        class="categories__item"
-        :class="`categories__item_${category.id_category}`">
-        {{ category.name_category }}
-      </button>
-      <!-- <strong>Этих фильтров нет:</strong>
+  <div class="technology-comparison">
+    <IconChevron
+      class="technology-comparison__go-prev"
+      @click="$emit('openNewItemInModal', 'prev')" />
+    <IconChevron
+      class="technology-comparison__go-next"
+      @click="$emit('openNewItemInModal', 'next')" />
+    <h5 class="technology-comparison__name-tool">
+      {{ currentTool.name_tool }}
+    </h5>
+    <AppSkeleton
+      v-if="!isLoaded"
+      width="100%"
+      height="260px"
+      display="inline-block"
+      br="0"
+      ml="var(--unit)" />
+    <div v-show="isLoaded" class="technology-comparison__chart">
+      <canvas id="myChart" ref="myChart" width="800" height="300"></canvas>
+    </div>
+    <button
+      class="technology-comparison__button"
+      @click="goToCompare(currentTool)">
+      compare with other technologies
+    </button>
+    <br />
+    <hr />
+    <button
+      v-for="category of currentTool.categories"
+      :key="category.id_category"
+      class="categories__item"
+      :class="`categories__item_${category.id_category}`">
+      {{ category.name_category }}
+    </button>
+    <!-- <strong>Этих фильтров нет:</strong>
     <button
       v-for="category of categories"
       :key="category.id_category"
@@ -43,19 +42,16 @@
       :class="`categories__item_${category.id_category}`">
       {{ category.name_category }}
     </button> -->
-      <br />
-    </div>
-  </ModalWrapper>
+    <br />
+  </div>
 </template>
 
 <script>
 import Chart from 'chart.js/auto'
 import api from '../api'
-import ModalWrapper from '../../../shared/components/ModalWrapper.vue'
 import { shallowRef } from 'vue'
 
 export default {
-  components: { ModalWrapper },
   props: {
     categories: { type: Array, default: () => [] },
     page: { type: Number, default: 1 },
@@ -126,7 +122,6 @@ export default {
   },
   async mounted() {
     document.body.addEventListener('keydown', event => {
-      console.log(1)
       if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
     })

@@ -60,8 +60,8 @@ const config = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/public'),
-          to: path.resolve(__dirname, 'dist/public'),
+          from: path.resolve(__dirname, 'public'),
+          to: path.resolve(__dirname, 'dist/'),
           info: { minimized: true },
           noErrorOnMissing: true,
           globOptions: { ignore: ['*.DS_Store'] },
@@ -76,7 +76,7 @@ const config = {
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: false,
     }),
-    // !isDevelopment && new BundleAnalyzerPlugin(),
+    // !isDevelopment   && new BundleAnalyzerPlugin(),
   ].filter(Boolean),
 
   optimization: {
@@ -150,7 +150,7 @@ const config = {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)$/,
         type: 'asset',
         generator: {
-          filename: 'media/[name].[hash:8][ext]',
+          filename: 'media/[name].[hash:8f][ext]',
         },
       },
 
