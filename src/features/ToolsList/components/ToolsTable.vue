@@ -3,9 +3,10 @@
     <table class="rating-table__inner">
       <thead class="rating-table__thead">
         <tr class="rating-table__row">
+          <th class="rating-table__th">№</th>
           <th
             tabindex="0"
-            class="rating-table__th"
+            class="rating-table__th rating-table__th_name"
             @click="$emit('listSort', 'name_tool')"
             @keydown.enter="$emit('listSort', 'name_tool')">
             Name
@@ -29,14 +30,18 @@
           v-for="(tool, idx) of paginationTools"
           :key="tool.id_tool"
           class="rating-table__row">
+          <td class="rating-table__item">
+            {{ idx + (page - 1) * itemsPerPage }}.
+          </td>
           <td class="rating-table__item rating-table__item_name">
-            <img
+            <!-- <img
               class="rating-table__item-logo"
               :src="
                 tool.srcImg ? tool.srcImg : require('../assets/test-img.png')
               "
-              :alt="`Logo ${tool.name_tool}`" />
+              :alt="`Logo ${tool.name_tool}`" /> -->
             <!-- <span @click="isOpenCompareModalFunction(tool)"> -->
+
             <span @click="isOpenCompareModalFunction(tool, idx)">
               {{ tool.name_tool }}
             </span>
@@ -176,6 +181,9 @@ export default {
   cursor: pointer;
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
+.rating-table__th_name {
+  text-align: left;
+}
 .rating-table__icon-change-sort {
   display: flex;
 }
@@ -193,6 +201,9 @@ export default {
   text-align: center;
   vertical-align: middle;
   border-bottom: var(--border-width-small) solid var(--color-border);
+}
+.rating-table__item_name {
+  text-align: left;
 }
 .rating-table__item-logo {
   width: var(--icon-width-middle);

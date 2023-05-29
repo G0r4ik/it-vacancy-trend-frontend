@@ -13,16 +13,19 @@
     </span>
 
     <AppSkeleton
-      v-if="categories.length === 0"
+      v-if="
+        categories.length === 0 ||
+        !currentCategories ||
+        dates.length < 0 ||
+        !selectedDate.id_date
+      "
       width="100%"
       height="175px"
       mb="var(--unit)"
       br="var(--radius)" />
 
     <RatingFilters
-      v-if="
-        dates.length > 0 && selectedDate.id_date && currentCategories.length > 0
-      "
+      v-if="dates.length > 0 && selectedDate.id_date && currentCategories"
       :categories="categories"
       :current-categories="currentCategories"
       :dates="dates"
@@ -156,6 +159,7 @@ export default {
     clearFilters() {
       this.searchInput = ''
       this.currentCategories = this.categories.map(item => item.id_category)
+      this.currentList = 'tools'
     },
     async getDates() {
       this.dates = await useStore().dates

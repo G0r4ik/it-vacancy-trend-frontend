@@ -3,7 +3,7 @@
     <div class="modal-wrapper" @click="$emit('closeModal')">
       <div class="modal-wrapper__inner" @click.stop>
         <button class="modal-wrapper__cross" @click="$emit('closeModal')">
-          &#9587;
+          Esc
         </button>
         <slot />
       </div>
@@ -59,8 +59,8 @@ export default {
 }
 .modal-wrapper__cross {
   position: absolute;
-  top: calc(var(--unit * 2));
-  right: calc(var(--unit * 2));
+  top: calc(var(--unit) * 2);
+  right: calc(var(--unit) * 2);
   z-index: var(--z-index-overlay);
   cursor: pointer;
 }

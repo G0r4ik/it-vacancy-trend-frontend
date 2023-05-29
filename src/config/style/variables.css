@@ -77,6 +77,7 @@
 :root.light-theme {
   --color-background: var(--color_white-base);
   --color-text: var(--color_cod-gray-base);
+  --color-border: #e3e3e3;
 }
 :root.dark-theme {
   --color-background: var(--color_cod-gray-base);

@@ -194,12 +194,14 @@ export default {
                 beginAtZero: true,
                 grid: { display: false },
                 ticks: { display: false },
+                border: { display: false },
               },
               y: {
                 grid: { display: false },
+                border: { display: false },
                 grace: '100%',
                 // ticks: { stepSize: 5000 },
-                beginAtZero: true,
+                // beginAtZero: true,
                 // min: 0,
                 // max: Math.floor((maxValue + (maxValue / 5)).toFixed(1)),
                 // max: maxValue,
@@ -254,7 +256,7 @@ export default {
 }
 #myChart {
   width: 100%;
-  background: var(--color-text);
+  background: var(--color-background);
 }
 .technology-comparison__button {
   padding: var(--unit) var(--unit);

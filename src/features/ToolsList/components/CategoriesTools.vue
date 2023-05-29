@@ -71,7 +71,7 @@ export default {
   text-align: left;
   list-style: none;
   cursor: pointer;
-  border: var(--border-width-small) solid transparent;
+  /* border: var(--border-width-small) solid transparent; */
 }
 .categories__button {
   display: flex;

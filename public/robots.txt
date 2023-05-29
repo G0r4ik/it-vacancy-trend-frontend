@@ -1,4 +1,3 @@
 User-agent: *
-Disallow: https://api.itvacna.com
 Allow: /
 Sitemap: https://itvacna.com/sitemap.txt
