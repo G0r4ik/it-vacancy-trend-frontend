@@ -1,16 +1,19 @@
-const Dotenv = require('dotenv-webpack')
-const path = require('node:path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const { VueLoaderPlugin } = require('vue-loader')
-const webpack = require('webpack')
+import path from 'node:path'
+import webpack from 'webpack'
+import Dotenv from 'dotenv-webpack'
+import CopyPlugin from 'copy-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import { VueLoaderPlugin } from 'vue-loader'
+import { fileURLToPath } from 'node:url'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const config = {
   mode: isDevelopment ? 'development' : 'production',
@@ -33,6 +36,7 @@ const config = {
       '@': path.join(__dirname, 'src'),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
+    modules: ['node_modules'],
   },
 
   devServer: {
@@ -47,16 +51,18 @@ const config = {
   },
 
   plugins: [
+    new webpack.ProgressPlugin(),
+    new VueLoaderPlugin(),
     new Dotenv({ systemvars: true }),
-    new MiniCssExtractPlugin({
-      filename: '[name]-[chunkhash:7].css',
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: isDevelopment,
     }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/config/index.html'),
-      title: 'App',
     }),
-    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({ filename: '[name]-[chunkhash:7].css' }),
     new CopyPlugin({
       patterns: [
         {
@@ -66,41 +72,32 @@ const config = {
           noErrorOnMissing: true,
           globOptions: { ignore: ['*.DS_Store'] },
         },
-        // {
-        //   from: path.resolve(__dirname, 'server/index.js'),
-        //   to: path.resolve(__dirname, 'dist/server/index.js'),
-        // },
       ],
     }),
-    new webpack.DefinePlugin({
-      __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: false,
-    }),
-    // !isDevelopment   && new BundleAnalyzerPlugin(),
+    !isDevelopment && new BundleAnalyzerPlugin(),
   ].filter(Boolean),
 
   optimization: {
     usedExports: true,
     minimize: !isDevelopment,
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        vendor: {
-          name: 'vendors',
-          test: /node_modules/,
-          chunks: 'all',
-        },
-      },
-    },
-
+    // splitChunks: {
+    //   chunks: 'all',
+    //   cacheGroups: {
+    //     defaultVendors: {
+    //       name: 'vendors',
+    //       test: /node_modules/,
+    //       chunks: 'all',
+    //       priority: -10,
+    //       reuseExistingChunk: true,
+    //     },
+    //   },
+    // },
     minimizer: [
       `...`,
       new CssMinimizerPlugin(),
       new TerserPlugin({
         parallel: true,
         terserOptions: {
-          // https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/config/terserOptions.js
-          // https://gist.github.com/rowanoulton/44ec3424ac1e86b63316d522e1b99a16#file-webpack-config-js
           compress: {
             arrows: false,
             collapse_vars: false,
@@ -139,41 +136,22 @@ const config = {
   },
 
   module: {
-    // noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
     rules: [
-      // video
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-      },
+      { test: /\.vue$/, loader: 'vue-loader' },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)$/,
         type: 'asset',
-        generator: {
-          filename: 'media/[name].[hash:8f][ext]',
-        },
+        generator: { filename: 'media/[name].[hash:8f][ext]' },
       },
-
-      // html
-      // {
-      //   test: /\.html$/,
-      //   loader: 'html-loader',
-      //   options: { minimize: !isDev },
-      // },
-
-      // fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
-        generator: {
-          filename: './fonts/[name][ext]',
-        },
+        generator: { filename: './fonts/[name][ext]' },
       },
-
-      // js
       {
         test: /\.js$/,
         exclude: /node_modules/,
+        type: 'javascript/auto',
         use: {
           loader: 'babel-loader',
           options: {
@@ -183,7 +161,6 @@ const config = {
         },
       },
 
-      // css
       {
         test: /\.css$/i,
         use: [
@@ -200,39 +177,25 @@ const config = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                config: path.resolve(__dirname, 'postcss.config.js'),
+                config: path.resolve(__dirname, 'postcss.config.cjs'),
               },
             },
           },
         ],
       },
-
-      // scss
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 2,
-              sourceMap: false,
-              modules: false,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                config: path.resolve(__dirname, 'postcss.config.js'),
-              },
-            },
-          },
-          'sass-loader',
-        ],
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: './img/[name]_[hash][ext]',
+        },
       },
-
+      // html
+      // {
+      //   test: /\.html$/,
+      //   loader: 'html-loader',
+      //   options: { minimize: !isDev },
+      // },
       // {
       //   test: /\.svg$/,
       //   loader: 'svg-inline-loader',
@@ -247,7 +210,6 @@ const config = {
       // },
       // {
       // test: /\.svg$/,
-
       // use: [
       //   {
       //     loader: 'svg-sprite-loader',
@@ -273,13 +235,10 @@ const config = {
       //     },
       //   ],
       // },
-
       // {
       //   test: /\.svg$/,
       //   loader: 'vue-svg-loader',
       // },
-
-      // svg
       // {
       //   test: /\.(?:svg)$/i,
       //   generator: {
@@ -292,7 +251,6 @@ const config = {
       //     },
       //   ],
       // },
-
       // {
       //   test: /\.(?:svg)$/i,
       //   generator: {
@@ -309,13 +267,6 @@ const config = {
       //   test: /\.svg$/,
       //   loader: 'svg-inline-loader',
       // },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: './img/[name]_[hash][ext]',
-        },
-      },
       // img
       // {
       //   test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/i,
@@ -348,4 +299,4 @@ const config = {
   },
 }
 
-module.exports = config
+export default config

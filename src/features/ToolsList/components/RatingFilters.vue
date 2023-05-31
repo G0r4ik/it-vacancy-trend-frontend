@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.css'
 import CategoriesTools from './CategoriesTools.vue'
 
@@ -51,17 +50,22 @@ export default {
   },
 
   mounted() {
+    import(/* webpackChunkName: "flatpickr" */ 'flatpickr').then(module => {
+      this.flatpickr = module.default
+    })
     const availableDates = []
     for (let i = 0; i < this.dates.length; i++) {
-      const { id_date } = this.dates[i]
-      const date_of_completion = this.dates[i].date_of_completion
+      const { id_date, date_of_completion } = this.dates[i]
       availableDates.push([id_date, date_of_completion])
     }
+
     const { dates, $emit, selectedDate } = this
 
+    // eslint-disable-next-line unicorn/consistent-destructuring
     const maxDate = this.dates.at(-1).date_of_completion
+    // eslint-disable-next-line unicorn/consistent-destructuring
     const minDate = this.dates[0].date_of_completion
-    flatpickr('#select-date', {
+    this.flatpickr('#select-date', {
       minDate,
       maxDate,
       defaultDate: selectedDate.date_of_completion,
@@ -117,12 +121,6 @@ export default {
   margin-top: var(--unit);
 }
 @media (width <= 760px) {
-  .filters__top {
-    flex-direction: column;
-    align-content: flex-start;
-    align-items: flex-start;
-    margin-bottom: var(--unit);
-  }
   .select-container__label {
     margin-bottom: var(--unit);
   }

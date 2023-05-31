@@ -145,6 +145,8 @@ export default {
 }
 .menu__button {
   display: none;
+  width: var(--icon-width-large);
+  height: var(--icon-width-large);
 }
 @media (width < 760px) {
   .header__inner {
@@ -165,7 +167,7 @@ export default {
     display: grid;
   }
   .menu__button {
-    z-index: var(--z-index-overlay);
+    z-index: var(--z-index-modal);
     display: block;
   }
   .menu__icon {
@@ -188,8 +190,10 @@ export default {
     top: 0;
     right: 0;
     left: 0;
+    z-index: var(--z-index-overlay);
     display: none;
     padding: var(--unit) 0;
+    padding-top: calc(var(--unit) * 2);
     padding-left: var(--unit);
     background-color: var(--color-background);
   }
@@ -207,7 +211,12 @@ export default {
     );
   }
   .menu__list_open {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--unit) * 2);
+    justify-content: center;
+    width: 100%;
   }
   .menu__item {
     margin-bottom: var(--unit);

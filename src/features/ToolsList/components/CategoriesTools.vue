@@ -44,9 +44,9 @@ export default {
       for (let i = 0; i < temporary.length / 2; i++) {
         if (temporary[i] === temporary.at(-i)) {
           res.push(temporary[i])
-          continue
+        } else {
+          res.push(temporary.at(-i), temporary[i])
         }
-        res.push(temporary.at(-i), temporary[i])
       }
       return res
     },

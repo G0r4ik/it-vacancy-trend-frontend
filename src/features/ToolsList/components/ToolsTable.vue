@@ -79,7 +79,6 @@
         </tr>
         <ModalWrapper v-if="isOpenCompareModal" @close-modal="closeModal">
           <ModalCompare
-            :filtered-list="filteredList"
             :categories="categories"
             :tools="tools"
             :page="page"
@@ -178,6 +177,7 @@ export default {
   font-size: var(--text-small);
   font-weight: 600;
   color: var(--color-gray);
+  white-space: nowrap;
   cursor: pointer;
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
@@ -228,7 +228,7 @@ export default {
   height: var(--height-table-item);
   padding: 0 var(--unit);
   /* margin: 0 auto; */
-  margin: 0 calc(var(--unit) / 2);
+  margin: calc(var(--unit) / 2);
   font-size: var(--text-extra-small);
   border-radius: var(--border-radius-middle);
 }

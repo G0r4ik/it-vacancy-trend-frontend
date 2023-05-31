@@ -47,9 +47,8 @@
 </template>
 
 <script>
-import Chart from 'chart.js/auto'
-import api from '../api'
 import { shallowRef } from 'vue'
+import api from '../api'
 
 export default {
   props: {
@@ -67,6 +66,7 @@ export default {
       chart: null,
       isLoaded: false,
       lastController: null,
+      Chart: null,
     }
   },
   watch: {
@@ -121,6 +121,9 @@ export default {
     },
   },
   async mounted() {
+    import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(module => {
+      this.Chart = module.default
+    })
     document.body.addEventListener('keydown', event => {
       if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
@@ -155,7 +158,7 @@ export default {
       )
       // eslint-disable-next-line no-new
       this.chart = shallowRef(
-        new Chart(context, {
+        new this.Chart(context, {
           type: 'line',
           data: {
             labels: sortedDates.map(date => {

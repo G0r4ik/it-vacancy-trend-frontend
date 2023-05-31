@@ -1,16 +1,17 @@
 <template>
   <div class="container">
-    <h2 class="title list-title">List</h2>
-
-    <span class="list-count">
-      <AppSkeleton
-        v-if="tools.length === 0"
-        width="50px"
-        height="30px"
-        display="inline-block"
-        ml="var(--unit)" />
-      <span v-else>({{ filteredList.length }})</span>
-    </span>
+    <h1 class="list-title">
+      IT Technology in vacancies
+      <span class="list-count">
+        <AppSkeleton
+          v-if="tools.length === 0"
+          width="50px"
+          height="30px"
+          display="inline-block"
+          ml="var(--unit)" />
+        <span v-else>({{ filteredList.length }})</span>
+      </span>
+    </h1>
 
     <AppSkeleton
       v-if="
@@ -115,9 +116,9 @@ export default {
         const inputCheck = t.name_tool
           .toLowerCase()
           .includes(this.searchInput.toLowerCase())
-        const categoryCheck = this.currentCategories.some(category => {
-          return t.categories.find(cat => cat.id_category === category)
-        })
+        const categoryCheck = this.currentCategories.some(category =>
+          t.categories.find(cat => cat.id_category === category)
+        )
         return inputCheck && categoryCheck
       })
       if (this.sortList === 'name_tool') list.sort(this.sortName())
@@ -192,7 +193,7 @@ export default {
     },
     sortName() {
       const { directionsForSorting } = this
-      return function (a, b) {
+      return function sortName(a, b) {
         return directionsForSorting === 'DESC'
           ? a.name_tool.localeCompare(b.name_tool)
           : b.name_tool.localeCompare(a.name_tool)
@@ -200,7 +201,7 @@ export default {
     },
     sortCategory() {
       const { directionsForSorting } = this
-      return function (a, b) {
+      return function sortCategory(a, b) {
         return directionsForSorting === 'DESC'
           ? a.category.name_category.localeCompare(b.category.name_category)
           : b.category.name_category.localeCompare(a.category.name_category)
@@ -209,7 +210,7 @@ export default {
     sortCount() {
       const { directionsForSorting, selectedDate } = this
       const { id_date } = selectedDate
-      return function (a, b) {
+      return function sortCount(a, b) {
         if (!b.counts.HeadHunter[id_date]) {
           b.counts.HeadHunter[id_date] = 0
         }

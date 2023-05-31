@@ -5,13 +5,13 @@
         class="pagination__button"
         :disabled="isFirstPage"
         @click="changePageWhenClickNumber(1)">
-        <IconChevronDouble style="transform: rotate(180deg);" />
+        <IconChevronDouble style="transform: rotate(180deg)" />
       </button>
       <button
         class="pagination__button"
         :disabled="isFirstPage"
         @click="changePageWhenClickNumber(currentPage - 1)">
-        <IconChevron style="transform: rotate(180deg);" />
+        <IconChevron style="transform: rotate(180deg)" />
       </button>
       <button
         v-for="page of paginationItems"
@@ -204,9 +204,6 @@ export default {
 .pagination__button:disabled {
   cursor: auto;
 }
-.pagination__button svg {
-  /* fill: var(--color-text); */
-}
 .pagination__button:disabled svg {
   color: var(--color-border);
 }
@@ -227,8 +224,5 @@ export default {
   text-align-last: center;
 }
 @media (width < 760px) {
-  .pagination__button {
-    /* margin: 0; */
-  }
 }
 </style>
