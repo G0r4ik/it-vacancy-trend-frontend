@@ -25,7 +25,7 @@ const routes = [
     path: '/compare',
     component: PageCompare,
     meta: {
-      title: 'Compare',
+      title: 'Compare technologies',
       description:
         'Compare the number of vacancies in which a certain technology is found. Data in the form of a graph',
     },

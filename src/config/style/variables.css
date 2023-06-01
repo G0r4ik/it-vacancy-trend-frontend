@@ -50,8 +50,8 @@
   --icon-height-large: 30px;
   /* BORDER-RADIUS */
   --radius: 5px;
-  --border-radius-middle: calc(var(--radius) * 3);
   --border-radius-small: calc(var(--radius) * 2);
+  --border-radius-middle: calc(var(--radius) * 3);
   --border-radius-extra-small: var(--radius);
   /* Border */
   --border-width: 3px;

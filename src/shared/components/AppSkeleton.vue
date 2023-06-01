@@ -12,7 +12,7 @@ export default {
     width: { type: String, default: '100px' },
     height: { type: String, default: '100px' },
     display: { type: String, default: 'block' },
-    br: { type: String, default: '15px' },
+    br: { type: String, default: 'var(--border-radius-middle)' },
     mt: { type: String, default: '0' },
     mr: { type: String, default: '0' },
     mb: { type: String, default: '0' },
@@ -51,6 +51,14 @@ export default {
   );
   transform: translateX(-100%);
   animation: shimmer var(--transition-skeleton) infinite;
+}
+.light-theme .skeleton::after {
+  background-image: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0),
+    rgb(255 255 255 / 0.7),
+    rgb(37 22 22 / 0)
+  );
 }
 @keyframes shimmer {
   100% {

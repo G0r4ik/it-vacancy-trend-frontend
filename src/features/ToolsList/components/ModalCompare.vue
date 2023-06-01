@@ -12,7 +12,7 @@
     <AppSkeleton
       v-if="!isLoaded"
       width="100%"
-      height="260px"
+      height="262px"
       display="inline-block"
       br="0"
       ml="var(--unit)" />
@@ -124,10 +124,7 @@ export default {
     import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(module => {
       this.Chart = module.default
     })
-    document.body.addEventListener('keydown', event => {
-      if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
-      if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
-    })
+    document.body.addEventListener('keydown', this.FIXMEF)
     this.chartNode = this.$refs.myChart
     document.addEventListener('keydown', this.addCloseFunction)
     const counts = await api.getCountOfCurrentItem(this.currentTool.id_tool)
@@ -139,6 +136,14 @@ export default {
     document.removeEventListener('keydown', this.addCloseFunction)
   },
   methods: {
+    FIXMEF(event) {
+      return function fixmeF() {
+        console.log(1)
+        if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
+        if (event.code === 'ArrowRight')
+          this.$emit('openNewItemInModal', 'next')
+      }
+    },
     async load(id_category) {
       console.log(
         `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
@@ -215,6 +220,7 @@ export default {
       )
     },
     addCloseFunction(event) {
+      console.log('2')
       if (event.key === 'Escape') {
         this.$emit('closeModal')
       }

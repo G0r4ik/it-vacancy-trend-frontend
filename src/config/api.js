@@ -1,7 +1,6 @@
 import axios from 'axios'
+import { SERVER_LOCAL, isProduction } from '../shared/consts.js'
 
-const isProduction = process.env.NODE_ENV === 'production'
-const SERVER_LOCAL = `http://localhost:${process.env.LOCAL_SERVER_PORT}`
 const server = isProduction ? process.env.SERVER_ADDRESS : SERVER_LOCAL
 
 const instance = axios.create({

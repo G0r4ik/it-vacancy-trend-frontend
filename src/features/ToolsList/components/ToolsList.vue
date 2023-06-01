@@ -2,15 +2,13 @@
   <div class="container">
     <h1 class="list-title">
       IT Technology in vacancies
-      <span class="list-count">
-        <AppSkeleton
-          v-if="tools.length === 0"
-          width="50px"
-          height="30px"
-          display="inline-block"
-          ml="var(--unit)" />
-        <span v-else>({{ filteredList.length }})</span>
-      </span>
+      <AppSkeleton
+        v-if="tools.length === 0"
+        width="56px"
+        height="27px"
+        display="inline-block"
+        ml="var(--unit)" />
+      <span class="list-count" v-else>({{ filteredList.length }})</span>
     </h1>
 
     <AppSkeleton
@@ -21,8 +19,8 @@
         !selectedDate.id_date
       "
       width="100%"
-      height="175px"
-      mb="var(--unit)"
+      height="181px"
+      mb="calc(var(--unit) * 2)"
       br="var(--radius)" />
 
     <RatingFilters
@@ -41,9 +39,10 @@
     <AppSkeleton
       v-if="tools.length === 0"
       width="300px"
-      height="calc(var(--unit) * 10)"
+      height="36px"
       mb="var(--unit)" />
     <AppPagination
+      :uniq-id="1"
       :pagination-tools="filteredList"
       :model-value="pagination"
       @update:model-value="pagination = $event" />
@@ -64,6 +63,7 @@
       @clear-filters="clearFilters" />
 
     <AppPagination
+      :uniq-id="2"
       :pagination-tools="filteredList"
       :model-value="pagination"
       @update:model-value="pagination = $event" />

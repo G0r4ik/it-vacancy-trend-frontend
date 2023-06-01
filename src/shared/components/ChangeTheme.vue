@@ -11,7 +11,7 @@
       <div
         class="change-theme__toggle"
         :class="{
-          'change-theme__toggle-checked': userTheme === 'dark-theme',
+          'change-theme__toggle_checked': userTheme === 'dark-theme',
         }"></div>
     </label>
   </div>
@@ -83,7 +83,7 @@ export default {
     background-color var(--transition-main) ease;
   transform: translateX(0);
 }
-.change-theme__toggle-checked {
+.change-theme__toggle_checked {
   transform: translateX(calc(var(--width-change-theme) / 2));
 }
 </style>

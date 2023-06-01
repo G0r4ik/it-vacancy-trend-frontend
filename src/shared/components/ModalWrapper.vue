@@ -22,13 +22,12 @@ export default {
       lastActiveFocusElement: '',
     }
   },
-
-  unmounted() {
-    document.removeEventListener('keydown', this.addCloseFunction)
-  },
   mounted() {
     document.addEventListener('keydown', this.addCloseFunction)
     this.lastActiveFocusElement = document.activeElement
+  },
+  unmounted() {
+    document.removeEventListener('keydown', this.addCloseFunction)
   },
   methods: {
     addCloseFunction(event) {

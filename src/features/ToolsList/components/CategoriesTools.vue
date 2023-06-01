@@ -13,9 +13,8 @@
         <button class="categories__button">
           <img
             class="categories__icon"
-            :src="
-              require(`../assets/categories/${category.id_category}.svg`)
-            " />
+            :src="require(`../assets/categories/${category.id_category}.svg`)"
+            :alt="`logo ${category.name_category}`" />
           {{ category.name_category }}
         </button>
       </li>

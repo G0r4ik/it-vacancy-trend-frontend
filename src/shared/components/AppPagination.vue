@@ -2,12 +2,16 @@
   <div v-if="pageCount" class="pagination">
     <div class="pagination__inner">
       <button
+        :id="`go-to-first-page-${uniqId}`"
+        :aria-label="`go-to-first-page-${uniqId}`"
         class="pagination__button"
         :disabled="isFirstPage"
         @click="changePageWhenClickNumber(1)">
         <IconChevronDouble style="transform: rotate(180deg)" />
       </button>
       <button
+        :id="`go-to-prev-page-${uniqId}`"
+        :aria-label="`go-to-prev-page-${uniqId}`"
         class="pagination__button"
         :disabled="isFirstPage"
         @click="changePageWhenClickNumber(currentPage - 1)">
@@ -15,7 +19,9 @@
       </button>
       <button
         v-for="page of paginationItems"
+        :id="`go-to-${page}-page-${uniqId}`"
         :key="page"
+        :aria-label="`go-to-${page}-page-${uniqId}`"
         class="pagination__button"
         :class="{ pagination__button_current: currentPage === page }"
         :disabled="page > pageCount"
@@ -23,23 +29,27 @@
         {{ page }}
       </button>
       <button
+        :id="`go-to-next-page-${uniqId}`"
+        :aria-label="`go-to-next-page-${uniqId}`"
         class="pagination__button"
         :disabled="isLastPage"
         @click="changePageWhenClickNumber(currentPage + 1)">
         <IconChevron />
       </button>
       <button
+        :id="`go-to-last-page-${uniqId}`"
+        :aria-label="`go-to-last-page-${uniqId}`"
         class="pagination__button"
         :disabled="isLastPage"
         @click="changePageWhenClickNumber(pageCount)">
         <IconChevronDouble />
       </button>
     </div>
-    <label class="pagination__change" for="listing-per-pages">
+    <label class="pagination__change" :for="`listing-per-pages-${uniqId}`">
       <select
-        id="listing-per-pages"
+        :id="`listing-per-pages-${uniqId}`"
         v-model="itemsPerPage"
-        name="listing-per-pages"
+        :name="`listing-per-pages-${uniqId}`"
         @change="changePerPage">
         <option value="25">25</option>
         <option value="50">50</option>
@@ -55,6 +65,7 @@ export default {
   props: {
     paginationTools: { type: Array, default: () => [] },
     modelValue: { type: Object, default: Object },
+    uniqId: { type: Number, default: 1 },
   },
 
   emits: ['update:modelValue'],
@@ -150,13 +161,17 @@ export default {
 
   mounted() {
     this.visibleButtons = window.innerWidth > 760 ? 5 : 3
-    window.addEventListener('resize', () => {
-      this.visibleButtons = window.innerWidth > 760 ? 5 : 3
-      this.changePageWhenClickNumber(this.currentPage)
-    })
+    window.addEventListener('resize', this.changeFIXME)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.changeFIXME)
   },
 
   methods: {
+    changeFIXME() {
+      this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+      this.changePageWhenClickNumber(this.currentPage)
+    },
     changePerPage(value = 50, currentPage = 1) {
       this.currentPage = currentPage
       if (value.target) this.itemsPerPage = value.target.value

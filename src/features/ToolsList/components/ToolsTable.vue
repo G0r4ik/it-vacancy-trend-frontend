@@ -68,14 +68,14 @@
           <td class="rating-table__item rating-table__item_count">
             {{ tool.counts.HeadHunter[selectedDate.id_date] ?? 0 }}
           </td>
-          <td class="rating-table__item">
+          <!-- <td class="rating-table__item">
             <button @click="$emit('addToStudiedTools', tool)">
               <IconStar
                 :class="{
                   'rating-table__item-studied_acitve': tool.isStudied,
                 }" />
             </button>
-          </td>
+          </td> -->
         </tr>
         <ModalWrapper v-if="isOpenCompareModal" @close-modal="closeModal">
           <ModalCompare
@@ -91,7 +91,7 @@
     <AppSkeleton
       v-if="!isDataLoaded"
       width="100%"
-      height="calc(var(--unit) * 10)"
+      height="42px"
       mb="var(--unit)"
       :count="25" />
     <div v-if="tools.length === 0 && isDataLoaded" class="empty-list">

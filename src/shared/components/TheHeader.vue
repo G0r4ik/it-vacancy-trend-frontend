@@ -21,7 +21,6 @@
           <ul class="menu__list">
             <li
               class="menu__item"
-              tabindex="0"
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')">
               <router-link to="/" active-class="menu__item_active">
@@ -30,7 +29,6 @@
             </li>
             <li
               class="menu__item"
-              tabindex="0"
               @click="changePage('compare')"
               @keyup.enter="changePage('compare')">
               <router-link to="/compare" active-class="menu__item_active">
@@ -39,7 +37,6 @@
             </li>
             <li
               class="menu__item"
-              tabindex="0"
               @click="changePage('other')"
               @keyup.enter="changePage('other')">
               <router-link to="/other" active-class="menu__item_active">
@@ -50,13 +47,13 @@
         </nav>
         <div class="header__other">
           <ChangeTheme />
-          <div class="header__user">
+          <!-- <div class="header__user">
             <button
               class="header__user-button"
               @click="showUserAction = !showUserAction">
               <IconUser />
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -213,8 +210,8 @@ export default {
   .menu__list_open {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: calc(var(--unit) * 2);
+    align-items: center;
     justify-content: center;
     width: 100%;
   }
