@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="list-title">
-      IT Technology in vacancies
+      <span>IT Technology in vacancies</span>
       <AppSkeleton
         v-if="tools.length === 0"
         width="56px"
@@ -279,6 +279,7 @@ export default {
 <style>
 .list-title {
   display: inline-block;
+  max-width: 300px;
 }
 .list-count {
   margin-left: var(--unit);

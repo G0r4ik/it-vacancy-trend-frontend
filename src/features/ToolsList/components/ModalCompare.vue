@@ -1,18 +1,21 @@
 <template>
   <div class="technology-comparison">
-    <IconChevron
-      class="technology-comparison__go-prev"
-      @click="$emit('openNewItemInModal', 'prev')" />
-    <IconChevron
-      class="technology-comparison__go-next"
-      @click="$emit('openNewItemInModal', 'next')" />
     <h5 class="technology-comparison__name-tool">
       {{ currentTool.name_tool }}
     </h5>
+    <div class="buttons-fixmme">
+      <button
+        v-for="category of currentTool.categories"
+        :key="category.id_category"
+        class="categories__item"
+        :class="`categories__item_${category.id_category}`">
+        {{ category.name_category }}
+      </button>
+    </div>
     <AppSkeleton
       v-if="!isLoaded"
       width="100%"
-      height="262px"
+      height="333px"
       display="inline-block"
       br="0"
       ml="var(--unit)" />
@@ -24,15 +27,21 @@
       @click="goToCompare(currentTool)">
       compare with other technologies
     </button>
-    <br />
-    <hr />
-    <button
-      v-for="category of currentTool.categories"
-      :key="category.id_category"
-      class="categories__item"
-      :class="`categories__item_${category.id_category}`">
-      {{ category.name_category }}
-    </button>
+
+    <div class="technology-comparison__chevrons">
+      <div
+        class="technology-comparison__chevron-item"
+        @click="$emit('openNewItemInModal', 'prev')">
+        <IconChevron class="technology-comparison__go-prev" />
+        prev
+      </div>
+      <div
+        class="technology-comparison__chevron-item"
+        @click="$emit('openNewItemInModal', 'next')">
+        next
+        <IconChevron class="technology-comparison__go-next" />
+      </div>
+    </div>
     <!-- <strong>Этих фильтров нет:</strong>
     <button
       v-for="category of categories"
@@ -42,7 +51,6 @@
       :class="`categories__item_${category.id_category}`">
       {{ category.name_category }}
     </button> -->
-    <br />
   </div>
 </template>
 
@@ -124,7 +132,7 @@ export default {
     import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(module => {
       this.Chart = module.default
     })
-    document.body.addEventListener('keydown', this.FIXMEF)
+    document.addEventListener('keydown', this.FIXMEF)
     this.chartNode = this.$refs.myChart
     document.addEventListener('keydown', this.addCloseFunction)
     const counts = await api.getCountOfCurrentItem(this.currentTool.id_tool)
@@ -134,15 +142,14 @@ export default {
 
   unmounted() {
     document.removeEventListener('keydown', this.addCloseFunction)
+    document.removeEventListener('keydown', this.FIXMEF)
   },
   methods: {
     FIXMEF(event) {
-      return function fixmeF() {
-        console.log(1)
-        if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
-        if (event.code === 'ArrowRight')
-          this.$emit('openNewItemInModal', 'next')
-      }
+      console.log(3)
+      console.log(1)
+      if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
+      if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
     },
     async load(id_category) {
       console.log(
@@ -193,6 +200,7 @@ export default {
           options: {
             animation: { duration: 0 },
             responsive: true,
+            maintainAspectRatio: false,
             elements: {
               point: { radius: 0, hoverRadius: 10, hitRadius: 50 },
               // line: { tension: 0.5 },
@@ -234,20 +242,30 @@ export default {
 </script>
 
 <style>
+.technology-comparison-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: calc(var(--unit) * 2);
+}
 .technology-comparison {
   position: relative;
-  width: 800px;
-  padding: calc(var(--unit) * 10);
+  padding: calc(var(--unit) * 3);
   background-color: var(--color-background);
+}
+.technology-comparison__chevrons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: calc(var(--unit) * 5);
+}
+.technology-comparison__chevron-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 .technology-comparison__go-prev,
 .technology-comparison__go-next {
-  position: absolute;
-  top: 50%;
-  width: var(--icon-width-middle);
-  height: var(--icon-width-middle);
-  cursor: pointer;
-  transform: translateY(-50%);
+  width: var(--icon-width-large);
+  height: var(--icon-width-large);
 }
 .technology-comparison__go-prev {
   left: 0;
@@ -257,14 +275,14 @@ export default {
   right: 0;
 }
 .technology-comparison__name-tool {
-  margin-bottom: var(--unit);
   font-size: var(--text-extra-large);
 }
 .technology-comparison__chart {
   margin-bottom: var(--unit);
 }
 #myChart {
-  width: 100%;
+  /* width: 100% !important; */
+  height: 100% !important;
   background: var(--color-background);
 }
 .technology-comparison__button {
@@ -275,5 +293,12 @@ export default {
   background: transparent;
   border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--border-radius-extra-small);
+}
+
+@media (max-width: 770px) {
+  .technology-comparison {
+    padding: var(--unit);
+    padding-top: calc(var(--unit) * 3);
+  }
 }
 </style>

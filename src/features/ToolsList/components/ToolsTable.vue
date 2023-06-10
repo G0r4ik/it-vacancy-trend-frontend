@@ -67,13 +67,14 @@
             </button>
           </td>
           <td class="rating-table__item">
-            <!-- {{ category }} -->
-            <div
-              v-for="category of tool.categories"
-              :key="category.id_category"
-              class="rating-table__item_category"
-              :class="`categories__item_${category.id_category}`">
-              {{ category.name_category }}
+            <div class="rating-table__item_category">
+              <div
+                v-for="category of tool.categories"
+                :key="category.id_category"
+                class="rating-table__item-inner_category"
+                :class="`categories__item_${category.id_category}`">
+                {{ category.name_category }}
+              </div>
             </div>
           </td>
           <td class="rating-table__item rating-table__item_count">
@@ -88,7 +89,10 @@
             </button>
           </td> -->
         </tr>
-        <ModalWrapper v-if="isOpenCompareModal" @close-modal="closeModal">
+        <ModalWrapper
+          v-if="isOpenCompareModal"
+          my-class="technology-comparison-wrapper"
+          @close-modal="closeModal">
           <ModalCompare
             :categories="categories"
             :tools="tools"
@@ -220,6 +224,12 @@ export default {
 }
 .rating-table__item_name {
   text-align: left;
+  white-space: nowrap;
+}
+.rating-table__item_category {
+  display: flex;
+  max-width: 100%;
+  overflow-x: auto;
 }
 .rating-table__controversial {
   font-weight: 700;
@@ -240,12 +250,13 @@ export default {
 .rating-table__item-star_active {
   color: var(--color-star);
 }
-.rating-table__item_category {
+.rating-table__item-inner_category {
   display: inline-flex;
   /* display: flex; */
   align-items: center;
   justify-content: center;
-  max-width: var(--width-ratin-item-category);
+  /* max-width: var(--width-ratin-item-category); */
+  max-width: 100%;
   height: var(--height-table-item);
   padding: 0 var(--unit);
   /* margin: 0 auto; */

@@ -1,7 +1,7 @@
 <template>
   <FocusTrap @deactivate="focusout">
     <div class="modal-wrapper" @click="$emit('closeModal')">
-      <div class="modal-wrapper__inner" @click.stop>
+      <div class="modal-wrapper__inner" :class="myClass" @click.stop>
         <button class="modal-wrapper__cross" @click="$emit('closeModal')">
           Esc
         </button>
@@ -16,6 +16,7 @@ import { FocusTrap } from 'focus-trap-vue'
 
 export default {
   components: { FocusTrap },
+  props: { myClass: { default: '', type: String } },
   emits: ['closeModal'],
   data() {
     return {
@@ -49,18 +50,24 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  overflow-y: auto;
   background: var(--color-modal-bg);
 }
 .modal-wrapper__inner {
   position: relative;
+  max-height: 95vh;
+  overflow-y: auto;
 }
 .modal-wrapper__cross {
   position: absolute;
-  top: calc(var(--unit) * 2);
-  right: calc(var(--unit) * 2);
+  top: var(--unit);
+  right: var(--unit);
   z-index: var(--z-index-overlay);
+  padding: var(--unit);
   cursor: pointer;
+  border: 3px solid #ff2400;
+  border-radius: var(--border-radius-small);
 }
 </style>
