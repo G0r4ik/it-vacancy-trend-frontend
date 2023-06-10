@@ -33,7 +33,18 @@
           <td class="rating-table__item">
             {{ idx + (page - 1) * itemsPerPage }}.
           </td>
+
           <td class="rating-table__item rating-table__item_name">
+            <span
+              v-if="tool.is_controversial_word"
+              class="rating-table__controversial"
+              @mouseover="changeIsVisibleFIXMEID(tool.id_tool)"
+              @mouseleave="changeIsVisibleFIXMEID(null)">
+              !
+            </span>
+            <AppPopup
+              v-if="isVisibleFIXMEID === tool.id_tool"
+              text="controversial word in this language" />
             <!-- <img
               class="rating-table__item-logo"
               :src="
@@ -136,10 +147,15 @@ export default {
       isOpenCompareModal: false,
       indexOfTool: null,
       toolInModal: null,
+      isVisibleFIXMEID: false,
     }
   },
 
   methods: {
+    changeIsVisibleFIXMEID(status) {
+      console.log('ues')
+      this.isVisibleFIXMEID = status
+    },
     openNewItemInModal(item) {
       if (item === 'prev') this.indexOfTool--
       if (item === 'next') this.indexOfTool++
@@ -204,6 +220,11 @@ export default {
 }
 .rating-table__item_name {
   text-align: left;
+}
+.rating-table__controversial {
+  font-weight: 700;
+  color: red;
+  cursor: pointer;
 }
 .rating-table__item-logo {
   width: var(--icon-width-middle);

@@ -177,7 +177,7 @@ export default {
       this.currentList = list
     },
     changeSearch(event) {
-      this.searchInput = event.target.value
+      this.searchInput = event.target.value.trim()
     },
     changeCategory(category) {
       const index = this.currentCategories.indexOf(category)
