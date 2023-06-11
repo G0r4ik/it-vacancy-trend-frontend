@@ -3,7 +3,7 @@
     <table class="rating-table__inner">
       <thead class="rating-table__thead">
         <tr class="rating-table__row">
-          <th class="rating-table__th">№</th>
+          <th class="rating-table__th rating-table__th_number">№</th>
           <th
             tabindex="0"
             class="rating-table__th rating-table__th_name"
@@ -12,7 +12,9 @@
             Name
             <IconChevronUpDown />
           </th>
-          <th tabindex="0" class="rating-table__th">Category</th>
+          <th tabindex="0" class="rating-table__th rating-table__th_category">
+            Category
+          </th>
           <th
             tabindex="0"
             class="rating-table__th"
@@ -53,7 +55,9 @@
               :alt="`Logo ${tool.name_tool}`" /> -->
             <!-- <span @click="isOpenCompareModalFunction(tool)"> -->
 
-            <span @click="isOpenCompareModalFunction(tool, idx)">
+            <span
+              class="rating-table__item-item-name"
+              @click="isOpenCompareModalFunction(tool, idx)">
               {{ tool.name_tool }}
             </span>
             <button
@@ -157,7 +161,6 @@ export default {
 
   methods: {
     changeIsVisibleFIXMEID(status) {
-      console.log('ues')
       this.isVisibleFIXMEID = status
     },
     openNewItemInModal(item) {
@@ -191,9 +194,12 @@ export default {
   border-spacing: 0;
   border-collapse: collapse;
 }
+.rating-table__thead {
+}
+.rating-table__tbody {
+}
 .rating-table__th {
-  padding-top: var(--unit);
-  padding-bottom: var(--unit);
+  padding: var(--unit);
   font-size: var(--text-small);
   font-weight: 600;
   color: var(--color-gray);
@@ -201,7 +207,11 @@ export default {
   cursor: pointer;
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
-.rating-table__th_name {
+.rating-table__th_number {
+  /* padding-right: var(--unit); */
+}
+.rating-table__th_name,
+.rating-table__th_category {
   text-align: left;
 }
 .rating-table__icon-change-sort {
@@ -241,6 +251,9 @@ export default {
   height: var(--icon-height-middle);
   margin-right: var(--unit);
   vertical-align: middle;
+}
+.rating-table__item-item-name {
+  cursor: y;
 }
 .rating-table__item-star {
   margin-left: var(--unit);
@@ -284,6 +297,7 @@ export default {
   color: var(--color-border);
 }
 .empty-list__span {
+  align-items: center;
   font-size: var(--text-extra-extra-large);
 }
 .empty-list__button {
@@ -302,6 +316,9 @@ export default {
 @media (width <= 760px) {
   .rating-table__inner {
     font-size: var(--text-small);
+  }
+  .empty-list__span {
+    font-size: var(--text-extra-large);
   }
 }
 </style>

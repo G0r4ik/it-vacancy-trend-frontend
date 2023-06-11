@@ -89,7 +89,7 @@ export default {
       searchInput: '',
       sortList: '',
       currentList: 'tools',
-      directionsForSorting: 'DESC',
+      directionsForSorting: 'ASC',
       // currentJobBoard: 'Indeed',
     }
   },

@@ -1,6 +1,7 @@
 <template>
   <div v-if="pageCount" class="pagination">
-    <div class="pagination__inner">
+    {{}}
+    <div v-if="paginationItems.length !== 1" class="pagination__inner">
       <button
         :id="`go-to-first-page-${uniqId}`"
         :aria-label="`go-to-first-page-${uniqId}`"
@@ -227,6 +228,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-top: var(--unit);
+  margin-left: auto;
   font-size: var(--text-small);
 }
 .pagination__change select {

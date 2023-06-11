@@ -122,7 +122,7 @@ export default {
 }
 .menu__item {
   padding-bottom: var(--unit);
-  margin: 0 var(--unit);
+  margin: 0 calc(var(--unit) * 4);
   color: inherit;
   text-decoration: none;
   cursor: pointer;

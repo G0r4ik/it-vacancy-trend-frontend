@@ -3,6 +3,7 @@
     v-for="index in count || 1"
     :key="index"
     class="skeleton"
+    :class="myClass"
     :style="styles" />
 </template>
 
@@ -18,6 +19,7 @@ export default {
     mb: { type: String, default: '0' },
     ml: { type: String, default: '0' },
     count: { type: Number, default: 1 },
+    myClass: { type: String, default: '' },
   },
 
   computed: {

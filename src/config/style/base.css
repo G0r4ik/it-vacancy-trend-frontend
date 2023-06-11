@@ -19,8 +19,8 @@ select {
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
 select option {
-  color: #000;
-  background-color: var(--color-text);
+  color: var(--color_cod-gray-base);
+  background-color: var(--color_white-base);
 }
 button {
   color: inherit;

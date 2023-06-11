@@ -15,10 +15,10 @@
     <AppSkeleton
       v-if="!isLoaded"
       width="100%"
-      height="333px"
+      height="419px"
+      :my-class="'skeleton__chart'"
       display="inline-block"
-      br="0"
-      ml="var(--unit)" />
+      br="0" />
     <div v-show="isLoaded" class="technology-comparison__chart">
       <canvas id="myChart" ref="myChart" width="800" height="300"></canvas>
     </div>
@@ -146,15 +146,13 @@ export default {
   },
   methods: {
     FIXMEF(event) {
-      console.log(3)
-      console.log(1)
       if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
     },
     async load(id_category) {
-      console.log(
-        `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
-      )
+      // console.log(
+      //   `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
+      // )
       // await api.setCategory(this.currentTool.id_tool, id_category)
     },
     async createChar(counts) {
@@ -203,7 +201,7 @@ export default {
             maintainAspectRatio: false,
             elements: {
               point: { radius: 0, hoverRadius: 10, hitRadius: 50 },
-              // line: { tension: 0.5 },
+              line: { tension: 0.5 },
             },
             scales: {
               x: {
@@ -228,13 +226,16 @@ export default {
       )
     },
     addCloseFunction(event) {
-      console.log('2')
       if (event.key === 'Escape') {
         this.$emit('closeModal')
       }
     },
     goToCompare(currentTool) {
       this.$emit('closeModal', currentTool)
+      this.$router.push({
+        path: '/compare',
+        query: { q: currentTool.name_tool },
+      })
       // this.emitter.emit('changePage', 'compare')
     },
   },
@@ -294,11 +295,14 @@ export default {
   border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--border-radius-extra-small);
 }
-
 @media (max-width: 770px) {
   .technology-comparison {
     padding: var(--unit);
     padding-top: calc(var(--unit) * 3);
+  }
+  .skeleton__chart {
+    /* display: none !important; */
+    height: 165px !important;
   }
 }
 </style>

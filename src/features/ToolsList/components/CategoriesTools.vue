@@ -64,7 +64,7 @@ export default {
 .categories__item {
   display: inline-block;
   padding: var(--unit);
-  margin: var(--unit) 0;
+  margin: calc(var(--unit) / 2) 0;
   margin-right: var(--unit);
   font-size: var(--text-small);
   text-align: left;

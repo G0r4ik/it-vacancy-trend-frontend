@@ -65,9 +65,9 @@ export default {
   top: var(--unit);
   right: var(--unit);
   z-index: var(--z-index-overlay);
-  padding: var(--unit);
+  padding: calc(var(--unit) / 2) var(--unit);
   cursor: pointer;
-  border: 3px solid #ff2400;
+  border: 2px solid #ff2400;
   border-radius: var(--border-radius-small);
 }
 </style>

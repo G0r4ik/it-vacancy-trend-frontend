@@ -10,8 +10,8 @@ export const useStore = defineStore('store', {
   }),
 
   actions: {
-    loadTools(dateId) {
-      api
+    async loadTools(dateId) {
+      await api
         .getTools('Russia', 'HeadHunter', dateId)
         .then(res => {
           this.tools = res
@@ -28,8 +28,8 @@ export const useStore = defineStore('store', {
           throw new Error(error)
         })
     },
-    loadDates() {
-      api
+    async loadDates() {
+      await api
         .getDates()
         .then(res => {
           this.dates = res

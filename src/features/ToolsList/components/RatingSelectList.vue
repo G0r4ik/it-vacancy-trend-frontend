@@ -13,12 +13,12 @@
         @click="$emit('changeCurrentList', 'favoritesTools')">
         Favourites
       </button>
-      <button
+      <!-- <button
         class="select-list__button"
         :class="{ 'select-list__button_active': list === 'studiedTools' }"
         @click="$emit('changeCurrentList', 'studiedTools')">
         Studied
-      </button>
+      </button> -->
       <!-- <button class="select-list__button">Настроить</button> -->
     </div>
   </div>

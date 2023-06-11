@@ -1,45 +1,47 @@
 <template>
   <div class="other">
     <div class="container">
-      <h2 class="other__title title">Another</h2>
+      <h1 class="other__title">Info of this website</h1>
       <div class="other__inner">
         <p class="other__p">
-          Сайт не несет цели показать актуальные и востребованные технологии.
-          Хоть зачастую количество вакансий коррелирует с частотой использования
-          технологии.
+          The website does not aim to showcase current and in-demand
+          technologies. The number of job vacancies often correlates with the
+          frequency of technology usage.
         </p>
         <p class="other__p">
-          Некоторые технологии с часто используемыми словами в жизни (например:
-          ...) могут неправильно считаться, такие технологии помечены
-          специальным символом
+          Certain technologies with commonly used words in everyday life (e.g.,
+          Go, Tree) or those that are too short (R language) might be
+          incorrectly counted. Such technologies are marked with a special
+          symbol.
         </p>
-        <p class="other__p">
-          На сайте каждый день в 3 часа ночи GMT выкладывается количество
-          вакансий определенных технологий.
-        </p>
-        <p class="other__p">
+        <p class="other__p">The job boards are parsed daily at 12 PM GMT.</p>
+        <!-- <p class="other__p">
           Ваши списки сохраняются только в браузере на котором была открыта эта
           страница, на других устройствах или в других браузерах ничего не
           сохранится. Хотите чтобы ваши списки сохранялись? Создайте аккаунт
-        </p>
-        <p class="other__p">
+        </p> -->
+        <!-- <p class="other__p">
           На данный момент на сайте есть два варианта. Российский рынок
           (HeadHunter) и мировой (Indeed).
-        </p>
-
+        </p> -->
         <p class="other__p">
+          Currently, only the Russian job market (HeadHunter) is available on
+          the website.
+        </p>
+        <!-- <p class="other__p">
           В вашей стране есть локальный агрегатор вакансий и вы хотите чтобы
           этот сайт отслеживал количество вакансий в нем и/или вы хотите чтобы
           на условном Indeed отображались не все вакансии, а только вашей страны
           (а может и города?), то пишите на почту.
+        </p> -->
+        <p class="other__p">
+          Incorrect category? Missing any technology? Inaccurate numbers?
+          Suggestions for project development? Found any bugs? In the near
+          future, some other solution is planned, but for now, please write an
+          email.
         </p>
         <p class="other__p">
-          Некорректное название категории? Нет какой-либо технологии?
-          Неадекватные цифры? Советы по развитию проекта? Нашли баги? На сайте
-          нет вашего родного языка? Пишите на почту.
-        </p>
-        <p class="other__p">
-          <a class="other__link" href="mailto:eforfora@gmail.com" type="">
+          <a class="other__link" href="mailto:eforfora@gmail.com">
             eforfora@gmail.com
           </a>
         </p>
