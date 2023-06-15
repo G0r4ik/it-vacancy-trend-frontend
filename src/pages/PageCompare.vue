@@ -60,7 +60,9 @@ export default {
       return this.tools
         .filter(
           tool =>
-            tool.name_tool.toLowerCase().includes(this.searchInput) &&
+            tool.name_tool
+              .toLowerCase()
+              .includes(this.searchInput.toLowerCase()) &&
             !this.compareTools.includes(tool)
         )
         .slice(0, 10)
