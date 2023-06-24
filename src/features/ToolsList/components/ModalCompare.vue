@@ -15,7 +15,7 @@
     <AppSkeleton
       v-if="!isLoaded"
       width="100%"
-      height="419px"
+      height="435px"
       :my-class="'skeleton__chart'"
       display="inline-block"
       br="0" />
@@ -28,7 +28,11 @@
       compare with other technologies
     </button>
 
-    <div class="technology-comparison__chevrons">
+    <div
+      class="technology-comparison__chevrons"
+      :class="{
+        'technology-comparison__chevrons_disabled': tools.length <= 1,
+      }">
       <div
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'prev')">
@@ -56,7 +60,8 @@
 
 <script>
 import { shallowRef } from 'vue'
-import api from '../api'
+import api from '../api.js'
+import { formateDate, createChart } from '@/shared/helpers.js'
 
 export default {
   props: {
@@ -104,10 +109,11 @@ export default {
 
       this.chart.data.labels = sortedDates.map(date => {
         const date2 = new Date(date.date_of_completion)
-        const day = String(date2.getDate()).padStart(2, '0')
-        const month = String(date2.getMonth() + 1).padStart(2, '0')
-        const year = String(date2.getFullYear()).padStart(2, '0')
-        return `${year}-${month}-${day}`
+        // const day = String(date2.getDate()).padStart(2, '0')
+        // const month = String(date2.getMonth() + 1).padStart(2, '0')
+        // const year = String(date2.getFullYear()).padStart(2, '0')
+        //   // return `${year}-${month}-${day}`
+        return formateDate(date2)
       })
       this.chart.data.datasets = [
         {
@@ -139,7 +145,6 @@ export default {
     this.isLoaded = true
     this.createChar(counts)
   },
-
   unmounted() {
     document.removeEventListener('keydown', this.addCloseFunction)
     document.removeEventListener('keydown', this.FIXMEF)
@@ -162,23 +167,19 @@ export default {
           current.count_of_item
       }
       const context = this.chartNode
-      const sortedDates = [...this.dates].sort(
-        (a, b) =>
-          new Date(a.date_of_completion) - new Date(b.date_of_completion)
-      )
+      const sortedDates = [...this.dates]
+        .sort(
+          (a, b) =>
+            new Date(a.date_of_completion) - new Date(b.date_of_completion)
+        )
+        .map(i => formateDate(i.date_of_completion))
       // eslint-disable-next-line no-new
+      // fix2
       this.chart = shallowRef(
-        new this.Chart(context, {
-          type: 'line',
-          data: {
-            labels: sortedDates.map(date => {
-              const date2 = new Date(date.date_of_completion)
-              const day = String(date2.getDate()).padStart(2, '0')
-              const month = String(date2.getMonth() + 1).padStart(2, '0')
-              const year = String(date2.getFullYear()).padStart(2, '0')
-              return `${year}-${month}-${day}`
-            }),
-            datasets: [
+        new this.Chart(
+          context,
+          createChart(
+            [
               {
                 label: 'HHru',
                 data: Object.values(copy.counts.HeadHunter),
@@ -186,43 +187,10 @@ export default {
                 fill: false,
                 // tension: 0.1,
               },
-              // {
-              //   label: 'Indeed',
-              //   data: countsIndeed,
-              //   borderColor: ['rgba(54, 162, 235, 1)'],
-              //   borderWidth: 10,
-              // },
             ],
-          },
-          stepped: true,
-          options: {
-            animation: { duration: 0 },
-            responsive: true,
-            maintainAspectRatio: false,
-            elements: {
-              point: { radius: 0, hoverRadius: 10, hitRadius: 50 },
-              line: { tension: 0.5 },
-            },
-            scales: {
-              x: {
-                beginAtZero: true,
-                grid: { display: false },
-                ticks: { display: false },
-                border: { display: false },
-              },
-              y: {
-                grid: { display: false },
-                border: { display: false },
-                grace: '100%',
-                // ticks: { stepSize: 5000 },
-                // beginAtZero: true,
-                // min: 0,
-                // max: Math.floor((maxValue + (maxValue / 5)).toFixed(1)),
-                // max: maxValue,
-              },
-            },
-          },
-        })
+            sortedDates
+          )
+        )
       )
     },
     addCloseFunction(event) {
@@ -263,10 +231,14 @@ export default {
   align-items: center;
   cursor: pointer;
 }
+.technology-comparison__chevrons_disabled .technology-comparison__chevron-item {
+  cursor: default;
+  opacity: 0.5;
+}
 .technology-comparison__go-prev,
 .technology-comparison__go-next {
-  width: var(--icon-width-large);
-  height: var(--icon-width-large);
+  width: var(--icon-size-large);
+  height: var(--icon-size-large);
 }
 .technology-comparison__go-prev {
   left: 0;
@@ -283,7 +255,7 @@ export default {
 }
 #myChart {
   /* width: 100% !important; */
-  height: 100% !important;
+  /* height: 100% !important; */
   background: var(--color-background);
 }
 .technology-comparison__button {
