@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     changeCategoryAll() {
-      return this.currentCategories.length > 0 ? 'clear' : 'show all'
+      return this.currentCategories.length > 0 ? 'clear' : 'select all'
     },
   },
 

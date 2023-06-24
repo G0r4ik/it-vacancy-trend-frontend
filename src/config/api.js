@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SERVER_LOCAL, isProduction } from '../shared/consts.js'
+import { SERVER_LOCAL, isProduction } from '@/shared/consts.js'
 
 const server = isProduction ? process.env.SERVER_ADDRESS : SERVER_LOCAL
 

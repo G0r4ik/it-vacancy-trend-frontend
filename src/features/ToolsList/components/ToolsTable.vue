@@ -111,7 +111,7 @@
       v-if="!isDataLoaded"
       width="100%"
       height="42px"
-      mb="var(--unit)"
+      mt="var(--unit)"
       :count="25" />
     <div v-if="tools.length === 0 && isDataLoaded" class="empty-list">
       <div class="empty-list__span">There is nothing</div>
@@ -123,12 +123,10 @@
 </template>
 
 <script>
-// import ModalCompare from './modals/ModalCompare.vue'
 import ModalCompare from './ModalCompare.vue'
-import ModalWrapper from '@/shared/components/ModalWrapper.vue'
 
 export default {
-  components: { ModalCompare, ModalWrapper },
+  components: { ModalCompare },
 
   props: {
     filteredList: { type: Array, default: () => [] },
@@ -247,8 +245,8 @@ export default {
   cursor: pointer;
 }
 .rating-table__item-logo {
-  width: var(--icon-width-middle);
-  height: var(--icon-height-middle);
+  width: var(--icon-size);
+  height: var(--icon-size);
   margin-right: var(--unit);
   vertical-align: middle;
 }
@@ -278,7 +276,7 @@ export default {
   border-radius: var(--border-radius-middle);
 }
 .rating-table__item-studied {
-  width: var(--icon-width-middle);
+  width: var(--icon-size);
   cursor: pointer;
   border-radius: 50%;
   fill: var(--color-text);

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PageCompare from '../pages/PageCompare.vue'
-import PageOther from '../pages/PageOther.vue'
-import PageToolsList from '../pages/PageToolsList.vue'
+import PageCompare from '@/pages/PageCompare.vue'
+import PageOther from '@/pages/PageOther.vue'
+import PageToolsList from '@/pages/PageToolsList.vue'
 
 const routes = [
   {

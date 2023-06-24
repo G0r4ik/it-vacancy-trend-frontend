@@ -74,7 +74,7 @@ const config = {
         },
       ],
     }),
-    !isDevelopment && new BundleAnalyzerPlugin(),
+    // !isDevelopment && new BundleAnalyzerPlugin(),
   ].filter(Boolean),
 
   optimization: {

@@ -8,7 +8,7 @@
         height="27px"
         display="inline-block"
         ml="var(--unit)" />
-      <span class="list-count" v-else>({{ filteredList.length }})</span>
+      <span v-else class="list-count">({{ filteredList.length }})</span>
     </h1>
 
     <AppSkeleton
@@ -41,11 +41,12 @@
       width="300px"
       height="36px"
       mb="var(--unit)" />
+    <div ref="invisibleStartTable"></div>
     <AppPagination
       :uniq-id="1"
-      :pagination-tools="filteredList"
+      :items-length="filteredList.length"
       :model-value="pagination"
-      @update:model-value="pagination = $event" />
+      @update:model-value="changePagination" />
 
     <ToolsTable
       :filtered-list="filteredList"
@@ -64,9 +65,9 @@
 
     <AppPagination
       :uniq-id="2"
-      :pagination-tools="filteredList"
+      :items-length="filteredList.length"
       :model-value="pagination"
-      @update:model-value="pagination = $event" />
+      @update:model-value="changePagination" />
   </div>
 </template>
 
@@ -74,8 +75,8 @@
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
 import ToolsTable from './ToolsTable.vue'
-import api from '../api'
-import { useStore } from '../store'
+import api from '../api.js'
+import { useStore } from '../store.js'
 
 export default {
   components: { ToolsTable, RatingFilters, RatingSelectList },
@@ -116,11 +117,17 @@ export default {
         const inputCheck = t.name_tool
           .toLowerCase()
           .includes(this.searchInput.toLowerCase())
+
         const categoryCheck = this.currentCategories.some(category =>
-          t.categories.find(cat => cat.id_category === category)
+          t.categories?.find(cat => cat.id_category === category)
         )
-        return inputCheck && categoryCheck
+        if (t.categories) {
+          return inputCheck && categoryCheck
+        } else {
+          return inputCheck
+        }
       })
+
       if (this.sortList === 'name_tool') list.sort(this.sortName())
       if (this.sortList === 'id_category') {
         list.sort(this.sortCategory())
@@ -157,6 +164,10 @@ export default {
   },
 
   methods: {
+    changePagination(page) {
+      this.$refs.invisibleStartTable.scrollIntoView({ behavior: 'smooth' })
+      this.pagination = page
+    },
     clearFilters() {
       this.searchInput = ''
       this.currentCategories = this.categories.map(item => item.id_category)

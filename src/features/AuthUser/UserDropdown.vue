@@ -31,10 +31,9 @@
 
 <script>
 import AuthSignUp from './AuthSignUp.vue'
-import ModalWrapper from '@/shared/components/ModalWrapper'
 
 export default {
-  components: { AuthSignUp, ModalWrapper },
+  components: { AuthSignUp },
   props: { showUserAction: Boolean },
 
   data() {

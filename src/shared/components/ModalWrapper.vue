@@ -16,20 +16,26 @@ import { FocusTrap } from 'focus-trap-vue'
 
 export default {
   components: { FocusTrap },
+
   props: { myClass: { default: '', type: String } },
+
   emits: ['closeModal'],
+
   data() {
     return {
       lastActiveFocusElement: '',
     }
   },
+
   mounted() {
     document.addEventListener('keydown', this.addCloseFunction)
     this.lastActiveFocusElement = document.activeElement
   },
+
   unmounted() {
     document.removeEventListener('keydown', this.addCloseFunction)
   },
+
   methods: {
     addCloseFunction(event) {
       if (event.key === 'Escape') this.$emit('closeModal')
@@ -46,7 +52,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--z-index-overlay);
+  z-index: var(--z-index-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,7 +73,7 @@ export default {
   z-index: var(--z-index-overlay);
   padding: calc(var(--unit) / 2) var(--unit);
   cursor: pointer;
-  border: 2px solid #ff2400;
+  border: var(--border-width-small) solid var(--color-danger);
   border-radius: var(--border-radius-small);
 }
 </style>

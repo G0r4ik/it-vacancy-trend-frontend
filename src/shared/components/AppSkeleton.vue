@@ -1,10 +1,14 @@
 <template>
   <div
-    v-for="index in count || 1"
+    v-for="index in count"
     :key="index"
     class="skeleton"
     :class="myClass"
-    :style="styles" />
+    :style="styles">
+    <div
+      class="skeleton__wave"
+      :style="`animation-delay: ${index * 50}ms`"></div>
+  </div>
 </template>
 
 <script>
@@ -25,7 +29,7 @@ export default {
   computed: {
     styles() {
       const { mt, mr, mb, ml, display, br, width, height } = this
-      const margin = `${mt} ${mr} ${mb} ${ml}`
+      const margin = `${mt || 0} ${mr || 0} ${mb || 0} ${ml || 0}`
       return `width: ${width}; height: ${height}; display: ${display}; margin: ${margin}; border-radius: ${br}`
     },
   },
@@ -38,7 +42,7 @@ export default {
   overflow: hidden;
   background-color: var(--color-skeleton-bg);
 }
-.skeleton::after {
+.skeleton .skeleton__wave {
   position: absolute;
   top: 0;
   left: 0;
@@ -54,7 +58,7 @@ export default {
   transform: translateX(-100%);
   animation: shimmer var(--transition-skeleton) infinite;
 }
-.light-theme .skeleton::after {
+.light-theme .skeleton__wave {
   background-image: linear-gradient(
     90deg,
     rgb(255 255 255 / 0),

@@ -77,8 +77,8 @@ export default {
   align-items: center;
 }
 .categories__icon {
-  width: var(--icon-width-small);
-  height: var(--icon-height-small);
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
   margin-right: var(--unit);
 }
 .categories__item:last-child {

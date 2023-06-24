@@ -135,7 +135,6 @@ input {
   background: rgb(98 44 57 / 0.1);
   border: var(--border-width-small) solid #fb6f92 !important;
 }
-/* 1 */
 .icon {
   width: var(--width-icon);
   height: var(--height-icon);

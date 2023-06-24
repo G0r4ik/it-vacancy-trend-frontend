@@ -1,4 +1,4 @@
-import instance from '@/config/api'
+import instance from '@/config/api.js'
 
 class API {
   async registrationUser(email, password) {

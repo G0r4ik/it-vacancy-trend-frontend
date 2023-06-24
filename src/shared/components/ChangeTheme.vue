@@ -5,14 +5,16 @@
       type="checkbox"
       class="change-theme__checkbox"
       @change="toggleTheme" />
-    <label for="checkbox" class="change-theme__label">
+    <label
+      for="checkbox"
+      class="change-theme__label"
+      tabindex="0"
+      @keyup.enter="toggleTheme">
       <span class="switch-theme__icon">🌙</span>
       <span class="switch-theme__icon">☀️</span>
       <div
-        class="change-theme__toggle"
-        :class="{
-          'change-theme__toggle_checked': userTheme === 'dark-theme',
-        }"></div>
+        :class="{ 'change-theme__toggle_checked': userTheme === 'dark-theme' }"
+        class="change-theme__toggle"></div>
     </label>
   </div>
 </template>
@@ -75,8 +77,8 @@ export default {
 }
 .change-theme__toggle {
   position: absolute;
-  width: var(--icon-width-middle);
-  height: var(--icon-height-middle);
+  width: var(--icon-size);
+  height: var(--icon-size);
   background-color: var(--color-primary2);
   border-radius: 50%;
   transition: transform var(--transition-small) ease,

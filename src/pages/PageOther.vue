@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { AppOther } from '@/features/Other/index.js'
+import { AppOther } from '@/features/Other'
 
 export default {
   components: { AppOther },

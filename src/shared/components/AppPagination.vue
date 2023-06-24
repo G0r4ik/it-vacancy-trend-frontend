@@ -1,13 +1,12 @@
 <template>
-  <div v-if="pageCount" class="pagination">
-    {{}}
-    <div v-if="paginationItems.length !== 1" class="pagination__inner">
+  <div v-if="countOfPages" class="pagination">
+    <div class="pagination__inner">
       <button
         :id="`go-to-first-page-${uniqId}`"
         :aria-label="`go-to-first-page-${uniqId}`"
         class="pagination__button"
         :disabled="isFirstPage"
-        @click="changePageWhenClickNumber(1)">
+        @click="changeCurrentPage(1)">
         <IconChevronDouble style="transform: rotate(180deg)" />
       </button>
       <button
@@ -15,7 +14,7 @@
         :aria-label="`go-to-prev-page-${uniqId}`"
         class="pagination__button"
         :disabled="isFirstPage"
-        @click="changePageWhenClickNumber(currentPage - 1)">
+        @click="changeCurrentPage(currentPage - 1)">
         <IconChevron style="transform: rotate(180deg)" />
       </button>
       <button
@@ -25,8 +24,7 @@
         :aria-label="`go-to-${page}-page-${uniqId}`"
         class="pagination__button"
         :class="{ pagination__button_current: currentPage === page }"
-        :disabled="page > pageCount"
-        @click="changePageWhenClickNumber(page)">
+        @click="changeCurrentPage(page)">
         {{ page }}
       </button>
       <button
@@ -34,7 +32,7 @@
         :aria-label="`go-to-next-page-${uniqId}`"
         class="pagination__button"
         :disabled="isLastPage"
-        @click="changePageWhenClickNumber(currentPage + 1)">
+        @click="changeCurrentPage(currentPage + 1)">
         <IconChevron />
       </button>
       <button
@@ -42,7 +40,7 @@
         :aria-label="`go-to-last-page-${uniqId}`"
         class="pagination__button"
         :disabled="isLastPage"
-        @click="changePageWhenClickNumber(pageCount)">
+        @click="changeCurrentPage(countOfPages)">
         <IconChevronDouble />
       </button>
     </div>
@@ -64,9 +62,9 @@
 <script>
 export default {
   props: {
-    paginationTools: { type: Array, default: () => [] },
-    modelValue: { type: Object, default: Object },
-    uniqId: { type: Number, default: 1 },
+    itemsLength: { type: Number, required: true },
+    modelValue: { type: Object, required: true },
+    uniqId: { type: Number, required: true },
   },
 
   emits: ['update:modelValue'],
@@ -84,29 +82,29 @@ export default {
       return this.currentPage === 1
     },
     isLastPage() {
-      return this.currentPage === this.pageCount
+      return this.currentPage === this.countOfPages
     },
-    pageCount() {
-      return Math.ceil(this.paginationTools.length / this.itemsPerPage)
+    countOfPages() {
+      return Math.ceil(this.itemsLength / this.itemsPerPage)
     },
     paginationItems() {
       const paginationTool = []
-      for (let i = 1; i <= this.pageCount; i++) {
+      for (let i = 1; i <= this.countOfPages; i++) {
         paginationTool.push(i)
       }
 
       if (this.currentPage <= Math.floor(Math.sqrt(this.visibleButtons))) {
         return paginationTool.slice(
           0,
-          Math.min(this.visibleButtons, this.pageCount)
+          Math.min(this.visibleButtons, this.countOfPages)
         )
       }
       if (
-        this.currentPage === this.pageCount ||
-        this.currentPage === this.pageCount - 1
+        this.currentPage === this.countOfPages ||
+        this.currentPage === this.countOfPages - 1
       ) {
         return paginationTool.slice(
-          Math.max(-this.visibleButtons, -this.pageCount)
+          Math.max(-this.visibleButtons, -this.countOfPages)
         )
       }
       return paginationTool.slice(
@@ -117,15 +115,14 @@ export default {
   },
 
   watch: {
-    paginationTools: {
+    itemsLength: {
       handler(newValue, oldValue) {
-        if (newValue.length === oldValue.length) {
+        if (newValue === oldValue) {
           this.changePerPage(this.itemsPerPage, this.currentPage)
         } else {
           this.changePerPage(this.itemsPerPage, 1)
         }
       },
-      deep: true,
     },
     modelValue: {
       handler() {
@@ -164,6 +161,7 @@ export default {
     this.visibleButtons = window.innerWidth > 760 ? 5 : 3
     window.addEventListener('resize', this.changeFIXME)
   },
+
   beforeUnmount() {
     window.removeEventListener('resize', this.changeFIXME)
   },
@@ -171,18 +169,18 @@ export default {
   methods: {
     changeFIXME() {
       this.visibleButtons = window.innerWidth > 760 ? 5 : 3
-      this.changePageWhenClickNumber(this.currentPage)
+      this.changeCurrentPage(this.currentPage)
     },
     changePerPage(value = 50, currentPage = 1) {
       this.currentPage = currentPage
       if (value.target) this.itemsPerPage = value.target.value
       if (!value.target) this.itemsPerPage = +value
 
-      if (this.currentPage > this.pageCount && this.currentPage !== 1) {
-        this.currentPage = this.pageCount || 1
+      if (this.currentPage > this.countOfPages && this.currentPage !== 1) {
+        this.currentPage = this.countOfPages || 1
       }
     },
-    changePageWhenClickNumber(page) {
+    changeCurrentPage(page) {
       this.currentPage = page
     },
   },
@@ -205,8 +203,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--icon-height-middle);
-  height: var(--icon-height-middle);
+  width: var(--icon-size);
+  height: var(--icon-size);
   margin: 0 var(--unit);
   font-size: var(--text-small);
   color: var(--color-text);
@@ -239,7 +237,5 @@ export default {
 .pagination__change option {
   text-align: center;
   text-align-last: center;
-}
-@media (width < 760px) {
 }
 </style>

@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import api from './api'
+import api from './api.js'
 
 export default {
   emits: ['showSignInModalFunction'],

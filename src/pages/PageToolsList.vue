@@ -4,10 +4,9 @@
 </template>
 
 <script>
-import { ToolsList } from '../features/ToolsList'
-import TheHeader from '../shared/components/TheHeader.vue'
+import { ToolsList } from '@/features/ToolsList'
 
 export default {
-  components: { ToolsList, TheHeader },
+  components: { ToolsList },
 }
 </script>

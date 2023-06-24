@@ -17,6 +17,7 @@
   --color-skeleton-bg: rgb(0 0 0 / 0.12);
   --color-modal-bg: rgb(0 0 0 / 0.7);
   --color-star: #f6b87e;
+  --color-danger: tomato;
   /* UNIT */
   --unit: 5px;
   /* z-index */
@@ -40,39 +41,34 @@
   --container-large: 1100px;
   --container-extra-large: 1400px;
   /* ICON */
-  --icon-width-extra-small: 10px;
-  --icon-height-extra-small: 10px;
-  --icon-width-small: 20px;
-  --icon-height-small: 20px;
-  --icon-width-middle: 25px;
-  --icon-height-middle: 25px;
-  --icon-width-large: 30px;
-  --icon-height-large: 30px;
+  --icon-size-extra-small: 10px;
+  --icon-size-small: 20px;
+  --icon-size-large: 30px;
   /* BORDER-RADIUS */
   --radius: 5px;
   --border-radius-small: calc(var(--radius) * 2);
   --border-radius-middle: calc(var(--radius) * 3);
   --border-radius-extra-small: var(--radius);
   /* Border */
-  --border-width: 3px;
-  --border-width-small: 2px;
   --border-width-extra-small: 1px;
+  --border-width-small: 2px;
+  --border-width: 3px;
   /* Width */
-  --width-compare-tools: 800px;
-  --width-auth: 400px;
-  --width-ratin-item-category: 200px;
-  --width-header: 115px;
-  --width-change-theme: 70px;
   --icon-size: 24px;
+  --width-change-theme: 70px;
+  --width-header: 115px;
+  --width-ratin-item-category: 200px;
+  --width-auth: 400px;
+  --width-compare-tools: 800px;
   /* Height */
-  --height-compare-tools: 500px;
-  --height-menu-list: 100px;
-  --height-logo-mobile: 30px;
   --height-table-item: 25px;
+  --height-logo-mobile: 30px;
+  --height-menu-list: 100px;
+  --height-compare-tools: 500px;
   /* Transition */
-  --transition-skeleton: 1.5s;
-  --transition-main: 0.5s;
   --transition-small: 0.3s;
+  --transition-main: 0.5s;
+  --transition-skeleton: 1.5s;
 }
 :root.light-theme {
   --color-background: var(--color_white-base);

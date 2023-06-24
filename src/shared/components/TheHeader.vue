@@ -47,13 +47,11 @@
         </nav>
         <div class="header__other">
           <ChangeTheme />
-          <!-- <div class="header__user">
-            <button
-              class="header__user-button"
-              @click="showUserAction = !showUserAction">
-              <IconUser />
-            </button>
-          </div> -->
+          <!-- <button
+            class="header__user-button"
+            @click="showUserAction = !showUserAction">
+            <IconUser />
+          </button> -->
         </div>
       </div>
     </div>
@@ -65,8 +63,6 @@
 // import UserDropdown from '@/features/auth/UserDropdown.vue'
 
 export default {
-  // components: { UserDropdown },
-
   emits: ['changePage'],
 
   data() {
@@ -136,14 +132,14 @@ export default {
   display: flex;
   align-items: center;
 }
-.header__user {
-  width: var(--icon-width-large);
-  height: var(--icon-height-large);
+.header__user-button {
+  width: var(--icon-size-large);
+  height: var(--icon-size-large);
 }
 .menu__button {
   display: none;
-  width: var(--icon-width-large);
-  height: var(--icon-width-large);
+  width: var(--icon-size-large);
+  height: var(--icon-size-large);
 }
 @media (width < 760px) {
   .header__inner {

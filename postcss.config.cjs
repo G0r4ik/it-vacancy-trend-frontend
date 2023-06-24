@@ -12,4 +12,3 @@ module.exports = ({ env }) => ({
     require('postcss-reporter')({ clearReportedMessages: true }),
   ],
 })
-// 1680
