@@ -27,7 +27,8 @@ class API {
     try {
       const dates = await instance.get('getCountOfCurrentItem', {
         signal,
-        params: { idTool },
+        // FIX тут хардкод!
+        params: { idTool, jobBoard: 'HeadHunter', region: 'Russia' },
       })
       return dates.data
     } catch {}

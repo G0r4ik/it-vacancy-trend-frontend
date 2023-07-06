@@ -1,8 +1,11 @@
 <template>
   <div class="technology-comparison">
-    <h5 class="technology-comparison__name-tool">
-      {{ currentTool.name_tool }}
-    </h5>
+    <div class="technology-comparison__top">
+      <ControversialWord v-if="currentTool.is_controversial_word" />
+      <h5 class="technology-comparison__name-tool">
+        {{ currentTool.name_tool }}
+      </h5>
+    </div>
     <div class="buttons-fixmme">
       <button
         v-for="category of currentTool.categories"
@@ -101,12 +104,10 @@ export default {
         copy.counts.HeadHunter[current.date_of_completion] =
           current.count_of_item
       }
-
       const sortedDates = [...this.dates].sort(
         (a, b) =>
           new Date(a.date_of_completion) - new Date(b.date_of_completion)
       )
-
       this.chart.data.labels = sortedDates.map(date => {
         const date2 = new Date(date.date_of_completion)
         // const day = String(date2.getDate()).padStart(2, '0')
@@ -130,14 +131,13 @@ export default {
         //   borderWidth: 10,
         // },
       ]
-
       this.chart.update()
     },
   },
   async mounted() {
-    import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(module => {
-      this.Chart = module.default
-    })
+    await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
+      module => (this.Chart = module.default)
+    )
     document.addEventListener('keydown', this.FIXMEF)
     this.chartNode = this.$refs.myChart
     document.addEventListener('keydown', this.addCloseFunction)
@@ -148,6 +148,7 @@ export default {
   unmounted() {
     document.removeEventListener('keydown', this.addCloseFunction)
     document.removeEventListener('keydown', this.FIXMEF)
+    this.chart?.destroy()
   },
   methods: {
     FIXMEF(event) {
@@ -211,6 +212,10 @@ export default {
 </script>
 
 <style>
+.technology-comparison__top {
+  display: flex;
+  align-items: center;
+}
 .technology-comparison-wrapper {
   width: 100%;
   max-width: 900px;

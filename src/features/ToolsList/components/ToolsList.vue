@@ -179,10 +179,9 @@ export default {
     async getLast() {
       this.selectedDate = await this.dates
     },
-    changeSelectedDate(selectDate) {
+    async changeSelectedDate(selectDate) {
       this.selectedDate = selectDate
-      useStore().loadTools(selectDate.id_date)
-      // FIXME ЗАПРОС
+      await useStore().loadTools(selectDate.id_date)
     },
     changeCurrentList(list) {
       this.currentList = list

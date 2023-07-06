@@ -47,10 +47,10 @@ export default {
       this.$emit('addToCompare', item)
     },
     selectFirstItem() {
-      this.searchInput = ''
       if (this.searchInput.length > 0 && this.filteredTools[0]) {
         this.$emit('selectFirstItem', this.filteredTools[0])
       }
+      this.searchInput = ''
     },
   },
 }

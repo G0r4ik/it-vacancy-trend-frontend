@@ -1,3 +1,8 @@
+import { Chart } from 'chart.js'
+import zoomPlugin from 'chartjs-plugin-zoom'
+
+Chart.register(zoomPlugin)
+
 function getLocale() {
   return navigator.languages && navigator.languages.length > 0
     ? navigator.languages[0]
@@ -47,6 +52,15 @@ export const createChart = (datasets, labels) => ({
       },
     },
     plugins: {
+      zoom: {
+        limits: { x: { min: 0, minRange: 10 } },
+        pan: { enabled: false, mode: 'x' },
+        zoom: {
+          wheel: { enabled: false },
+          pinch: { enabled: false },
+          mode: 'x',
+        },
+      },
       tooltip: {
         callbacks: {
           // beforeTitle: data => {},

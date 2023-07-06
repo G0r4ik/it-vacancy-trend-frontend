@@ -15,9 +15,14 @@
         <SelectTools
           :tools="tools"
           :compare-tools="compareTools"
-          @add-to-compare="addToCompare" />
+          @add-to-compare="addToCompare"
+          @select-first-item="addToCompare" />
       </div>
       <div v-show="compareTools.length > 0" class="compare__chart">
+        <LabelAndCheckbox
+          id="is-possible-scroll"
+          v-model="isPossibleScroll"
+          text="Is it possible to scroll graph" />
         <canvas ref="chartNode"></canvas>
       </div>
       <!-- <div class="compare__another"></div> -->
@@ -51,6 +56,7 @@ export default {
       Chart: null,
       chart: null,
       isShowTable: false,
+      isPossibleScroll: false,
       compareToolsIsLoad: false,
     }
   },
@@ -67,6 +73,14 @@ export default {
     },
     dates() {
       return useStore().dates
+    },
+  },
+
+  watch: {
+    isPossibleScroll(v) {
+      this.chart.options.plugins.zoom.zoom.wheel.enabled = v
+      this.chart.options.plugins.zoom.zoom.pinch.enabled = v
+      this.chart.update()
     },
   },
 
@@ -88,9 +102,6 @@ export default {
     this.createChar()
   },
   methods: {
-    selectFirstItem(item) {
-      this.addToCompare(item)
-    },
     async addItemsOfPopularList(toolNames) {
       for (const toolName of toolNames) {
         const findTool = this.tools.find(
@@ -173,6 +184,7 @@ export default {
 .compare__chart {
   width: 100%;
   height: 70vh !important;
+  max-height: 1000px;
   /* height: 50vh; */
   margin-bottom: calc(var(--unit) * 4);
 }

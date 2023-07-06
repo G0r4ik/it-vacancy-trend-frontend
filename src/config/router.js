@@ -8,7 +8,7 @@ const routes = [
     path: '/',
     component: PageToolsList,
     meta: {
-      title: 'List',
+      title: 'IT Vacancy Trend — IT Tech Frequency in Vacancies',
       description:
         'A list of technologies sorted by the number of occurrences in vacancies on the HeadHunter website',
     },

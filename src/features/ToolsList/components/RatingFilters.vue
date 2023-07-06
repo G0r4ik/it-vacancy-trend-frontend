@@ -54,39 +54,39 @@ export default {
     },
   },
 
-  mounted() {
-    import(/* webpackChunkName: "flatpickr" */ 'flatpickr').then(module => {
-      this.flatpickr = module.default
-      const availableDates = []
-      for (let i = 0; i < this.dates.length; i++) {
-        const { id_date, date_of_completion } = this.dates[i]
-        availableDates.push([id_date, date_of_completion])
-      }
+  async mounted() {
+    // eslint-disable-next-line promise/catch-or-return
+    const module = await import(/* webpackChunkName: "flatpickr" */ 'flatpickr')
+    this.flatpickr = module.default
+    const availableDates = []
+    for (let i = 0; i < this.dates.length; i++) {
+      const { id_date, date_of_completion } = this.dates[i]
+      availableDates.push([id_date, date_of_completion])
+    }
 
-      const { dates, $emit, selectedDate } = this
+    const { dates, $emit, selectedDate } = this
 
-      // eslint-disable-next-line unicorn/consistent-destructuring
-      const maxDate = this.dates.at(-1).date_of_completion
-      // eslint-disable-next-line unicorn/consistent-destructuring
-      const minDate = this.dates[0].date_of_completion
-      this.flatpickr('#select-date', {
-        minDate,
-        maxDate,
-        defaultDate: selectedDate.date_of_completion,
-        enable: availableDates.map(d => d[1]),
-        onChange(s, d) {
-          for (const date of dates) {
-            const fDate = new Date(date.date_of_completion)
-            const sDate = new Date(d)
-            const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
-            const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
-            if (firstDate === secondDate) {
-              $emit('changeSelectedDate', date)
-              break
-            }
+    // eslint-disable-next-line unicorn/consistent-destructuring
+    const maxDate = this.dates.at(-1).date_of_completion
+    // eslint-disable-next-line unicorn/consistent-destructuring
+    const minDate = this.dates[0].date_of_completion
+    this.flatpickr('#select-date', {
+      minDate,
+      maxDate,
+      defaultDate: selectedDate.date_of_completion,
+      enable: availableDates.map(d => d[1]),
+      onChange(d) {
+        for (const date of dates) {
+          const fDate = new Date(date.date_of_completion)
+          const sDate = new Date(d)
+          const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
+          const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
+          if (firstDate === secondDate) {
+            $emit('changeSelectedDate', date)
+            break
           }
-        },
-      })
+        }
+      },
     })
   },
 }
