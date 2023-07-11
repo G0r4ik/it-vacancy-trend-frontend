@@ -47,8 +47,8 @@ export const createChart = (datasets, labels) => ({
       y: {
         grid: { display: false },
         border: { display: false },
-        grace: '100%',
-        ticks: { precision: 0 },
+        // grace: '100%',
+        ticks: { precision: 0, beginAtZero: true, min: 0 },
       },
     },
     plugins: {

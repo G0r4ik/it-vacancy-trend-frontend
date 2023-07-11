@@ -14,6 +14,7 @@
       </div>
 
       <CategoriesTools
+        v-if="categories.length > 0"
         :categories="categories"
         :current-categories="currentCategories"
         @change-category="$emit('changeCategory', $event)" />

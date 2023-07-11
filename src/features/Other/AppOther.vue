@@ -60,11 +60,9 @@
   margin-bottom: var(--unit);
 }
 .other__inner {
-  padding: var(--unit);
   margin: var(--unit);
   font-family: monospace;
   line-height: 150%;
-  border: var(--border-width-extra-small) solid var(--color-border);
 }
 .other__p {
   margin-bottom: var(--unit);

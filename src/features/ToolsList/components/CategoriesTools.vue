@@ -5,15 +5,16 @@
         v-for="category of filteredCategories"
         :key="category.id_category"
         class="categories__item"
-        :class="
+        :class="[
           currentCategories.includes(category.id_category) &&
-          `categories__item_${category.id_category}`
-        "
+            `categories__item_${category.id_category}`,
+        ]"
         @click="$emit('changeCategory', category.id_category)">
         <button class="categories__button">
+          {{ hasClass(category.id_category) }}
           <img
             class="categories__icon"
-            :src="require(`../assets/categories/${category.id_category}.svg`)"
+            :src="getImg(category.id_category)"
             :alt="`logo ${category.name_category}`" />
           {{ category.name_category }}
         </button>
@@ -40,7 +41,9 @@ export default {
         (a, b) => a.name_category.length - b.name_category.length
       )
       const res = []
-      for (let i = 0; i < temporary.length / 2; i++) {
+      console.log(temporary.length)
+      for (let i = 0; i < temporary.length / 2 + 1; i++) {
+        console.log(temporary[i])
         if (temporary[i] === temporary.at(-i)) {
           res.push(temporary[i])
         } else {
@@ -51,7 +54,40 @@ export default {
     },
   },
 
-  methods: {},
+  methods: {
+    getCSS() {
+      const allCSS = [...document.styleSheets]
+        .map(styleSheet => {
+          try {
+            return [...styleSheet.cssRules].map(rule => rule.cssText).join('')
+          } catch (e) {
+            console.log(
+              'Access to stylesheet %s is denied. Ignoring...',
+              styleSheet.href
+            )
+          }
+        })
+        .filter(Boolean)
+        .join('\n')
+      return allCSS
+    },
+    hasClass(categoryId) {
+      if (!this.getCSS().includes(`categories__item_${categoryId}`)) {
+        console.log(1)
+        const style = document.createElement('style')
+        style.type = 'text/css'
+        style.innerHTML = `.categories__item_${categoryId} {   color: #8e9aaf; background: rgb(56 60 69 / 0.1); border: var(--border-width-small) solid #8e9aaf !important; }`
+        document.getElementsByTagName('head')[0].appendChild(style)
+      }
+    },
+    getImg(id_category) {
+      try {
+        return require(`../assets/categories/${id_category}.svg`)
+      } catch (error) {
+        return require(`../assets/categories/13.svg`)
+      }
+    },
+  },
 }
 </script>
 <style>

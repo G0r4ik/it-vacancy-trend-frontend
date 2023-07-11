@@ -156,9 +156,9 @@ export default {
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
     },
     async load(id_category) {
-      // console.log(
-      //   `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
-      // )
+      console.log(
+        `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
+      )
       // await api.setCategory(this.currentTool.id_tool, id_category)
     },
     async createChar(counts) {
