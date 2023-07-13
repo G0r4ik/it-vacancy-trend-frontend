@@ -41,9 +41,7 @@ export default {
         (a, b) => a.name_category.length - b.name_category.length
       )
       const res = []
-      console.log(temporary.length)
       for (let i = 0; i < temporary.length / 2 + 1; i++) {
-        console.log(temporary[i])
         if (temporary[i] === temporary.at(-i)) {
           res.push(temporary[i])
         } else {
@@ -73,7 +71,6 @@ export default {
     },
     hasClass(categoryId) {
       if (!this.getCSS().includes(`categories__item_${categoryId}`)) {
-        console.log(1)
         const style = document.createElement('style')
         style.type = 'text/css'
         style.innerHTML = `.categories__item_${categoryId} {   color: #8e9aaf; background: rgb(56 60 69 / 0.1); border: var(--border-width-small) solid #8e9aaf !important; }`

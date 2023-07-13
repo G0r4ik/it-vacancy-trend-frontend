@@ -234,7 +234,7 @@ export default {
   vertical-align: middle;
 }
 .rating-table__item-item-name {
-  cursor: y;
+  cursor: pointer;
 }
 .rating-table__item-star {
   margin-left: var(--unit);

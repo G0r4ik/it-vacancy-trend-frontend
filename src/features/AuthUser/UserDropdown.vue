@@ -1,27 +1,20 @@
 <template>
-  <ul v-if="showUserAction" class="user-dropdown">
-    <li class="user-dropdown__item">
-      <button class="user-dropdown__button" @click="showSignInModalFunction">
-        Войти
-      </button>
-    </li>
-    <li class="user-dropdown__item">
-      <button class="user-dropdown__button" @click="showSignUpModalFunction">
-        Зарегестрироваться
-      </button>
-    </li>
-    <li class="user-dropdown__item">
-      <button class="user-dropdown__button">Создать новый список</button>
-    </li>
-    <li class="user-dropdown__item">
-      <button class="user-dropdown__button">Выйти</button>
-    </li>
-  </ul>
-  <modal-wrapper
-    v-if="showSignUpModal"
-    @show-sign-up-modal-function="showSignUpModalFunction">
-    <AuthSignUp />
-  </modal-wrapper>
+  <div class="user-dropdown">
+    <ul v-if="showUserAction" class="user-dropdown__list">
+      <li v-if="!user" class="user-dropdown__item">
+        <router-link to="/auth" class="user-dropdown__button">
+          Войти или зарегестрироваться
+        </router-link>
+      </li>
+      <li v-if="user" class="user-dropdown__item">
+        <button class="user-dropdown__button">Создать новый список</button>
+      </li>
+      <li v-if="user" class="user-dropdown__item" @click="logout">
+        <button class="user-dropdown__button">Выйти</button>
+      </li>
+    </ul>
+  </div>
+
   <!-- <AuthSignIn
     v-if="showSignInModal"
     @showSignUpModalFunction="showSignUpModalFunction"
@@ -30,10 +23,9 @@
 </template>
 
 <script>
-import AuthSignUp from './AuthSignUp.vue'
+import { useStore } from '@/features/AuthUser'
 
 export default {
-  components: { AuthSignUp },
   props: { showUserAction: Boolean },
 
   data() {
@@ -44,7 +36,16 @@ export default {
     }
   },
 
+  computed: {
+    user() {
+      return useStore().user
+    },
+  },
+
   methods: {
+    logout() {
+      useStore().logout()
+    },
     showSignInModalFunction() {
       this.showSignInModal = true
       this.showSignUpModal = false
@@ -68,10 +69,12 @@ export default {
   display: flex;
   flex-direction: column;
   padding: var(--unit);
-  list-style-type: none;
   background: var(--color-background);
   border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--border-radius-extra-small);
+}
+.user-dropdown__list {
+  list-style-type: none;
 }
 .user-dropdown__item {
   margin-bottom: var(--unit);

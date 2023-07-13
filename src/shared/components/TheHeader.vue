@@ -47,28 +47,38 @@
         </nav>
         <div class="header__other">
           <ChangeTheme />
-          <!-- <button
+          <button
             class="header__user-button"
             @click="showUserAction = !showUserAction">
-            <IconUser />
-          </button> -->
+            <IconUser v-if="user" />
+            <IconUserOff v-else />
+          </button>
         </div>
       </div>
     </div>
   </header>
-  <!-- <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" /> -->
+  <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" />
 </template>
 
 <script>
-// import UserDropdown from '@/features/auth/UserDropdown.vue'
+import { UserDropdown } from '@/features/AuthUser'
+import { useStore } from '@/features/AuthUser'
 
 export default {
+  components: { UserDropdown },
+
   emits: ['changePage'],
 
   data() {
     return {
       showUserAction: false,
     }
+  },
+
+  computed: {
+    user() {
+      return useStore().user
+    },
   },
 
   methods: {
@@ -90,6 +100,9 @@ export default {
 </script>
 
 <style>
+.header {
+  height: var(--height-header);
+}
 .header__inner {
   display: grid;
   grid-template-columns: max-content max-content max-content;

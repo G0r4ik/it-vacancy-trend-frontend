@@ -150,9 +150,6 @@ export default {
   },
   // WHY TOP
   mounted() {
-    useStore().loadTools()
-    useStore().loadDates()
-
     api
       .getCategories()
       .then(result => {
@@ -161,6 +158,12 @@ export default {
         return result
       })
       .catch(error => console.log(error))
+
+    useStore()
+      .loadDates()
+      .then(() => {
+        useStore().loadTools(this.selectedDate.id_date)
+      })
   },
 
   methods: {

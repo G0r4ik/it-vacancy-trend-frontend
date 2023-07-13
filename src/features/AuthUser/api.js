@@ -2,27 +2,33 @@ import instance from '@/config/api.js'
 
 class API {
   async registrationUser(email, password) {
-    const user = await instance.post('registrationUser', {
-      email,
-      password,
-    })
-    return user.data
+    try {
+      const user = await instance.post('registration', {
+        email,
+        password,
+      })
+      return user.data
+    } catch (error) {
+      throw error.response.data.error
+    }
   }
 
   async loginUser(email, password) {
-    const user = await instance.post('loginUser', { email, password })
-    return user.data
+    try {
+      const user = await instance.post('login', { email, password })
+      return user.data
+    } catch (error) {
+      console.log(error.response.data)
+      throw error.response.data.error
+    }
   }
 
   async logoutUser() {
     await instance.post('logout')
   }
 
-  async refreshToken(refreshToken) {
-    const token = await instance.post('refreshToken', {
-      params: { refreshToken },
-    })
-    return token.data
+  async refreshToken() {
+    return instance.get('refresh_token')
   }
 }
 

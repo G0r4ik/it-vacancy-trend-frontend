@@ -1,75 +1,62 @@
 <template>
-  <form class="sign-up">
-    <h3 class="sign-up__title">Sign Up</h3>
-    <label for="sign-up-email" class="sign-up__label sign-up__label_email">
-      Email:
+  <div class="sign-in">
+    <form v-if="isCheckEmail" class="sign-in__inner">
+      <h3 class="sign-in__title">Зарегестрироваться</h3>
+      <label for="sign-in-login" class="sign-in__label sign-in__label_login">
+        Email:
+      </label>
       <input
-        id="sign-up-email"
+        id="sign-in-login"
         v-model="email"
-        type="email"
-        name="sign-up-email"
-        class="input sign-up__input sign-up__input_email" />
-    </label>
-    <label
-      for="sign-up-password"
-      class="sign-up__label sing-in__label_password">
-      Password:
+        type="text"
+        name="sign-in-login"
+        class="input sign-in__input" />
+      <label for="sign-in-password" class="sign-in__label"> Password: </label>
       <input
-        id="sign-up-password"
+        id="sign-in-password`"
         v-model="password"
-        type="password"
-        name="sign-up-password"
-        class="input sign-up__input sign-up__input_password" />
-    </label>
-    <label
-      for="sign-up-re-password"
-      class="sign-up__label sing-in__label_re-password">
-      Repeat the password:
-      <input
-        id="sign-up-re-password"
-        v-model="rePassword"
-        type="password"
-        name="sign-up-re-password"
-        class="input sign-up__input sign-up__input_re-password" />
-    </label>
-    <small v-if="error" class="sign-up__error">{{ error }}</small>
-    <button type="submit" class="sign-up__send" @click.prevent="singUp">
-      SignUp
-    </button>
-    <button
-      class="sign-up__button"
-      @click.prevent="$emit('showSignInModalFunction')">
-      есть аккаунт?
-    </button>
-  </form>
+        type="text"
+        name="sign-in-password"
+        class="input sign-in__input" />
+      <small class="sign-in__error">{{ error }}</small>
+      <button type="submit" class="sign-in__send" @click.prevent="singUp">
+        Sign up
+      </button>
+      <a
+        class="sign-in__FIXME"
+        tabindex="0"
+        @click.prevent="$emit('changeComponent', 'login')">
+        Есть аккаунт? Войдите в него.
+      </a>
+    </form>
+    <div v-else>Войдите на почту и перейдите по ссылке</div>
+  </div>
 </template>
 
 <script>
 import api from './api.js'
 
 export default {
-  emits: ['showSignInModalFunction'],
+  emits: ['changeComponent'],
   data() {
     return {
       email: '',
       password: '',
-      rePassword: '',
       error: '',
-      userData: null,
+      isCheckEmail: false,
     }
   },
   methods: {
     async singUp() {
       this.error = ''
-      if (this.password !== this.rePassword) {
-        return (this.error = 'passwords are different')
+      try {
+        await api.registrationUser(this.email, this.password)
+        // this.$emit('changeComponent', 'login')
+        // this.error = 'Войдите на почту и перейдите по ссылке'
+        this.isCheckEmail = true
+      } catch (error) {
+        this.error = error.message
       }
-
-      const result = await api.registrationUser(this.email, this.password)
-      if (result.error) {
-        return (this.error = result.error)
-      }
-      this.userData = result
     },
   },
 }
