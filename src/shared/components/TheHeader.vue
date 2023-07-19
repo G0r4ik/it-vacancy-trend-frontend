@@ -47,12 +47,12 @@
         </nav>
         <div class="header__other">
           <ChangeTheme />
-          <button
+          <!-- <button
             class="header__user-button"
             @click="showUserAction = !showUserAction">
             <IconUser v-if="user" />
             <IconUserOff v-else />
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -61,8 +61,7 @@
 </template>
 
 <script>
-import { UserDropdown } from '@/features/AuthUser'
-import { useStore } from '@/features/AuthUser'
+import { UserDropdown, useStore } from '@/features/AuthUser'
 
 export default {
   components: { UserDropdown },

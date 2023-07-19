@@ -13,6 +13,12 @@ class API {
     return tools.data
   }
 
+  // FIXME
+  async getOnlyTools() {
+    const tools = await instance.get('getOnlyTools')
+    return tools.data
+  }
+
   async getCategories() {
     const categories = await instance.get('getCategories')
     return categories.data

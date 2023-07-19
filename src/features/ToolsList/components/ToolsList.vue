@@ -121,11 +121,7 @@ export default {
         const categoryCheck = this.currentCategories.some(category =>
           t.categories?.find(cat => cat.id_category === category)
         )
-        if (t.categories) {
-          return inputCheck && categoryCheck
-        } else {
-          return inputCheck
-        }
+        return t.categories ? inputCheck && categoryCheck : inputCheck
       })
 
       if (this.sortList === 'name_tool') list.sort(this.sortName())
@@ -161,9 +157,7 @@ export default {
 
     useStore()
       .loadDates()
-      .then(() => {
-        useStore().loadTools(this.selectedDate.id_date)
-      })
+      .then(() => useStore().loadTools(this.selectedDate.id_date))
   },
 
   methods: {

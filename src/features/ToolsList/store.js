@@ -11,6 +11,7 @@ export const useStore = defineStore('store', {
 
   actions: {
     async loadTools(dateId) {
+      console.log(dateId)
       await api
         .getTools('Russia', 'HeadHunter', dateId)
         .then(res => {

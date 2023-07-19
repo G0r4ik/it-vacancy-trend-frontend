@@ -28,7 +28,12 @@ class API {
   }
 
   async refreshToken() {
-    return instance.get('refresh_token')
+    try {
+      return await instance.get('refresh_token')
+    } catch (error) {
+      console.log(error)
+      console.log('errior>')
+    }
   }
 }
 

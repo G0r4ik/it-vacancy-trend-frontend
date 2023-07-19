@@ -1,6 +1,6 @@
 <template>
   <div class="sign-in">
-    <form v-if="isCheckEmail" class="sign-in__inner">
+    <form v-if="!isCheckEmail" class="sign-in__inner">
       <h3 class="sign-in__title">Зарегестрироваться</h3>
       <label for="sign-in-login" class="sign-in__label sign-in__label_login">
         Email:

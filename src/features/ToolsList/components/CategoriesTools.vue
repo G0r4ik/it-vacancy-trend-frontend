@@ -58,7 +58,7 @@ export default {
         .map(styleSheet => {
           try {
             return [...styleSheet.cssRules].map(rule => rule.cssText).join('')
-          } catch (e) {
+          } catch {
             console.log(
               'Access to stylesheet %s is denied. Ignoring...',
               styleSheet.href
@@ -74,13 +74,13 @@ export default {
         const style = document.createElement('style')
         style.type = 'text/css'
         style.innerHTML = `.categories__item_${categoryId} {   color: #8e9aaf; background: rgb(56 60 69 / 0.1); border: var(--border-width-small) solid #8e9aaf !important; }`
-        document.getElementsByTagName('head')[0].appendChild(style)
+        document.querySelectorAll('head')[0].append(style)
       }
     },
     getImg(id_category) {
       try {
         return require(`../assets/categories/${id_category}.svg`)
-      } catch (error) {
+      } catch {
         return require(`../assets/categories/13.svg`)
       }
     },

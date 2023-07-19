@@ -42,17 +42,17 @@ export default {
   },
   methods: {
     sortTable(columnIndex) {
-      let tbody = document.querySelector('tbody')
-      let rows = Array.from(tbody.querySelectorAll('tr'))
+      const tbody = document.querySelector('tbody')
+      const rows = [...tbody.querySelectorAll('tr')]
       rows.sort((a, b) => {
         let aValue = a.cells[columnIndex].textContent.trim()
         let bValue = b.cells[columnIndex].textContent.trim()
-        aValue = parseInt(aValue.replace(/\s/g, ''), 10)
-        bValue = parseInt(bValue.replace(/\s/g, ''), 10)
+        aValue = parseInt(aValue.replaceAll(/\s/g, ''), 10)
+        bValue = parseInt(bValue.replaceAll(/\s/g, ''), 10)
         return this.sortDirection * (aValue - bValue)
       })
-      rows.forEach(row => tbody.removeChild(row))
-      rows.forEach(row => tbody.appendChild(row))
+      for (const row of rows) row.remove()
+      for (const row of rows) tbody.append(row)
       this.sortDirection *= -1
     },
     normalizeString(string) {

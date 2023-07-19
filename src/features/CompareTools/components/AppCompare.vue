@@ -58,6 +58,7 @@ export default {
       isShowTable: false,
       isPossibleScroll: false,
       compareToolsIsLoad: false,
+      tools: [],
     }
   },
   computed: {
@@ -68,9 +69,9 @@ export default {
     //       '<span style="font-weight: 700; color: var(--color-gray)">  &  </span> '
     //     )
     // },
-    tools() {
-      return useStore().tools
-    },
+    // tools() {
+    //   return useStore().tools
+    // },
     dates() {
       return useStore().dates
     },
@@ -86,7 +87,7 @@ export default {
 
   async mounted() {
     if (useStore().dates.length === 0) await useStore().loadDates()
-    if (useStore().tools.length === 0) await useStore().loadTools()
+    if (useStore().tools.length === 0) this.tools = await api.getOnlyTools()
     await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
       module => (this.Chart = module.default)
     )
