@@ -87,7 +87,11 @@ export default {
 
   async mounted() {
     if (useStore().dates.length === 0) await useStore().loadDates()
-    if (useStore().tools.length === 0) this.tools = await api.getOnlyTools()
+    if (useStore().tools.length === 0) {
+      this.tools = await api.getOnlyTools()
+    } else {
+      this.tools = useStore().tools
+    }
     await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
       module => (this.Chart = module.default)
     )
@@ -104,14 +108,18 @@ export default {
   },
   methods: {
     async addItemsOfPopularList(toolNames) {
+      console.log(toolNames)
       for (const toolName of toolNames) {
         const findTool = this.tools.find(
           item => item.name_tool.toLowerCase() === toolName.toLowerCase()
         )
+        console.log(findTool)
         await this.addToCompare(findTool)
       }
     },
     async addToCompare(tool) {
+      console.log(tool)
+
       this.compareTools.push(tool)
       const count = await api.getCountOfCurrentItem(tool.id_tool)
       tool.counts3 = count
