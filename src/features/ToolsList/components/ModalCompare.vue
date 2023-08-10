@@ -15,16 +15,9 @@
         {{ category.name_category }}
       </button>
     </div>
-    <AppSkeleton
-      v-if="!isLoaded"
-      width="100%"
-      height="435px"
-      :my-class="'skeleton__chart'"
-      display="inline-block"
-      br="0" />
-    <div v-show="isLoaded" class="technology-comparison__chart">
-      <canvas id="myChart" ref="myChart" width="800" height="300"></canvas>
-    </div>
+
+    <ChartItemCount :current-tools="[currentTool]" :dates="dates" />
+
     <button
       class="technology-comparison__button"
       @click="goToCompare(currentTool)">
@@ -62,10 +55,6 @@
 </template>
 
 <script>
-import { shallowRef } from 'vue'
-import api from '../api.js'
-import { formateDate, createChart } from '@/shared/helpers.js'
-
 export default {
   props: {
     categories: { type: Array, default: () => [] },
@@ -78,77 +67,15 @@ export default {
   data() {
     return {
       selectedTools: [],
-      chartNode: null,
-      chart: null,
-      isLoaded: false,
-      lastController: null,
-      Chart: null,
     }
   },
-  watch: {
-    async currentTool() {
-      const copy = { ...this.currentTool }
-      const controller = new AbortController()
-      if (!this.isLoaded) {
-        this.lastController.abort()
-      }
-      this.isLoaded = false
-      this.lastController = controller
-      const counts = await api.getCountOfCurrentItem(
-        this.currentTool.id_tool,
-        controller.signal
-      )
-      if (!counts) return
-      this.isLoaded = true
-      for (const current of counts) {
-        copy.counts.HeadHunter[current.date_of_completion] =
-          current.count_of_item
-      }
-      const sortedDates = [...this.dates].sort(
-        (a, b) =>
-          new Date(a.date_of_completion) - new Date(b.date_of_completion)
-      )
-      this.chart.data.labels = sortedDates.map(date => {
-        const date2 = new Date(date.date_of_completion)
-        // const day = String(date2.getDate()).padStart(2, '0')
-        // const month = String(date2.getMonth() + 1).padStart(2, '0')
-        // const year = String(date2.getFullYear()).padStart(2, '0')
-        //   // return `${year}-${month}-${day}`
-        return formateDate(date2)
-      })
-      this.chart.data.datasets = [
-        {
-          label: 'HHru',
-          data: Object.values(copy.counts.HeadHunter),
-          borderColor: ['rgba(255, 99, 132, 1)'],
-          fill: false,
-          // tension: 0.1,
-        },
-        // {
-        //   label: 'Indeed',
-        //   data: countsIndeed,
-        //   borderColor: ['rgba(54, 162, 235, 1)'],
-        //   borderWidth: 10,
-        // },
-      ]
-      this.chart.update()
-    },
-  },
-  async mounted() {
-    await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
-      module => (this.Chart = module.default)
-    )
+  mounted() {
     document.addEventListener('keydown', this.FIXMEF)
-    this.chartNode = this.$refs.myChart
     document.addEventListener('keydown', this.addCloseFunction)
-    const counts = await api.getCountOfCurrentItem(this.currentTool.id_tool)
-    this.isLoaded = true
-    this.createChar(counts)
   },
   unmounted() {
     document.removeEventListener('keydown', this.addCloseFunction)
     document.removeEventListener('keydown', this.FIXMEF)
-    this.chart?.destroy()
   },
   methods: {
     FIXMEF(event) {
@@ -160,39 +87,6 @@ export default {
         `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
       )
       // await api.setCategory(this.currentTool.id_tool, id_category)
-    },
-    async createChar(counts) {
-      const copy = { ...this.currentTool }
-      for (const current of counts) {
-        copy.counts.HeadHunter[current.date_of_completion] =
-          current.count_of_item
-      }
-      const context = this.chartNode
-      const sortedDates = [...this.dates]
-        .sort(
-          (a, b) =>
-            new Date(a.date_of_completion) - new Date(b.date_of_completion)
-        )
-        .map(i => formateDate(i.date_of_completion))
-      // eslint-disable-next-line no-new
-      // fix2
-      this.chart = shallowRef(
-        new this.Chart(
-          context,
-          createChart(
-            [
-              {
-                label: 'HHru',
-                data: Object.values(copy.counts.HeadHunter),
-                borderColor: ['rgba(255, 99, 132, 1)'],
-                fill: false,
-                // tension: 0.1,
-              },
-            ],
-            sortedDates
-          )
-        )
-      )
     },
     addCloseFunction(event) {
       if (event.key === 'Escape') {

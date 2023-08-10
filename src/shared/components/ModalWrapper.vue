@@ -65,6 +65,8 @@ export default {
   position: relative;
   max-height: 95vh;
   overflow-y: auto;
+  border-radius: 5px;
+  box-shadow: 0 0.1rem 1rem -0.5rem rgb(0 0 0 / 0.4);
 }
 .modal-wrapper__cross {
   position: absolute;

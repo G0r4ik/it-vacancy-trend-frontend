@@ -9,7 +9,10 @@
       class="c-checkbox-input"
       :name="id"
       @input="$emit('update:modelValue', $event.target.checked)" />
-    <div class="check">
+    <div
+      class="check"
+      tabindex="0"
+      @keydown.enter="$event.target.previousSibling.click()">
       <IconCheck />
     </div>
   </label>
@@ -41,6 +44,7 @@ export default {
 .check {
   position: relative;
   width: var(--icon-size);
+  min-width: var(--icon-size);
   height: var(--icon-size);
   margin-left: var(--unit);
   border: var(--border-width-small) solid var(--color-border);

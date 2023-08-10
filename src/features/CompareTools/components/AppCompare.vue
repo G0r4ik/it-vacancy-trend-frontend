@@ -19,18 +19,16 @@
           @select-first-item="addToCompare" />
       </div>
       <div v-show="compareTools.length > 0" class="compare__chart">
-        <LabelAndCheckbox
-          id="is-possible-scroll"
-          v-model="isPossibleScroll"
-          text="Is it possible to scroll graph" />
-        <canvas ref="chartNode"></canvas>
+        <div v-if="compareToolsIsLoad">
+          <ChartItemCount :current-tools="compareTools" :dates="dates" />
+        </div>
       </div>
       <!-- <div class="compare__another"></div> -->
-      <LabelAndCheckbox
+      <!-- <LabelAndCheckbox
         v-if="compareTools.length > 0"
         id="show-table"
         v-model="isShowTable"
-        text="Show table" />
+        text="Show table" /> -->
       <TableOfCountsOfItems
         v-if="isShowTable"
         :compare-tools="compareTools"
@@ -40,11 +38,8 @@
 </template>
 
 <script>
-import autocolors from 'chartjs-plugin-autocolors'
-import { shallowRef } from 'vue'
 import SelectTools from './SelectTools.vue'
-import { useStore, api } from '@/features/ToolsList'
-import { createChart, formateDate } from '@/shared/helpers.js'
+import { useStore } from '@/features/ToolsList'
 import ComparePopularSearches from './ComparePopularSearches.vue'
 
 export default {
@@ -52,109 +47,56 @@ export default {
   data() {
     return {
       compareTools: [],
-      chartNode: null,
-      Chart: null,
-      chart: null,
       isShowTable: false,
-      isPossibleScroll: false,
       compareToolsIsLoad: false,
-      tools: [],
     }
   },
   computed: {
-    // namesOfCompareTools() {
-    //   return this.compareTools
-    //     .map(tool => tool.name_tool)
-    //     .join(
-    //       '<span style="font-weight: 700; color: var(--color-gray)">  &  </span> '
-    //     )
-    // },
-    // tools() {
-    //   return useStore().tools
-    // },
     dates() {
       return useStore().dates
     },
-  },
-
-  watch: {
-    isPossibleScroll(v) {
-      this.chart.options.plugins.zoom.zoom.wheel.enabled = v
-      this.chart.options.plugins.zoom.zoom.pinch.enabled = v
-      this.chart.update()
+    tools() {
+      return useStore().tools
     },
   },
 
   async mounted() {
     if (useStore().dates.length === 0) await useStore().loadDates()
+
     if (useStore().tools.length === 0) {
-      this.tools = await api.getOnlyTools()
-    } else {
-      this.tools = useStore().tools
+      await useStore().loadTools(this.dates.at(-1).id_date)
     }
-    await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
-      module => (this.Chart = module.default)
-    )
-    this.Chart.register(autocolors)
-    this.chartNode = this.$refs.chartNode
+
     if (this.$route.query.q) {
       const items = this.$route.query.q.split(',')
+      const copy = []
       for (const tool of this.tools) {
-        if (items.includes(tool.name_tool)) this.compareTools.push(tool)
+        if (items.includes(tool.name_tool)) copy.push(tool)
       }
+      this.compareTools = copy
     }
     this.compareToolsIsLoad = true
-    this.createChar()
   },
   methods: {
     async addItemsOfPopularList(toolNames) {
-      console.log(toolNames)
+      let query = ''
       for (const toolName of toolNames) {
         const findTool = this.tools.find(
           item => item.name_tool.toLowerCase() === toolName.toLowerCase()
         )
-        console.log(findTool)
-        await this.addToCompare(findTool)
-      }
-    },
-    async addToCompare(tool) {
-      console.log(tool)
 
+        this.addToCompare(findTool, false)
+        query += `${findTool.name_tool},`
+      }
+      await this.$router.push({ path: '/compare', query: { q: query } })
+    },
+    async addToCompare(tool, isOnceFIXME = true) {
+      if (isOnceFIXME) {
+        const aaa = `${this.$route.query.q + tool.name_tool},`
+        await this.$router.push({ path: '/compare', query: { q: aaa } })
+      }
       this.compareTools.push(tool)
-      const count = await api.getCountOfCurrentItem(tool.id_tool)
-      tool.counts3 = count
-
-      const query = `${this.$route.query.q || ''}${tool.name_tool},`
-      this.$router.push({ path: '/compare', query: { q: query } })
-      if (this.chart) {
-        this.chart.data.datasets.push({
-          data: count.map(d => d.count_of_item),
-          label: tool.name_tool,
-          fill: false,
-        })
-        this.chart.update()
-      } else {
-        await this.createChar()
-      }
-    },
-    async createChar() {
-      const { dates, compareTools, chartNode } = this
-      const datasets = []
-      for (const item of compareTools) {
-        const count = await api.getCountOfCurrentItem(item.id_tool)
-        item.counts3 = count
-        datasets.push({
-          data: count.map(d => d.count_of_item),
-          label: item.name_tool,
-          fill: false,
-        })
-      }
-
-      if (datasets.length === 0) return
-
-      const dates2 = dates.map(date => formateDate(date.date_of_completion))
-      const createdChart = createChart(datasets, dates2)
-      this.chart = shallowRef(new this.Chart(chartNode, createdChart))
+      // tool.counts3 = count
     },
   },
 }
@@ -202,7 +144,6 @@ export default {
 }
 .compare__another {
 }
-
 .compare__variants {
   margin-bottom: calc(var(--unit) * 3);
 }

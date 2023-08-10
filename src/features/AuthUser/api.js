@@ -18,7 +18,6 @@ class API {
       const user = await instance.post('login', { email, password })
       return user.data
     } catch (error) {
-      console.log(error.response.data)
       throw error.response.data.error
     }
   }
