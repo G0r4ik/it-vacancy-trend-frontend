@@ -34,10 +34,21 @@ class API {
       const dates = await instance.get('getCountOfCurrentItem', {
         signal,
         // FIX тут хардкод!
-        params: { idTool, jobBoard: 'HeadHunter', region: 'Russia' },
+        params: { idTool, jobBoard: '1', region: '1' },
       })
       return dates.data
     } catch {}
+  }
+
+  async getEvents(idTool, region = 1, jobBoard = 1) {
+    try {
+      const events = await instance.get('getEventsOfCurrentItem', {
+        params: { idTool, region, jobBoard },
+      })
+      return events.data
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async setCategory(idTool, idCategory) {
