@@ -42,7 +42,8 @@
   --container-extra-large: 1400px;
   /* ICON */
   --icon-size-extra-small: 10px;
-  --icon-size-small: 20px;
+  --icon-size-small: 18px;
+  --icon-size: 24px;
   --icon-size-large: 30px;
   /* BORDER-RADIUS */
   --radius: 5px;
@@ -54,7 +55,6 @@
   --border-width-small: 2px;
   --border-width: 3px;
   /* Width */
-  --icon-size: 24px;
   --width-change-theme: 70px;
   --width-header: 115px;
   --width-ratin-item-category: 200px;

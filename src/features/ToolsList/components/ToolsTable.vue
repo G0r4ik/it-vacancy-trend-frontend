@@ -73,7 +73,19 @@
             </div>
           </td>
           <td class="rating-table__item rating-table__item_count">
-            {{ tool.counts.HeadHunter[selectedDate.id_date] ?? 0 }}
+            <div>
+              {{ tool.counts.HeadHunter[selectedDate.id_date] ?? 0 }}
+              <div v-if="tool.comparedToPastValue !== 0">
+                <IconArrow
+                  class="rating-table__item-fixme"
+                  :class="`rating-table__item-fixme_${
+                    tool.comparedToPastValue > 0 ? 1 : -1
+                  }`" />
+                <span class="rating-table__item-fixme-span">
+                  {{ tool.comparedToPastValue }}
+                </span>
+              </div>
+            </div>
           </td>
           <!-- <td class="rating-table__item">
             <button @click="$emit('addToStudiedTools', tool)">
@@ -216,6 +228,33 @@ export default {
   text-align: center;
   vertical-align: middle;
   border-bottom: var(--border-width-small) solid var(--color-border);
+}
+.rating-table__item_count div {
+  display: inline-flex;
+  align-items: center;
+}
+.rating-table__item-fixme-span {
+  font-size: var(--text-extra-small);
+  /* color: var(--color-border); */
+  /* font-weight: 700; */
+}
+.rating-table__item-fixme {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  margin-right: calc(var(--unit) / 2);
+  margin-left: var(--unit);
+}
+.rating-table__item-fixme_1 {
+  transform: rotate(0deg);
+}
+.rating-table__item-fixme_-1 {
+  transform: rotate(180deg);
+}
+.rating-table__item-fixme_-1 path {
+  stroke: red;
+}
+.rating-table__item-fixme_1 path {
+  stroke: green;
 }
 .rating-table__item_name {
   text-align: left;

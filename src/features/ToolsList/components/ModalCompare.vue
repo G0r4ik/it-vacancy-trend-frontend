@@ -5,6 +5,9 @@
       <h5 class="technology-comparison__name-tool">
         {{ currentTool.name_tool }}
       </h5>
+      <span class="technology-comparison__search-query">
+        ({{ currentTool.search_query }})
+      </span>
     </div>
     <div class="buttons-fixmme">
       <button
@@ -148,6 +151,13 @@ export default {
 }
 .technology-comparison__name-tool {
   font-size: var(--text-extra-large);
+}
+.technology-comparison__search-query {
+  margin-left: calc(var(--unit) * 2);
+  /* margin-top: 4px; */
+  font-weight: 700;
+  /* color: var(--color-border); */
+  font-size: var(--text-extra-small);
 }
 .technology-comparison__chart {
   margin-bottom: var(--unit);

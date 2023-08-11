@@ -59,7 +59,6 @@ export default {
       return useStore().tools
     },
   },
-
   async mounted() {
     if (useStore().dates.length === 0) await useStore().loadDates()
 
