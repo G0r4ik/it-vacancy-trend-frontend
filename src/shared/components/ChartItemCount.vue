@@ -170,15 +170,22 @@ export default {
             mode: 'index',
             intersect: false,
             callbacks: {
-              title: context => {
-                const { dataIndex } = context[0]
-                if (eventIndices.has(dataIndex)) {
-                  const event = specialEvents.find(
-                    event_ => dates[dataIndex] === event_
-                  )
-                  return `${context[0].label} \nEvent: ${event.events} `
+              label: context => {
+                const { dataIndex, dataset } = context
+                const tool = this.currentTools2.find(
+                  item => dataset.label === item.name_tool
+                )
+                let event2 = null
+                for (const event of tool.events) {
+                  if (event.id_date === dates[dataIndex].id_date) {
+                    event2 = event
+                    console.log(event2)
+                    break
+                  }
                 }
-                return context.formattedValue
+                if (dataset.pointRadius[dataIndex]) {
+                  return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.event_text} `
+                }
               },
             },
           },
