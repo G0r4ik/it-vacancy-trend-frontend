@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename)
 
 const config = {
   mode: isDevelopment ? 'development' : 'production',
-  devtool: isDevelopment ? 'eval-cheap-source-map' : false, // inline-source-map'
+  devtool: isDevelopment ? 'source-map' : 'source-map', // inline-source-map'
   context: path.resolve(__dirname),
 
   output: {

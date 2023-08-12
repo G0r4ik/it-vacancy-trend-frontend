@@ -12,6 +12,7 @@
           <button
             class="menu__button"
             type="button"
+            aria-label="menu__list"
             aria-expanded="false"
             aria-controls="menu__list"
             @click="showMenuFunction">

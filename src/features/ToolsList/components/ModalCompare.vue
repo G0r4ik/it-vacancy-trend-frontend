@@ -2,9 +2,9 @@
   <div class="technology-comparison">
     <div class="technology-comparison__top">
       <ControversialWord v-if="currentTool.is_controversial_word" />
-      <h5 class="technology-comparison__name-tool">
+      <h2 class="technology-comparison__name-tool">
         {{ currentTool.name_tool }}
-      </h5>
+      </h2>
       <span class="technology-comparison__search-query">
         ({{ currentTool.search_query }})
       </span>

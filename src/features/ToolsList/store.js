@@ -16,14 +16,16 @@ export const useStore = defineStore('store', {
         .then(res => {
           this.tools = res
           this.isToolsLoaded = true
+          for (const tool of this.tools) {
+            const [a, b] = Object.values(tool.counts.HeadHunter)
+            tool.comparedToPastValue = b - a
+          }
 
           const favTool = localStorage.getItem('favoritesTools')
           if (!favTool) return res
           const idsOfFav = favTool.split(' ')
           for (const tool of this.tools) {
             if (idsOfFav.includes(String(tool.id_tool))) tool.isFav = true
-            const [a, b] = Object.values(tool.counts.HeadHunter)
-            tool.comparedToPastValue = b - a
           }
           return res
         })
