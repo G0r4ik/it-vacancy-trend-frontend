@@ -12,11 +12,11 @@
         v-model="isCanScroll"
         class-label="chart-settings-count__label"
         text=" разрешить скролл" />
-      <!-- <labelAndCheckbox
+      <labelAndCheckbox
         id="is-using-contrast-color"
         v-model="isUsingContrastColor"
         class-label="chart-settings-count__label"
-        text="использовать контрасные цвета вместо уникальных блеклых?" /> -->
+        text="использовать контрасные цвета вместо уникальных блеклых?" />
       <labelAndCheckbox
         id="is-show-by-week"
         v-model="isShowByWeek"
@@ -33,17 +33,15 @@
   <AppSkeleton
     v-if="!isLoaded"
     width="100%"
-    height="435px"
+    :height="`30vh`"
     :my-class="'skeleton__chart'"
-    display="inline-block"
+    display="block"
     br="0" />
   <div v-if="isLoaded" class="technology-comparison__chart">
     <LineChart
       id="my-chart-id"
       :options="config"
-      :data="{ datasets: datasets2, labels: labels2 }"
-      width="800"
-      height="300" />
+      :data="{ datasets: datasets2, labels: labels2 }" />
   </div>
 </template>
 
@@ -60,6 +58,7 @@ export default {
   props: {
     currentTools: { type: Array, default: Array },
     dates: { type: Array, default: () => [] },
+    isShowLegend: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -86,18 +85,15 @@ export default {
       const copy = JSON.parse(JSON.stringify(this.datasets))
 
       for (let i = 0; i < this.datasets.length; i++) {
-        const extendedColors = []
         const colorIndex = i % colors.length
-        extendedColors.push(colors[colorIndex])
-        const item = copy[i]
         if (this.isUsingContrastColor) {
-          item.borderColor = extendedColors[i]
-          item.backgroundColor = extendedColors[i]
-          item.pointBackgroundColor = extendedColors[i]
+          copy[i].borderColor = colors[colorIndex]
+          copy[i].backgroundColor = colors[colorIndex]
+          copy[i].pointBackgroundColor = colors[colorIndex]
         } else {
-          delete item.borderColor
-          delete item.backgroundColor
-          delete item.pointBackgroundColor
+          delete copy[i].borderColor
+          delete copy[i].backgroundColor
+          delete copy[i].pointBackgroundColor
         }
 
         const points = this.dates.map(date => {
@@ -108,8 +104,9 @@ export default {
             : 0
         })
 
-        item.pointRadius = this.isShowEvents && !this.isShowByWeek ? points : []
-        item.data = this.isShowByWeek
+        copy[i].pointRadius =
+          this.isShowEvents && !this.isShowByWeek ? points : []
+        copy[i].data = this.isShowByWeek
           ? Object.values(this.currentTools2[i].countOfWeeks.HeadHunter)
           : Object.values(this.currentTools2[i].counts.HeadHunter)
       }
@@ -128,11 +125,7 @@ export default {
     },
     config() {
       console.log('computed config change')
-      const { dates, isCanScroll } = this
-      const specialEvents = dates.filter(date => date.events)
-      const eventIndices = new Set(
-        specialEvents.map(event => dates.indexOf(event))
-      )
+      const { dates, isCanScroll, isShowLegend } = this
 
       return {
         hover: { mode: 'nearest', intersect: false },
@@ -163,7 +156,7 @@ export default {
           },
         },
         plugins: {
-          // legend: { display: isUsingContrastColor },
+          legend: { display: isShowLegend },
           // autocolors: !isUsingContrastColor,
           // colors: { enabled: isUsingContrastColor },
           tooltip: {
@@ -179,7 +172,6 @@ export default {
                 for (const event of tool.events) {
                   if (event.id_date === dates[dataIndex].id_date) {
                     event2 = event
-                    console.log(event2)
                     break
                   }
                 }
@@ -212,6 +204,12 @@ export default {
         this.createChar()
       },
       deep: true,
+    },
+    isUsingContrastColor(v) {
+      if (v === false) {
+        this.isLoaded = false
+        setTimeout(() => (this.isLoaded = true), 0)
+      }
     },
   },
   async mounted() {
@@ -344,6 +342,9 @@ export default {
 }
 .chart-settings-count .chart-settings-count__summary::-webkit-details-marker {
   display: none;
+}
+.technology-comparison__chart {
+  height: 30vh;
 }
 </style>
 <!-- 414 -->

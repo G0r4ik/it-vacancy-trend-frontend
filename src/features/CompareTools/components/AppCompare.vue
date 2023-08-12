@@ -20,7 +20,10 @@
       </div>
       <div v-show="compareTools.length > 0" class="compare__chart">
         <div v-if="compareToolsIsLoad">
-          <ChartItemCount :current-tools="compareTools" :dates="dates" />
+          <ChartItemCount
+            :current-tools="compareTools"
+            :dates="dates"
+            :is-show-legend="true" />
         </div>
       </div>
       <!-- <div class="compare__another"></div> -->

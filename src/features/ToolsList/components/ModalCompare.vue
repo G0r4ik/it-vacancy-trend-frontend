@@ -159,9 +159,6 @@ export default {
   /* color: var(--color-border); */
   font-size: var(--text-extra-small);
 }
-.technology-comparison__chart {
-  margin-bottom: var(--unit);
-}
 #myChart {
   /* width: 100% !important; */
   /* height: 100% !important; */
@@ -183,7 +180,7 @@ export default {
   }
   .skeleton__chart {
     /* display: none !important; */
-    height: 165px !important;
+    /* height: 165px !important; */
   }
 }
 </style>
