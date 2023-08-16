@@ -6,9 +6,9 @@ class API {
     return c.data
   }
 
-  async getTools(region, jobBoard, dateId) {
+  async getTools(dateId, jobBoardRegion = 1) {
     const tools = await instance.get('getTools', {
-      params: { region, jobBoard, dateId },
+      params: { jobBoardRegion, dateId },
     })
     return tools.data
   }

@@ -262,8 +262,7 @@ export default {
 
       for (const item of currentTools2) {
         const counts = await api.getCountOfCurrentItem(item.id_tool)
-        const events = await api.getEvents(item.id_tool)
-        item.events = events
+
         for (const count of counts) {
           item.counts.HeadHunter[count.date_of_completion] = count.count_of_item
         }

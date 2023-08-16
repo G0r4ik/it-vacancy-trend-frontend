@@ -12,8 +12,8 @@ export const useStore = defineStore('store', {
   actions: {
     async loadTools(dateId) {
       await api
-        .getTools('Russia', 'HeadHunter', dateId)
-        .then(res => {
+        .getTools(dateId)
+        .then(async res => {
           this.tools = res
           this.isToolsLoaded = true
           for (const tool of this.tools) {

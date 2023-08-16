@@ -61,6 +61,15 @@ export default {
     tools() {
       return useStore().tools
     },
+    routeQ() {
+      return this.$route.query.q
+    },
+  },
+  watch: {
+    routeQ(v) {
+      console.log(v)
+      this.nameToObject()
+    },
   },
   async mounted() {
     if (useStore().dates.length === 0) await useStore().loadDates()
@@ -68,18 +77,18 @@ export default {
     if (useStore().tools.length === 0) {
       await useStore().loadTools(this.dates.at(-1).id_date)
     }
-
-    if (this.$route.query.q) {
-      const items = this.$route.query.q.split(',')
-      const copy = []
-      for (const tool of this.tools) {
-        if (items.includes(tool.name_tool)) copy.push(tool)
-      }
-      this.compareTools = copy
-    }
+    this.nameToObject()
     this.compareToolsIsLoad = true
   },
   methods: {
+    nameToObject() {
+      const items = this.routeQ.split(',')
+      this.compareTools = []
+      for (const tool of this.tools) {
+        if (items.includes(tool.name_tool)) this.compareTools.push(tool)
+      }
+      // this.compareTools = copy
+    },
     async addItemsOfPopularList(toolNames) {
       let query = ''
       for (const toolName of toolNames) {
@@ -88,15 +97,21 @@ export default {
         )
 
         this.addToCompare(findTool, false)
-        query += `${findTool.name_tool},`
+        query += `,${findTool.name_tool}`
       }
-      await this.$router.push({ path: '/compare', query: { q: query } })
+      await this.$router.push({
+        path: '/compare',
+        query: { q: query.slice(1) },
+      })
     },
     async addToCompare(tool, isOnceFIXME = true) {
       if (isOnceFIXME) {
-        const aaa = `${this.$route.query.q + tool.name_tool},`
-        await this.$router.push({ path: '/compare', query: { q: aaa } })
+        const qParameter = this.$route.query.q || ''
+        const separator = qParameter ? ',' : ''
+        const q = `${qParameter}${separator}${tool.name_tool}`
+        await this.$router.push({ path: '/compare', query: { q } })
       }
+      console.log()
       this.compareTools.push(tool)
       // tool.counts3 = count
     },
