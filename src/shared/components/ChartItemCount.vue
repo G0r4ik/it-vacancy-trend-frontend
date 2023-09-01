@@ -49,7 +49,7 @@
 import zoomPlugin from 'chartjs-plugin-zoom'
 import autocolors from 'chartjs-plugin-autocolors'
 import { Line as LineChart } from 'vue-chartjs'
-import { api } from '@/features/ToolsList'
+import { api, useStore } from '@/features/ToolsList'
 import { formateDate } from '@/shared/helpers.js'
 import { colors } from '@/shared/consts.js'
 
@@ -58,7 +58,8 @@ export default {
   props: {
     currentTools: { type: Array, default: Array },
     dates: { type: Array, default: () => [] },
-    isShowLegend: { type: Boolean, default: false },
+    isShowLegend: { type: Boolean, default: true },
+    isShowJbr: { type: Boolean, default: true },
   },
   data() {
     return {
@@ -78,7 +79,6 @@ export default {
     }
   },
   computed: {
-    // !!!
     datasets2() {
       console.log('computed datasets change')
 
@@ -96,19 +96,21 @@ export default {
           delete copy[i].pointBackgroundColor
         }
 
-        const points = this.dates.map(date => {
-          return this.currentTools2[i].events
-            .map(i => i.id_date)
-            .includes(date.id_date)
-            ? 10
-            : 0
-        })
+        // const points = this.dates.map(date => {
+        //   return this.currentTools2[i].events
+        //     .map(i => i.idDate)
+        //     .includes(date.idDate)
+        //     ? 10
+        //     : 0
+        // })
 
-        copy[i].pointRadius =
-          this.isShowEvents && !this.isShowByWeek ? points : []
-        copy[i].data = this.isShowByWeek
-          ? Object.values(this.currentTools2[i].countOfWeeks.HeadHunter)
-          : Object.values(this.currentTools2[i].counts.HeadHunter)
+        // copy[i].pointRadius =
+        //   this.isShowEvents && !this.isShowByWeek ? points : []
+        // copy[i].data = this.isShowByWeek
+        //   ? Object.values(
+        //       this.currentTools2[i].countOfWeeks[`HeadHunter-Russia`]
+        //     )
+        //   : Object.values(this.currentTools2[i].counts[`HeadHunter-Russia`])
       }
 
       return copy
@@ -121,7 +123,7 @@ export default {
       }
       return this.isShowByWeek
         ? Object.keys(byweek)
-        : this.dates.map(item => formateDate(item.date_of_completion))
+        : this.dates.map(item => formateDate(item.dateOfCompletion))
     },
     config() {
       console.log('computed config change')
@@ -163,22 +165,35 @@ export default {
             mode: 'index',
             intersect: false,
             callbacks: {
-              label: context => {
-                const { dataIndex, dataset } = context
-                const tool = this.currentTools2.find(
-                  item => dataset.label === item.name_tool
-                )
-                let event2 = null
-                for (const event of tool.events) {
-                  if (event.id_date === dates[dataIndex].id_date) {
-                    event2 = event
-                    break
-                  }
-                }
-                if (dataset.pointRadius[dataIndex]) {
-                  return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.event_text} `
-                }
-              },
+              // label: context => {
+              //   const { dataIndex, dataset } = context
+              //   console.log(dataset)
+              //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
+              //     const jobBoardRegion = this.currentJobBoardsRegions[i]
+              //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
+              //     const a = useStore().jobBoardsRegions.find(
+              //       i => +i.id === +jobBoardRegion
+              //     )
+              //     const tool = this.currentTools2.find(
+              //       item =>
+              //         dataset.label ===
+              //         `${item.nameTool}(${a.jobBoard}-${a.region})`
+              //     )
+              //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
+              //     let event2 = null
+              //     if (tool) {
+              //       for (const event of tool.events) {
+              //         if (event.idDate === dates[dataIndex].idDate) {
+              //           event2 = event
+              //           break
+              //         }
+              //       }
+              //     }
+              //     // if (dataset.pointRadius[dataIndex]) {
+              //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
+              //     // }
+              //   }
+              // },
             },
           },
           zoom: {
@@ -192,6 +207,9 @@ export default {
           },
         },
       }
+    },
+    currentJobBoardsRegions() {
+      return useStore().currentJobBoardsRegions
     },
   },
   watch: {
@@ -224,8 +242,8 @@ export default {
   methods: {
     sortedDate(dates) {
       const sortedDates = [...dates].sort((a, b) => {
-        const dateA = new Date(a.date_of_completion)
-        const dateB = new Date(b.date_of_completion)
+        const dateA = new Date(a.dateOfCompletion)
+        const dateB = new Date(b.dateOfCompletion)
         return dateA - dateB
       })
       return sortedDates
@@ -242,14 +260,14 @@ export default {
       return 1 + Math.ceil((firstThursday - target) / 604_800_000) // 604800000 = 7 * 24 * 3600 * 1000
     },
     groupweek(value, byweek) {
-      const d = new Date(value.date_of_completion)
+      const d = new Date(value.dateOfCompletion)
       const weekKey = `${d.getFullYear()}-${this.getWeekNumber(d)}`
       if (!byweek[weekKey]) byweek[weekKey] = []
-      byweek[weekKey].push(value.id_date)
+      byweek[weekKey].push(value.idDate)
     },
     // !!!
     async createChar() {
-      const { dates, currentTools2 } = this
+      const { dates, currentTools2, isShowJbr } = this
       this.isLoaded = false
       const datasets = []
       const byweek = {}
@@ -259,30 +277,35 @@ export default {
       }
 
       let i = -1
-
       for (const item of currentTools2) {
-        const counts = await api.getCountOfCurrentItem(item.id_tool)
+        for (const jbr of this.currentJobBoardsRegions) {
+          const counts2 = await api.getCountOfCurrentItem(item.idTool, jbr)
 
-        for (const count of counts) {
-          item.counts.HeadHunter[count.date_of_completion] = count.count_of_item
-        }
-        datasets.push({
-          data: Object.values(item.counts.HeadHunter),
-          label: item.name_tool,
-          fill: false,
-        })
-        item.countOfWeeks = { HeadHunter: {} }
-        for (const date of Object.values(byweek)) {
-          item.countOfWeeks.HeadHunter[++i] = []
-          for (const date2 of date) {
-            item.countOfWeeks.HeadHunter[i].push(item.counts.HeadHunter[date2])
+          item.counts[jbr] = {}
+          for (let i = 0; i < counts2.length; i++) {
+            item.counts[jbr][this.dates[i]?.idDate] = counts2[i]
           }
-          const l1 = item.countOfWeeks.HeadHunter[i].filter(i2 => i2 !== null)
-          const l2 = item.countOfWeeks.HeadHunter[i].reduce(
-            (accumulator, item2) => (accumulator += item2),
-            0
-          )
-          item.countOfWeeks.HeadHunter[i] = Math.round(l2 / l1.length)
+          const a = useStore().jobBoardsRegions.find(i => +i.id === +jbr)
+          datasets.push({
+            data: Object.values(item.counts[jbr]),
+            label: isShowJbr
+              ? `${item.nameTool}(${a.jobBoard}-${a.region})`
+              : item.nameTool,
+            fill: false,
+          })
+          item.countOfWeeks = { [jbr]: {} }
+          for (const date of Object.values(byweek)) {
+            item.countOfWeeks[jbr][++i] = []
+            for (const date2 of date) {
+              item.countOfWeeks[jbr][i].push(item.counts[jbr][date2])
+            }
+            const l1 = item.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
+            const l2 = item.countOfWeeks[jbr][i].reduce(
+              (accumulator, item2) => (accumulator += item2),
+              0
+            )
+            item.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
+          }
         }
       }
 

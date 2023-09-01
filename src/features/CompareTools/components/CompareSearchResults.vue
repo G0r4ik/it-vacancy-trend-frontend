@@ -8,12 +8,12 @@
       </div>
       <div
         v-for="tool of filteredTools"
-        :key="tool.id_tool"
+        :key="tool.idTool"
         tabindex="0"
         class="search-result__item"
         @click="$emit('addToCompare', tool)"
         @keydown.enter="$emit('addToCompare', tool)">
-        {{ tool.name_tool }}
+        {{ tool.nameTool }}
       </div>
     </div>
   </div>

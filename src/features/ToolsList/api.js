@@ -6,16 +6,10 @@ class API {
     return c.data
   }
 
-  async getTools(dateId, jobBoardRegion = 1) {
+  async getTools(idDate, idJobBoardsRegions) {
     const tools = await instance.get('getTools', {
-      params: { jobBoardRegion, dateId },
+      params: { idJobBoardsRegions, idDate },
     })
-    return tools.data
-  }
-
-  // FIXME
-  async getOnlyTools() {
-    const tools = await instance.get('getOnlyTools')
     return tools.data
   }
 
@@ -24,37 +18,41 @@ class API {
     return categories.data
   }
 
-  async getDates(id_date) {
-    const dates = await instance.get('getDates', { params: { id_date } })
+  async getDates() {
+    const dates = await instance.get('getDates')
     return dates.data
   }
 
-  async getCountOfCurrentItem(idTool, signal) {
+  async getCountOfCurrentItem(idTool, idJobBoardsRegions, signal) {
     try {
       const dates = await instance.get('getCountOfCurrentItem', {
         signal,
-        // FIX тут хардкод!
-        params: { idTool, jobBoard: '1', region: '1' },
+        params: { idTool, idJobBoardsRegions },
       })
       return dates.data
-    } catch {}
-  }
-
-  async getEvents(idTool, region = 1, jobBoard = 1) {
-    try {
-      const events = await instance.get('getEventsOfCurrentItem', {
-        params: { idTool, region, jobBoard },
-      })
-      return events.data
     } catch (error) {
       console.log(error)
     }
   }
 
-  async setCategory(idTool, idCategory) {
-    await instance.get('aaaa2', {
-      params: { idTool, idCategory },
-    })
+  async getJobBoardsRegions() {
+    try {
+      const response = await instance.get('getJobBoardsRegions')
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async getLastCountOfAllItems(idDate, idJobBoardsRegions) {
+    try {
+      const response = await instance.get('getCountOfCurrentDate', {
+        params: { idDate, idJobBoardsRegions },
+      })
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

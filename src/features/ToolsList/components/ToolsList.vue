@@ -16,7 +16,7 @@
         categories.length === 0 ||
         !currentCategories ||
         dates.length < 0 ||
-        !selectedDate.id_date
+        !selectedDate.idDate
       "
       width="100%"
       height="181px"
@@ -24,15 +24,15 @@
       br="var(--radius)" />
 
     <RatingFilters
-      v-if="dates.length > 0 && selectedDate.id_date && currentCategories"
+      v-if="dates.length > 0 && selectedDate.idDate && currentCategories"
       :categories="categories"
       :current-categories="currentCategories"
       :dates="dates"
-      :selected-date="selectedDate"
       :search-input="searchInput"
       @change-category="changeCategory"
       @change-search="changeSearch"
       @change-selected-date="changeSelectedDate" />
+    <JobBoardsRegions v-if="tools.length > 0" />
     <RatingSelectList
       :list="currentList"
       @change-current-list="changeCurrentList" />
@@ -52,7 +52,6 @@
       :filtered-list="filteredList"
       :page="pagination.page"
       :items-per-page="pagination.itemsPerPage"
-      :selected-date="selectedDate"
       :pagination-tools="paginationTools"
       :tools="paginationTools"
       :dates="dates"
@@ -74,18 +73,18 @@
 <script>
 import RatingFilters from './RatingFilters.vue'
 import RatingSelectList from './RatingSelectList.vue'
+import JobBoardsRegions from './JobBoardsRegions.vue'
 import ToolsTable from './ToolsTable.vue'
 import api from '../api.js'
 import { useStore } from '../store.js'
 
 export default {
-  components: { ToolsTable, RatingFilters, RatingSelectList },
+  components: { ToolsTable, RatingFilters, RatingSelectList, JobBoardsRegions },
 
   data() {
     return {
       pagination: { page: 1, itemsPerPage: 50 },
       categories: [],
-      selectedDate: { id_date: null, date_of_complition: null },
       currentCategories: [],
       searchInput: '',
       sortList: '',
@@ -112,23 +111,27 @@ export default {
           this.pagination.itemsPerPage
       )
     },
+    selectedDate() {
+      return useStore().selectedDate
+    },
     filteredList() {
       let list = this.tools.filter(t => {
-        const inputCheck = t.name_tool
+        const inputCheck = t.nameTool
           .toLowerCase()
           .includes(this.searchInput.toLowerCase())
 
         const categoryCheck = this.currentCategories.some(category =>
-          t.categories?.find(cat => cat.id_category === category)
+          t.categories?.find(cat => cat.idCategory === category)
         )
         return t.categories ? inputCheck && categoryCheck : inputCheck
       })
 
-      if (this.sortList === 'name_tool') list.sort(this.sortName())
-      if (this.sortList === 'id_category') {
+      if (this.sortList === 'nameTool') list.sort(this.sortName())
+      if (this.sortList === 'idCategory') {
         list.sort(this.sortCategory())
       }
-      if (this.sortList === 'HeadHunter') list.sort(this.sortCount())
+      if (Number.isFinite(this.sortList))
+        list.sort(this.sortCount(this.sortList))
       if (this.currentList === 'favoritesTools') {
         list = list.filter(t => t.isFav)
       }
@@ -141,7 +144,7 @@ export default {
   // WHY BOTTOM
   watch: {
     dates(newValue) {
-      this.selectedDate = newValue.at(-1)
+      useStore().selectedDate = newValue.at(-1)
     },
   },
   // WHY TOP
@@ -150,14 +153,18 @@ export default {
       .getCategories()
       .then(result => {
         this.categories = result
-        this.currentCategories = result.map(c => c.id_category)
+        this.currentCategories = result.map(c => c.idCategory)
         return result
       })
       .catch(error => console.log(error))
 
     useStore()
-      .loadDates()
-      .then(() => useStore().loadTools(this.selectedDate.id_date))
+      .loadJobBoardsRegions()
+      .then(() => {
+        useStore()
+          .loadDates()
+          .then(() => useStore().loadTools(this.selectedDate.idDate))
+      })
   },
 
   methods: {
@@ -167,18 +174,18 @@ export default {
     },
     clearFilters() {
       this.searchInput = ''
-      this.currentCategories = this.categories.map(item => item.id_category)
+      this.currentCategories = this.categories.map(item => item.idCategory)
       this.currentList = 'tools'
     },
     async getDates() {
       this.dates = await useStore().dates
     },
     async getLast() {
-      this.selectedDate = await this.dates
+      useStore().selectedDate = await this.dates
     },
     async changeSelectedDate(selectDate) {
-      this.selectedDate = selectDate
-      await useStore().loadTools(selectDate.id_date)
+      useStore().selectedDate = selectDate
+      await useStore().loadTools(selectDate.idDate)
     },
     changeCurrentList(list) {
       this.currentList = list
@@ -189,7 +196,7 @@ export default {
     changeCategory(category) {
       const index = this.currentCategories.indexOf(category)
       if (category === 'all' && this.currentCategories.length === 0) {
-        this.currentCategories = this.categories.map(c => c.id_category)
+        this.currentCategories = this.categories.map(c => c.idCategory)
       } else if (category === 'all' && this.currentCategories.length > 0) {
         this.currentCategories = []
       } else if (category !== 'all' && index === -1) {
@@ -202,31 +209,31 @@ export default {
       const { directionsForSorting } = this
       return function sortName(a, b) {
         return directionsForSorting === 'DESC'
-          ? a.name_tool.localeCompare(b.name_tool)
-          : b.name_tool.localeCompare(a.name_tool)
+          ? a.nameTool.localeCompare(b.nameTool)
+          : b.nameTool.localeCompare(a.nameTool)
       }
     },
     sortCategory() {
       const { directionsForSorting } = this
       return function sortCategory(a, b) {
         return directionsForSorting === 'DESC'
-          ? a.category.name_category.localeCompare(b.category.name_category)
-          : b.category.name_category.localeCompare(a.category.name_category)
+          ? a.category.nameCategory.localeCompare(b.category.nameCategory)
+          : b.category.nameCategory.localeCompare(a.category.nameCategory)
       }
     },
-    sortCount() {
+    sortCount(jbr) {
       const { directionsForSorting, selectedDate } = this
-      const { id_date } = selectedDate
+      const { idDate } = selectedDate
       return function sortCount(a, b) {
-        if (!b.counts.HeadHunter[id_date]) {
-          b.counts.HeadHunter[id_date] = 0
+        if (!b.counts[jbr][idDate]) {
+          b.counts[jbr][idDate] = 0
         }
-        if (!a.counts.HeadHunter[id_date]) {
-          a.counts.HeadHunter[id_date] = 0
+        if (!a.counts[jbr][idDate]) {
+          a.counts[jbr][idDate] = 0
         }
         return directionsForSorting === 'DESC'
-          ? a.counts.HeadHunter[id_date] - b.counts.HeadHunter[id_date]
-          : b.counts.HeadHunter[id_date] - a.counts.HeadHunter[id_date]
+          ? a.counts[jbr][idDate] - b.counts[jbr][idDate]
+          : b.counts[jbr][idDate] - a.counts[jbr][idDate]
       }
     },
     listSort(v = this.sortList, saveSort = false) {
@@ -242,17 +249,17 @@ export default {
         const f = localStorage
           .getItem('favoritesTools')
           .split(' ')
-          .filter(t => +t !== tool.id_tool)
+          .filter(t => +t !== tool.idTool)
           .join(' ')
         localStorage.setItem('favoritesTools', f)
       } else {
         const favoritesTools = localStorage.getItem('favoritesTools')
         if (favoritesTools === null) {
-          localStorage.setItem('favoritesTools', `${tool.id_tool}`)
+          localStorage.setItem('favoritesTools', `${tool.idTool}`)
         } else {
           localStorage.setItem(
             'favoritesTools',
-            `${favoritesTools} ${tool.id_tool}`
+            `${favoritesTools} ${tool.idTool}`
           )
         }
       }
@@ -263,18 +270,15 @@ export default {
         const f = localStorage
           .getItem('studiedTools')
           .split(' ')
-          .filter(t => +t !== tool.id_tool)
+          .filter(t => +t !== tool.idTool)
           .join(' ')
         localStorage.setItem('studiedTools', f)
       } else {
         const studiedTools = localStorage.getItem('studiedTools')
         if (studiedTools === null) {
-          localStorage.setItem('studiedTools', `${tool.id_tool}`)
+          localStorage.setItem('studiedTools', `${tool.idTool}`)
         } else {
-          localStorage.setItem(
-            'studiedTools',
-            `${studiedTools} ${tool.id_tool}`
-          )
+          localStorage.setItem('studiedTools', `${studiedTools} ${tool.idTool}`)
         }
       }
       tool.isStudied = !tool.isStudied

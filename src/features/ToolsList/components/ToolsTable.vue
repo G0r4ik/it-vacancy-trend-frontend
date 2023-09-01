@@ -7,20 +7,23 @@
           <th
             tabindex="0"
             class="rating-table__th rating-table__th_name"
-            @click="$emit('listSort', 'name_tool')"
-            @keydown.enter="$emit('listSort', 'name_tool')">
+            @click="$emit('listSort', 'nameTool')"
+            @keydown.enter="$emit('listSort', 'nameTool')">
             Name
             <IconChevronUpDown />
           </th>
           <th tabindex="0" class="rating-table__th rating-table__th_category">
             Category
           </th>
+
           <th
+            v-for="jbr of currentJobBoardsRegions2"
+            :key="jbr.id"
             tabindex="0"
             class="rating-table__th"
-            @click="$emit('listSort', 'HeadHunter')"
-            @keydown.enter="$emit('listSort', 'HeadHunter')">
-            HHru
+            @click="$emit('listSort', +jbr.id)"
+            @keydown.enter="$emit('listSort', +jbr.id)">
+            {{ `${jbr.jobBoard}-${jbr.region}` }}
             <IconChevronUpDown />
           </th>
           <th tabindex="0" class="rating-table__th"></th>
@@ -30,7 +33,7 @@
       <tbody class="rating-table__tbody">
         <tr
           v-for="(tool, idx) of paginationTools"
-          :key="tool.id_tool"
+          :key="tool.idTool"
           class="rating-table__row">
           <td class="rating-table__item">
             {{ idx + (page - 1) * itemsPerPage }}.
@@ -43,13 +46,13 @@
               :src="
                 tool.srcImg ? tool.srcImg : require('../assets/test-img.png')
               "
-              :alt="`Logo ${tool.name_tool}`" /> -->
+              :alt="`Logo ${tool.nameTool}`" /> -->
             <!-- <span @click="isOpenCompareModalFunction(tool)"> -->
 
             <span
               class="rating-table__item-item-name"
               @click="isOpenCompareModalFunction(tool, idx)">
-              {{ tool.name_tool }}
+              {{ tool.nameTool }}
             </span>
             <button
               tabindex="0"
@@ -65,24 +68,27 @@
             <div class="rating-table__item_category">
               <div
                 v-for="category of tool.categories"
-                :key="category.id_category"
+                :key="category.idCategory"
                 class="rating-table__item-inner_category"
-                :class="`categories__item_${category.id_category}`">
-                {{ category.name_category }}
+                :class="`categories__item_${category.idCategory}`">
+                {{ category.nameCategory }}
               </div>
             </div>
           </td>
-          <td class="rating-table__item rating-table__item_count">
+          <td
+            v-for="jbr of currentJobBoardsRegions2"
+            :key="jbr.id"
+            class="rating-table__item rating-table__item_count">
             <div>
-              {{ tool.counts.HeadHunter[selectedDate.id_date] ?? 0 }}
-              <div v-if="tool.comparedToPastValue !== 0">
+              {{ tool.counts[jbr.id]?.[selectedDate.idDate] }}
+              <div v-if="tool.diff !== 0">
                 <IconArrow
                   class="rating-table__item-fixme"
                   :class="`rating-table__item-fixme_${
-                    tool.comparedToPastValue > 0 ? 1 : -1
+                    tool.diff[jbr.id] > 0 ? 1 : -1
                   }`" />
                 <span class="rating-table__item-fixme-span">
-                  {{ tool.comparedToPastValue }}
+                  {{ tool.diff[jbr.id] }}
                 </span>
               </div>
             </div>
@@ -126,6 +132,7 @@
 </template>
 
 <script>
+import { useStore } from '../store.js'
 import ModalCompare from './ModalCompare.vue'
 
 export default {
@@ -136,7 +143,7 @@ export default {
     page: { type: Number, default: 1 },
     itemsPerPage: { type: Number, default: 1 },
     categories: { type: Array, default: () => [] },
-    selectedDate: { type: Object, default: Object },
+
     paginationTools: { type: Array, default: () => [] },
     tools: { type: Array, default: () => [] },
     dates: { type: Array, default: () => [] },
@@ -157,6 +164,24 @@ export default {
       indexOfTool: null,
       toolInModal: null,
     }
+  },
+
+  computed: {
+    selectedDate() {
+      return useStore().selectedDate
+    },
+    currentJobBoardsRegions2() {
+      const a = useStore().jobBoardsRegions
+      const res = []
+      for (const jbr in a) {
+        if (Object.hasOwnProperty.call(a, jbr)) {
+          const element = a[jbr]
+          if (element.status) res.push(element)
+        }
+      }
+
+      return res
+    },
   },
 
   methods: {

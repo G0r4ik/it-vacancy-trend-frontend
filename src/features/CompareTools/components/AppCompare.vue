@@ -67,25 +67,25 @@ export default {
   },
   watch: {
     routeQ(v) {
-      console.log(v)
       this.nameToObject()
     },
   },
   async mounted() {
     if (useStore().dates.length === 0) await useStore().loadDates()
 
+    await useStore().loadJobBoardsRegions()
     if (useStore().tools.length === 0) {
-      await useStore().loadTools(this.dates.at(-1).id_date)
+      await useStore().loadTools(this.dates.at(-1).idDate)
     }
     this.nameToObject()
     this.compareToolsIsLoad = true
   },
   methods: {
     nameToObject() {
-      const items = this.routeQ.split(',')
+      const items = this.routeQ?.split(',') || []
       this.compareTools = []
       for (const tool of this.tools) {
-        if (items.includes(tool.name_tool)) this.compareTools.push(tool)
+        if (items.includes(tool.nameTool)) this.compareTools.push(tool)
       }
       // this.compareTools = copy
     },
@@ -93,11 +93,11 @@ export default {
       let query = ''
       for (const toolName of toolNames) {
         const findTool = this.tools.find(
-          item => item.name_tool.toLowerCase() === toolName.toLowerCase()
+          item => item.nameTool.toLowerCase() === toolName.toLowerCase()
         )
 
         this.addToCompare(findTool, false)
-        query += `,${findTool.name_tool}`
+        query += `,${findTool.nameTool}`
       }
       await this.$router.push({
         path: '/compare',
@@ -108,10 +108,9 @@ export default {
       if (isOnceFIXME) {
         const qParameter = this.$route.query.q || ''
         const separator = qParameter ? ',' : ''
-        const q = `${qParameter}${separator}${tool.name_tool}`
+        const q = `${qParameter}${separator}${tool.nameTool}`
         await this.$router.push({ path: '/compare', query: { q } })
       }
-      console.log()
       this.compareTools.push(tool)
       // tool.counts3 = count
     },

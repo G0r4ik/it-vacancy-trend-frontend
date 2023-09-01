@@ -1,5 +1,7 @@
-export const SERVER_LOCAL = `http://localhost:${process.env.LOCAL_SERVER_PORT}`
+const LOCAL_SERVER_PORT = 5000
+export const SERVER_LOCAL = `http://localhost:${LOCAL_SERVER_PORT}`
 export const SERVER_PROD = `https://itvacna.com`
+export const SERVER_API_PROD = `https://api.itvacna.com`
 export const isProduction = process.env.NODE_ENV === 'production'
 
 export const colors = [

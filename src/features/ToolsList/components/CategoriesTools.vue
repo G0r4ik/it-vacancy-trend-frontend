@@ -3,20 +3,20 @@
     <ul class="categories">
       <li
         v-for="category of filteredCategories"
-        :key="category.id_category"
+        :key="category.idCategory"
         class="categories__item"
         :class="[
-          currentCategories.includes(category.id_category) &&
-            `categories__item_${category.id_category}`,
+          currentCategories.includes(category.idCategory) &&
+            `categories__item_${category.idCategory}`,
         ]"
-        @click="$emit('changeCategory', category.id_category)">
+        @click="$emit('changeCategory', category.idCategory)">
         <button class="categories__button">
-          {{ hasClass(category.id_category) }}
+          {{ hasClass(category.idCategory) }}
           <img
             class="categories__icon"
-            :src="getImg(category.id_category)"
-            :alt="`logo ${category.name_category}`" />
-          {{ category.name_category }}
+            :src="getImg(category.idCategory)"
+            :alt="`logo ${category.nameCategory}`" />
+          {{ category.nameCategory }}
         </button>
       </li>
     </ul>
@@ -38,7 +38,7 @@ export default {
   computed: {
     filteredCategories() {
       const temporary = [...this.categories].sort(
-        (a, b) => a.name_category.length - b.name_category.length
+        (a, b) => a.nameCategory.length - b.nameCategory.length
       )
       const res = []
       for (let i = 0; i < temporary.length / 2 + 1; i++) {
@@ -77,9 +77,9 @@ export default {
         document.querySelectorAll('head')[0].append(style)
       }
     },
-    getImg(id_category) {
+    getImg(idCategory) {
       try {
-        return require(`../assets/categories/${id_category}.svg`)
+        return require(`../assets/categories/${idCategory}.svg`)
       } catch {
         return require(`../assets/categories/13.svg`)
       }

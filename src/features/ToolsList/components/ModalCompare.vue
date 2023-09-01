@@ -3,7 +3,7 @@
     <div class="technology-comparison__top">
       <ControversialWord v-if="currentTool.is_controversial_word" />
       <h2 class="technology-comparison__name-tool">
-        {{ currentTool.name_tool }}
+        {{ currentTool.nameTool }}
       </h2>
       <span class="technology-comparison__search-query">
         ({{ currentTool.search_query }})
@@ -12,10 +12,10 @@
     <div class="buttons-fixmme">
       <button
         v-for="category of currentTool.categories"
-        :key="category.id_category"
+        :key="category.idCategory"
         class="categories__item"
-        :class="`categories__item_${category.id_category}`">
-        {{ category.name_category }}
+        :class="`categories__item_${category.idCategory}`">
+        {{ category.nameCategory }}
       </button>
     </div>
 
@@ -48,11 +48,11 @@
     <!-- <strong>Этих фильтров нет:</strong>
     <button
       v-for="category of categories"
-      :key="category.id_category"
-      @click="load(category.id_category)"
+      :key="category.idCategory"
+      @click="load(category.idCategory)"
       class="categories__item"
-      :class="`categories__item_${category.id_category}`">
-      {{ category.name_category }}
+      :class="`categories__item_${category.idCategory}`">
+      {{ category.nameCategory }}
     </button> -->
   </div>
 </template>
@@ -85,11 +85,11 @@ export default {
       if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
     },
-    async load(id_category) {
+    async load(idCategory) {
       console.log(
-        `INSERT INTO  categories_tools (id_tool, id_category) VALUES(${this.currentTool.id_tool}, ${id_category});`
+        `INSERT INTO  categories_tools (idTool, idCategory) VALUES(${this.currentTool.idTool}, ${idCategory});`
       )
-      // await api.setCategory(this.currentTool.id_tool, id_category)
+      // await api.setCategory(this.currentTool.idTool, idCategory)
     },
     addCloseFunction(event) {
       if (event.key === 'Escape') {
@@ -100,7 +100,7 @@ export default {
       this.$emit('closeModal', currentTool)
       this.$router.push({
         path: '/compare',
-        query: { q: currentTool.name_tool },
+        query: { q: currentTool.nameTool },
       })
       // this.emitter.emit('changePage', 'compare')
     },

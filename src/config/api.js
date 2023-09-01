@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import axios from 'axios'
 import { SERVER_LOCAL, isProduction } from '@/shared/consts.js'
+import { SERVER_API_PROD } from '../shared/consts.js'
 
-const server = isProduction ? process.env.SERVER_ADDRESS : SERVER_LOCAL
+const server = isProduction ? SERVER_API_PROD : SERVER_LOCAL
 
 const instance = axios.create({
   baseURL: server,

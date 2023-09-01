@@ -32,6 +32,7 @@
 <script>
 import 'flatpickr/dist/flatpickr.css'
 import CategoriesTools from './CategoriesTools.vue'
+import { useStore } from '../store'
 
 export default {
   components: { CategoriesTools },
@@ -40,7 +41,6 @@ export default {
     categories: { type: Array, default: () => [] },
     currentCategories: { type: Array, default: () => [] },
     dates: { type: Array, default: () => [] },
-    selectedDate: { type: Object, default: Object },
   },
   emits: ['changeCategory', 'changeSearch', 'changeSelectedDate'],
 
@@ -53,6 +53,9 @@ export default {
     changeCategoryAll() {
       return this.currentCategories.length > 0 ? 'clear' : 'select all'
     },
+    selectedDate() {
+      return useStore().selectedDate
+    },
   },
 
   async mounted() {
@@ -61,27 +64,28 @@ export default {
     this.flatpickr = module.default
     const availableDates = []
     for (let i = 0; i < this.dates.length; i++) {
-      const { id_date, date_of_completion } = this.dates[i]
-      availableDates.push([id_date, date_of_completion])
+      const { idDate, dateOfCompletion } = this.dates[i]
+      availableDates.push([idDate, dateOfCompletion])
     }
 
     const { dates, $emit, selectedDate } = this
 
     // eslint-disable-next-line unicorn/consistent-destructuring
-    const maxDate = this.dates.at(-1).date_of_completion
+    const maxDate = this.dates.at(-1).dateOfCompletion
     // eslint-disable-next-line unicorn/consistent-destructuring
-    const minDate = this.dates[0].date_of_completion
+    const minDate = this.dates[0].dateOfCompletion
     this.flatpickr('#select-date', {
       minDate,
       maxDate,
-      defaultDate: selectedDate.date_of_completion,
+      defaultDate: selectedDate.dateOfCompletion,
       enable: availableDates.map(d => d[1]),
       onChange(d) {
         for (const date of dates) {
-          const fDate = new Date(date.date_of_completion)
+          const fDate = new Date(date.dateOfCompletion)
           const sDate = new Date(d)
           const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
           const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
+
           if (firstDate === secondDate) {
             $emit('changeSelectedDate', date)
             break

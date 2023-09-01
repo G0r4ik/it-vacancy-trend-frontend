@@ -47,26 +47,24 @@ const router = createRouter({ history: createWebHistory(), routes })
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title
 
-  const metaTag = document.querySelector('link[rel="canonical"]')
-  if (metaTag) {
-    metaTag.setAttribute('href', `${SERVER_PROD}${to.path}`)
+  const linkTag = document.querySelector('link[rel="canonical"]')
+  if (linkTag) {
+    linkTag.setAttribute('href', `${SERVER_PROD}${to.path}`)
   } else {
     const newMetaTag = document.createElement('link')
     newMetaTag.setAttribute('rel', `canonical`)
     newMetaTag.setAttribute('href', `${SERVER_PROD}${to.path}`)
     document.head.append(newMetaTag)
   }
-  const metaDescription = to.meta.description
-  if (metaDescription) {
-    const metaTag = document.querySelector('meta[name="description"]')
-    if (metaTag) {
-      metaTag.setAttribute('content', metaDescription)
-    } else {
-      const newMetaTag = document.createElement('meta')
-      newMetaTag.setAttribute('name', 'description')
-      newMetaTag.setAttribute('content', metaDescription)
-      document.head.append(newMetaTag)
-    }
+
+  const descriptionTag = document.querySelector('meta[name="description"]')
+  if (descriptionTag) {
+    descriptionTag.setAttribute('content', to.meta.description)
+  } else {
+    const newMetaTag = document.createElement('meta')
+    newMetaTag.setAttribute('name', 'description')
+    newMetaTag.setAttribute('content', to.meta.description)
+    document.head.append(newMetaTag)
   }
   next()
 })

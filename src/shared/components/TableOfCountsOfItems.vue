@@ -5,21 +5,21 @@
         <td class="compare__table-tool-name"></td>
         <td
           v-for="(date, index) of dates"
-          :key="date.id_date"
+          :key="date.idDate"
           class="compare__table-tool-date"
           @click="sortTable(index + 1)">
-          {{ normalizeString(date.date_of_completion) }}
+          {{ normalizeString(date.dateOfCompletion) }}
         </td>
       </tr>
       <tbody>
         <tr
           v-for="tool of compareTools"
-          :key="tool.id_tool"
+          :key="tool.idTool"
           class="compare__table-tr">
-          <td class="compare__table-tool-name">{{ tool.name_tool }}</td>
+          <td class="compare__table-tool-name">{{ tool.nameTool }}</td>
           <td
             v-for="count of tool.counts3"
-            :key="tool.id_tool + '' + count.date_of_completion"
+            :key="tool.idTool + '' + count.dateOfCompletion"
             class="compare__table-count">
             {{ count.count_of_item }}
           </td>

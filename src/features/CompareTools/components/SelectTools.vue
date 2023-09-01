@@ -31,7 +31,7 @@ export default {
   computed: {
     filteredTools() {
       const filteredTools = this.tools.filter(tool => {
-        const lowerNameTool = tool.name_tool.toLowerCase()
+        const lowerNameTool = tool.nameTool.toLowerCase()
         const lowerSearchInput = this.searchInput.toLowerCase()
         const cond1 = lowerNameTool.includes(lowerSearchInput)
         const cond2 = !this.compareTools.includes(tool)

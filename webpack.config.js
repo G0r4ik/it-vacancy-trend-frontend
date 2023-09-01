@@ -7,33 +7,34 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
+
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { VueLoaderPlugin } from 'vue-loader'
 import { fileURLToPath } from 'node:url'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 const config = {
   mode: isDevelopment ? 'development' : 'production',
-  devtool: isDevelopment ? 'source-map' : 'source-map', // inline-source-map'
-  context: path.resolve(__dirname),
+  devtool: isDevelopment ? 'eval-cheap-source-map' : 'source-map', // inline-source-map'
+  context: path.resolve(dirname),
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(dirname, 'dist'),
     filename: isDevelopment ? '[name].js' : '[name].[contenthash:10].js',
     chunkFilename: isDevelopment ? '[name].js' : '[name].[contenthash:10].js',
     clean: true,
   },
 
   entry: {
-    index: path.resolve(__dirname, 'src/config/index.js'),
+    index: path.resolve(dirname, 'src/config/index.js'),
   },
 
   resolve: {
     alias: {
-      '@': path.join(__dirname, 'src'),
+      '@': path.join(dirname, 'src'),
     },
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm'],
     modules: ['node_modules'],
@@ -41,12 +42,12 @@ const config = {
 
   devServer: {
     static: {
-      directory: path.resolve(__dirname, 'dist'),
+      directory: path.resolve(dirname, 'dist'),
       watch: true,
     },
     historyApiFallback: true,
     compress: true,
-    port: process.env.LOCAL_WEBPACK_PORT || 9000,
+    port: 9000,
     hot: true,
   },
 
@@ -60,14 +61,14 @@ const config = {
     }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src/config/index.html'),
+      template: path.resolve(dirname, 'src/config/index.html'),
     }),
     new MiniCssExtractPlugin({ filename: '[name]-[chunkhash:7].css' }),
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'public'),
-          to: path.resolve(__dirname, 'dist/'),
+          from: path.resolve(dirname, 'public'),
+          to: path.resolve(dirname, 'dist/'),
           info: { minimized: true },
           noErrorOnMissing: true,
           globOptions: { ignore: ['*.DS_Store'] },
@@ -177,7 +178,7 @@ const config = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                config: path.resolve(__dirname, 'postcss.config.cjs'),
+                config: path.resolve(dirname, 'postcss.config.cjs'),
               },
             },
           },
