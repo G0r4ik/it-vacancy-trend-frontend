@@ -80,15 +80,24 @@
             :key="jbr.id"
             class="rating-table__item rating-table__item_count">
             <div>
-              {{ tool.counts[jbr.id]?.[selectedDate.idDate] }}
-              <div v-if="tool.diff !== 0">
+              {{
+                normalizeCount(
+                  tool.counts[jbr.id]?.[selectedDate.idDate],
+                  tool.nameTool
+                )
+              }}
+
+              <div
+                v-if="
+                  tool.diff[jbr.id] !== 0 && tool.diff[jbr.id] !== undefined
+                ">
                 <IconArrow
                   class="rating-table__item-fixme"
                   :class="`rating-table__item-fixme_${
                     tool.diff[jbr.id] > 0 ? 1 : -1
                   }`" />
                 <span class="rating-table__item-fixme-span">
-                  {{ tool.diff[jbr.id] }}
+                  {{ normalizeDiff(tool.diff[jbr.id]) }}
                 </span>
               </div>
             </div>
@@ -107,6 +116,7 @@
           my-class="technology-comparison-wrapper"
           @close-modal="closeModal">
           <ModalCompare
+            ref="chart"
             :categories="categories"
             :tools="tools"
             :page="page"
@@ -167,6 +177,9 @@ export default {
   },
 
   computed: {
+    toolsUseStore() {
+      return useStore().tools
+    },
     selectedDate() {
       return useStore().selectedDate
     },
@@ -185,17 +198,38 @@ export default {
   },
 
   methods: {
-    openNewItemInModal(item) {
+    normalizeDiff(diff) {
+      const n =
+        Math.abs(diff) > 999
+          ? Math.sign(diff) * (Math.abs(diff) / 1000).toFixed(1) + 'k'
+          : Math.sign(diff) * Math.abs(diff)
+      return n || diff
+    },
+    normalizeCount(count) {
+      if (!Number.isFinite(count)) return '...'
+      const a = new Intl.NumberFormat({ maximumSignificantDigits: 2 })
+      return a.format(count)
+    },
+    async openNewItemInModal(item) {
       if (item === 'prev') this.indexOfTool--
       if (item === 'next') this.indexOfTool++
       if (this.indexOfTool >= this.filteredList.length) this.indexOfTool = 0
       if (this.indexOfTool < 0) this.indexOfTool = this.filteredList.length - 1
-      this.toolInModal = this.filteredList[this.indexOfTool]
+      const toolInModal = this.filteredList[this.indexOfTool]
+      const findTool = this.toolsUseStore.find(
+        i => toolInModal.idTool === i.idTool
+      )
+
+      this.toolInModal = findTool
+      await useStore().loadFullOfCurrentItem(toolInModal.idTool)
+      await this.$refs.chart.$refs.chart1.createChar()
     },
-    isOpenCompareModalFunction(tool, index) {
+    async isOpenCompareModalFunction(tool, index) {
       this.isOpenCompareModal = true
       this.toolInModal = tool
       this.indexOfTool = (this.page - 1) * this.itemsPerPage + index
+      await useStore().loadFullOfCurrentItem(tool.idTool)
+      await this.$refs.chart.$refs.chart1.createChar()
     },
     closeModal() {
       this.isOpenCompareModal = false

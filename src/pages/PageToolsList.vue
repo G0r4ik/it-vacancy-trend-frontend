@@ -1,6 +1,7 @@
 <template>
   <TheHeader />
   <ToolsList />
+  <ServerErrorPopup />
 </template>
 
 <script>

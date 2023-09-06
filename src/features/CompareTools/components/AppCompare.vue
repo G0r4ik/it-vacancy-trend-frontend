@@ -20,11 +20,14 @@
       </div>
       <div v-show="compareTools.length > 0" class="compare__chart">
         <div v-if="compareToolsIsLoad">
-          <ChartItemCount
-            :current-tools="compareTools"
-            :dates="dates"
-            :is-show-legend="true" />
+          <JobBoardsRegions />
         </div>
+        <ChartItemCount
+          ref="chart"
+          :current-tools="compareTools"
+          :change-value="changeValue"
+          :dates="dates"
+          :is-show-legend="true" />
       </div>
       <!-- <div class="compare__another"></div> -->
       <!-- <LabelAndCheckbox
@@ -42,16 +45,17 @@
 
 <script>
 import SelectTools from './SelectTools.vue'
-import { useStore } from '@/features/ToolsList'
+import { useStore, JobBoardsRegions } from '@/features/ToolsList'
 import ComparePopularSearches from './ComparePopularSearches.vue'
 
 export default {
-  components: { SelectTools, ComparePopularSearches },
+  components: { SelectTools, ComparePopularSearches, JobBoardsRegions },
   data() {
     return {
       compareTools: [],
       isShowTable: false,
       compareToolsIsLoad: false,
+      changeValue: 0,
     }
   },
   computed: {
@@ -64,30 +68,40 @@ export default {
     routeQ() {
       return this.$route.query.q
     },
+    currentJobBoardsRegions() {
+      return useStore().currentJobBoardsRegions
+    },
   },
   watch: {
-    routeQ(v) {
-      this.nameToObject()
+    routeQ() {
+      this.urlToJs()
+    },
+    currentJobBoardsRegions: {
+      handler() {
+        this.urlToJs()
+      },
+      deep: true,
     },
   },
   async mounted() {
-    if (useStore().dates.length === 0) await useStore().loadDates()
-
+    await useStore().loadDates()
     await useStore().loadJobBoardsRegions()
-    if (useStore().tools.length === 0) {
-      await useStore().loadTools(this.dates.at(-1).idDate)
-    }
-    this.nameToObject()
+    await useStore().loadTools(this.dates.at(-1).idDate)
+    this.urlToJs()
     this.compareToolsIsLoad = true
   },
   methods: {
-    nameToObject() {
+    async urlToJs() {
       const items = this.routeQ?.split(',') || []
+
       this.compareTools = []
       for (const tool of this.tools) {
-        if (items.includes(tool.nameTool)) this.compareTools.push(tool)
+        if (items.includes(tool.nameTool)) {
+          this.compareTools.push(tool)
+          await useStore().loadFullOfCurrentItem(tool.idTool)
+        }
       }
-      // this.compareTools = copy
+      this.$refs.chart.createChar()
     },
     async addItemsOfPopularList(toolNames) {
       let query = ''
@@ -95,8 +109,6 @@ export default {
         const findTool = this.tools.find(
           item => item.nameTool.toLowerCase() === toolName.toLowerCase()
         )
-
-        this.addToCompare(findTool, false)
         query += `,${findTool.nameTool}`
       }
       await this.$router.push({
@@ -104,15 +116,11 @@ export default {
         query: { q: query.slice(1) },
       })
     },
-    async addToCompare(tool, isOnceFIXME = true) {
-      if (isOnceFIXME) {
-        const qParameter = this.$route.query.q || ''
-        const separator = qParameter ? ',' : ''
-        const q = `${qParameter}${separator}${tool.nameTool}`
-        await this.$router.push({ path: '/compare', query: { q } })
-      }
-      this.compareTools.push(tool)
-      // tool.counts3 = count
+    async addToCompare(tool) {
+      const qParameter = this.$route.query.q || ''
+      const separator = qParameter ? ',' : ''
+      const q = `${qParameter}${separator}${tool.nameTool}`
+      await this.$router.push({ path: '/compare', query: { q } })
     },
   },
 }

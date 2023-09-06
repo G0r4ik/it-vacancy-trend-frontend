@@ -1,0 +1,131 @@
+<template>
+  <teleport to="body">
+    <div class="error-server">
+      <div v-for="error of errors" :key="error.id" class="error-server__item">
+        <div class="error-server__bg"></div>
+        <IconCross class="error-server__cross" @click="closeError(error.id)" />
+        <div class="error-server__inner">
+          <div class="error-server__text">
+            <strong class="error-server__title">
+              {{ error.title }}
+            </strong>
+            <span class="error-server__text">
+              {{ error.text }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="error-server__item">
+        <div class="error-server__bg"></div>
+        <IconCross class="error-server__cross" />
+        <div class="error-server__inner">
+          <div class="error-server__text">
+            <strong class="error-server__title">
+              Ошибка на стороне сервера Ошибка на стороне сервера Ошибка на
+              стороне сервера
+            </strong>
+            <span class="error-server__text">
+              Скорее всего программист опять что то сломал. Скорее всего
+              программист опять что то сломал. Скорее всего программист опять
+              что то сломал.
+            </span>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </teleport>
+</template>
+
+<script>
+import { useSharedStore } from '@/shared/store.js'
+
+export default {
+  computed: {
+    errors() {
+      return useSharedStore().errors
+    },
+  },
+  methods: {
+    closeError(idError) {
+      console.log(idError)
+      console.log(this.errors.indexOf(idError))
+      const index = this.errors.map(i => i.id).indexOf(idError)
+      useSharedStore().errors.splice(index, 1)
+    },
+  },
+}
+</script>
+<style>
+.error-server {
+  position: fixed;
+  right: calc(var(--unit) * 3);
+  bottom: calc(var(--unit) * 3);
+}
+.error-server__item {
+  position: relative;
+  padding: calc(var(--unit) * 3);
+  margin-top: 5px;
+  overflow: hidden;
+  background: var(--color-background);
+  border-radius: 15px;
+  border: 2px solid var(--color-border);
+  box-shadow: var(--color-border) 0px 2px 8px;
+}
+.error-server__cross {
+  position: absolute;
+  top: var(--unit);
+  right: var(--unit);
+  width: var(--icon-size-large);
+  height: var(--icon-size-large);
+  padding: var(--unit);
+  color: black;
+  cursor: pointer;
+  background-color: #f0f0ff;
+  border-radius: 50%;
+  z-index: var(--z-index-overlay);
+}
+.error-server__inner {
+  position: relative;
+  max-width: 300px;
+  padding-right: calc(var(--unit) * 7);
+  padding-left: calc(var(--unit) * 10);
+  /* overflow: hidden; */
+}
+.error-server__item::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 100%;
+  aspect-ratio: 1;
+  content: '';
+  background: #fdeff8;
+  background: #eb5b5b;
+  border: 15px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.error-server__text {
+  max-height: 100px;
+  overflow-y: auto;
+}
+.error-server__title {
+  display: block;
+  font-size: var(--text-small);
+  word-wrap: break-word;
+}
+.error-server__text {
+  font-size: var(--text-extra-small);
+}
+
+/*
+
+
+.error-server__bg {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+} */
+</style>

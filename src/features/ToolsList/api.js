@@ -1,26 +1,43 @@
 import instance from '@/config/api.js'
+import { useSharedStore } from '@/shared/store.js'
+
+// const useSharedStore().errorHandler = useSharedStore().useSharedStore().errorHandler
 
 class API {
   async getLists() {
-    const c = await instance.get('getLists', {})
-    return c.data
+    try {
+      const c = await instance.get('getLists', {})
+      return c.data
+    } catch (error) {
+      useSharedStore().errorHandler(error, `url "/getTools" does not work`)
+    }
   }
 
-  async getTools(idDate, idJobBoardsRegions) {
-    const tools = await instance.get('getTools', {
-      params: { idJobBoardsRegions, idDate },
-    })
-    return tools.data
+  async getTools() {
+    try {
+      const tools = await instance.get('getTools')
+      return tools.data
+    } catch (error) {
+      useSharedStore().errorHandler(error, 'url /getTools does not work')
+    }
   }
 
   async getCategories() {
-    const categories = await instance.get('getCategories')
-    return categories.data
+    try {
+      const categories = await instance.get('getCategories')
+      return categories.data
+    } catch (error) {
+      useSharedStore().errorHandler(error, 'url /getCategories does not work')
+    }
   }
 
   async getDates() {
-    const dates = await instance.get('getDates')
-    return dates.data
+    try {
+      const dates = await instance.get('getDates')
+      return dates.data
+    } catch (error) {
+      useSharedStore().errorHandler(error, 'url /getDates does not work')
+    }
   }
 
   async getCountOfCurrentItem(idTool, idJobBoardsRegions, signal) {
@@ -31,7 +48,10 @@ class API {
       })
       return dates.data
     } catch (error) {
-      console.log(error)
+      useSharedStore().errorHandler(
+        error,
+        'url /getCountOfCurrentItem does not work'
+      )
     }
   }
 
@@ -40,7 +60,10 @@ class API {
       const response = await instance.get('getJobBoardsRegions')
       return response.data
     } catch (error) {
-      console.log(error)
+      useSharedStore().errorHandler(
+        error,
+        'url /getJobBoardsRegions does not work'
+      )
     }
   }
 
@@ -51,7 +74,10 @@ class API {
       })
       return response.data
     } catch (error) {
-      console.log(error)
+      useSharedStore().errorHandler(
+        error,
+        'url /getLastCountOfAllItems does not work'
+      )
     }
   }
 }

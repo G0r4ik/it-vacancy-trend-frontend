@@ -34,13 +34,6 @@ export default {
   watch: {
     jobBoardsRegions: {
       handler() {
-        // if (!this.omgNiceHackFixMe) {
-        //   this.omgNiceHackFixMe = true
-        //   return
-        // }
-        // const currentJbr = Object.entries(this.jobBoardsRegions)
-        //   .filter(([id, status1]) => status1)
-        //   .map(i => +i[0])
         const res = []
         for (const jbr in this.jobBoardsRegions) {
           if (Object.hasOwnProperty.call(this.jobBoardsRegions, jbr)) {
@@ -50,14 +43,10 @@ export default {
         }
         useStore().currentJobBoardsRegions = res
         localStorage.setItem('currentJobBoardsRegions', JSON.stringify(res))
-        useStore().loadFixMe()
+        useStore().loadOneCounts()
       },
       deep: true,
     },
-  },
-  async mounted() {
-    // const { jobBoardsRegions } = storeToRefs(useStore())
-    // this.b = jobBoardsRegions
   },
 }
 </script>

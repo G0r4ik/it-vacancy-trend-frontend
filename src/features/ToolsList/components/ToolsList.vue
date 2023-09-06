@@ -90,7 +90,6 @@ export default {
       sortList: '',
       currentList: 'tools',
       directionsForSorting: 'ASC',
-      // currentJobBoard: 'Indeed',
     }
   },
 
@@ -164,6 +163,7 @@ export default {
         useStore()
           .loadDates()
           .then(() => useStore().loadTools(this.selectedDate.idDate))
+          .then(() => useStore().loadOneCounts())
       })
   },
 
@@ -185,7 +185,7 @@ export default {
     },
     async changeSelectedDate(selectDate) {
       useStore().selectedDate = selectDate
-      await useStore().loadTools(selectDate.idDate)
+      await useStore().loadOneCounts(selectDate.idDate)
     },
     changeCurrentList(list) {
       this.currentList = list

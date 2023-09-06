@@ -12,6 +12,8 @@ export const useStore = defineStore('store', {
     lastDate: null,
     selectedDate: { idDate: null, date_of_complition: null },
     isToolsLoaded: false,
+    lastController: null,
+    serverErrors: [],
   }),
 
   actions: {
@@ -26,12 +28,10 @@ export const useStore = defineStore('store', {
         }
       }
     },
-    async loadFixMe() {
-      console.log('loadFixMe', this.currentJobBoardsRegions)
+
+    async loadOneCounts() {
       for (const jbr of this.currentJobBoardsRegions) {
-        console.log('loadFixMe1', jbr)
         if (this.tools[0].counts[jbr]) continue
-        console.log('loadFixMe2', jbr)
         const counts = await api.getLastCountOfAllItems(
           this.selectedDate.idDate,
           jbr
@@ -47,13 +47,81 @@ export const useStore = defineStore('store', {
       }
     },
 
-    async loadTools(dateId) {
-      const res = await api.getTools(dateId)
+    getWeekNumber(date) {
+      const target = new Date(date.valueOf())
+      const dayNr = (date.getDay() + 6) % 7
+      target.setDate(target.getDate() - dayNr + 3)
+      const firstThursday = target.valueOf()
+      target.setMonth(0, 1)
+      if (target.getDay() !== 4) {
+        target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7))
+      }
+      return 1 + Math.ceil((firstThursday - target) / 604_800_000) // 604800000 = 7 * 24 * 3600 * 1000
+    },
+
+    groupweek(value, byweek) {
+      const d = new Date(value.dateOfCompletion)
+      const weekKey = `${d.getFullYear()}-${this.getWeekNumber(d)}`
+      if (!byweek[weekKey]) byweek[weekKey] = []
+      byweek[weekKey].push(value.idDate)
+    },
+
+    async loadFullOfCurrentItem(idTool) {
+      await this.lastController?.abort()
+      const controller = new AbortController()
+      this.lastController = controller
+
+      for (const jbr of this.currentJobBoardsRegions) {
+        const tool = this.tools.find(tool_ => tool_.idTool === idTool)
+        if (
+          tool.counts[jbr] &&
+          Object.keys(tool.counts[jbr]).length === this.dates.length
+        ) {
+          console.log('loadFullOfCurrentItem контьиню')
+          continue
+        }
+
+        const byweek = {}
+        for (const sortedDate of this.dates) {
+          this.groupweek(sortedDate, byweek)
+        }
+
+        const counts = await api.getCountOfCurrentItem(
+          tool.idTool,
+          jbr,
+          controller.signal
+        )
+        console.log(counts)
+        tool.counts[jbr] = {}
+        // tool.isLoadFull = true
+        if (!counts) return
+        for (const [i, count] of counts.entries()) {
+          tool.counts[jbr][this.dates[i].idDate] = count
+        }
+
+        let i = -1
+        tool.countOfWeeks = { [jbr]: {} }
+        for (const date of Object.values(byweek)) {
+          tool.countOfWeeks[jbr][++i] = []
+          for (const date2 of date) {
+            tool.countOfWeeks[jbr][i].push(tool.counts[jbr][date2])
+          }
+          const l1 = tool.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
+          const l2 = tool.countOfWeeks[jbr][i].reduce(
+            (accumulator, tool2) => (accumulator += tool2),
+            0
+          )
+          tool.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
+        }
+      }
+      this.isLoaded = true
+    },
+
+    async loadTools() {
+      const res = await api.getTools()
 
       this.tools = res
       this.isToolsLoaded = true
-
-      this.loadFixMe()
 
       const favTool = localStorage.getItem('favoritesTools')
       if (!favTool) return res

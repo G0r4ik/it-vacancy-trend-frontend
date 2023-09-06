@@ -19,7 +19,10 @@
       </button>
     </div>
 
-    <ChartItemCount :current-tools="[currentTool]" :dates="dates" />
+    <ChartItemCount
+      ref="chart1"
+      :current-tools="[currentTool]"
+      :dates="dates" />
 
     <button
       class="technology-comparison__button"
@@ -72,6 +75,7 @@ export default {
       selectedTools: [],
     }
   },
+
   mounted() {
     document.addEventListener('keydown', this.FIXMEF)
     document.addEventListener('keydown', this.addCloseFunction)

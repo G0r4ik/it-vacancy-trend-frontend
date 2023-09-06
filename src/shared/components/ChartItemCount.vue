@@ -1,47 +1,49 @@
 <template>
-  <details class="chart-settings-count">
-    <summary class="chart-settings-count__summary">
-      Нажмите, чтобы
-      <span class="open">показать</span>
-      <span class="close">скрыть</span>
-      настройки
-    </summary>
-    <div class="chart-settings-count__labels">
-      <labelAndCheckbox
-        id="is-can-scroll"
-        v-model="isCanScroll"
-        class-label="chart-settings-count__label"
-        text=" разрешить скролл" />
-      <labelAndCheckbox
-        id="is-using-contrast-color"
-        v-model="isUsingContrastColor"
-        class-label="chart-settings-count__label"
-        text="использовать контрасные цвета вместо уникальных блеклых?" />
-      <labelAndCheckbox
-        id="is-show-by-week"
-        v-model="isShowByWeek"
-        class-label="chart-settings-count__label"
-        text="показывать по неделям а не по дням" />
-      <labelAndCheckbox
-        v-show="!isShowByWeek"
-        id="is-show-event"
-        v-model="isShowEvents"
-        class-label="chart-settings-count__label"
-        text="показать события" />
+  <div>
+    <details class="chart-settings-count">
+      <summary class="chart-settings-count__summary">
+        Нажмите, чтобы
+        <span class="open">показать</span>
+        <span class="close">скрыть</span>
+        настройки
+      </summary>
+      <div class="chart-settings-count__labels">
+        <labelAndCheckbox
+          id="is-can-scroll"
+          v-model="isCanScroll"
+          class-label="chart-settings-count__label"
+          text=" разрешить скролл" />
+        <labelAndCheckbox
+          id="is-using-contrast-color"
+          v-model="isUsingContrastColor"
+          class-label="chart-settings-count__label"
+          text="использовать контрасные цвета вместо уникальных блеклых?" />
+        <labelAndCheckbox
+          id="is-show-by-week"
+          v-model="isShowByWeek"
+          class-label="chart-settings-count__label"
+          text="показывать по неделям а не по дням" />
+        <labelAndCheckbox
+          v-show="!isShowByWeek"
+          id="is-show-event"
+          v-model="isShowEvents"
+          class-label="chart-settings-count__label"
+          text="показать события" />
+      </div>
+    </details>
+    <AppSkeleton
+      v-if="!isLoaded"
+      width="100%"
+      :height="`30vh`"
+      :my-class="'skeleton__chart'"
+      display="block"
+      br="0" />
+    <div v-if="isLoaded" class="technology-comparison__chart">
+      <LineChart
+        id="my-chart-id"
+        :options="config"
+        :data="{ datasets: datasets2, labels: labels2 }" />
     </div>
-  </details>
-  <AppSkeleton
-    v-if="!isLoaded"
-    width="100%"
-    :height="`30vh`"
-    :my-class="'skeleton__chart'"
-    display="block"
-    br="0" />
-  <div v-if="isLoaded" class="technology-comparison__chart">
-    <LineChart
-      id="my-chart-id"
-      :options="config"
-      :data="{ datasets: datasets2, labels: labels2 }" />
   </div>
 </template>
 
@@ -75,7 +77,6 @@ export default {
 
       datasets: {},
       labels: {},
-      currentTools2: [], // copy !!!
     }
   },
   computed: {
@@ -213,16 +214,6 @@ export default {
     },
   },
   watch: {
-    // !!!
-    currentTools: {
-      handler() {
-        console.log('currentTools поменялись')
-        this.currentTools2 = JSON.parse(JSON.stringify(this.currentTools))
-
-        this.createChar()
-      },
-      deep: true,
-    },
     isUsingContrastColor(v) {
       if (v === false) {
         this.isLoaded = false
@@ -237,7 +228,6 @@ export default {
     this.currentTools2 = JSON.parse(JSON.stringify(this.currentTools))
     this.ChartModule.register(autocolors)
     this.ChartModule.register(zoomPlugin)
-    this.createChar()
   },
   methods: {
     sortedDate(dates) {
@@ -267,7 +257,7 @@ export default {
     },
     // !!!
     async createChar() {
-      const { dates, currentTools2, isShowJbr } = this
+      const { dates, currentTools, isShowJbr } = this
       this.isLoaded = false
       const datasets = []
       const byweek = {}
@@ -277,10 +267,10 @@ export default {
       }
 
       let i = -1
-      for (const item of currentTools2) {
+      for (const item of currentTools) {
         for (const jbr of this.currentJobBoardsRegions) {
-          const counts2 = await api.getCountOfCurrentItem(item.idTool, jbr)
-
+          if (!item.counts[jbr]) return
+          const counts2 = Object.values(item.counts[jbr])
           item.counts[jbr] = {}
           for (let i = 0; i < counts2.length; i++) {
             item.counts[jbr][this.dates[i]?.idDate] = counts2[i]
