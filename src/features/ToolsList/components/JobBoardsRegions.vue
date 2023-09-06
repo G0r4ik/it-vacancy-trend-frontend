@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { storeToRefs } from 'pinia'
+// import { storeToRefs } from 'pinia'
 import { useStore } from '../store'
 
 export default {
@@ -36,7 +36,7 @@ export default {
       handler() {
         const res = []
         for (const jbr in this.jobBoardsRegions) {
-          if (Object.hasOwnProperty.call(this.jobBoardsRegions, jbr)) {
+          if (Object.hasOwn(this.jobBoardsRegions, jbr)) {
             const element = this.jobBoardsRegions[jbr]
             if (element.status) res.push(+element.id)
           }

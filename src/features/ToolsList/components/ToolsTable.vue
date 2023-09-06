@@ -187,7 +187,7 @@ export default {
       const a = useStore().jobBoardsRegions
       const res = []
       for (const jbr in a) {
-        if (Object.hasOwnProperty.call(a, jbr)) {
+        if (Object.hasOwn(a, jbr)) {
           const element = a[jbr]
           if (element.status) res.push(element)
         }
@@ -201,7 +201,7 @@ export default {
     normalizeDiff(diff) {
       const n =
         Math.abs(diff) > 999
-          ? Math.sign(diff) * (Math.abs(diff) / 1000).toFixed(1) + 'k'
+          ? `${Math.sign(diff) * (Math.abs(diff) / 1000).toFixed(1)}k`
           : Math.sign(diff) * Math.abs(diff)
       return n || diff
     },
@@ -324,7 +324,6 @@ export default {
   max-width: 100%;
   overflow-x: auto;
 }
-
 .rating-table__item-logo {
   width: var(--icon-size);
   height: var(--icon-size);

@@ -147,7 +147,7 @@ export default {
     },
   },
   // WHY TOP
-  mounted() {
+  async mounted() {
     api
       .getCategories()
       .then(result => {
@@ -157,14 +157,10 @@ export default {
       })
       .catch(error => console.log(error))
 
-    useStore()
-      .loadJobBoardsRegions()
-      .then(() => {
-        useStore()
-          .loadDates()
-          .then(() => useStore().loadTools(this.selectedDate.idDate))
-          .then(() => useStore().loadOneCounts())
-      })
+    await useStore().loadJobBoardsRegions()
+    await useStore().loadDates()
+    await useStore().loadTools(this.selectedDate.idDate)
+    await useStore().loadOneCounts()
   },
 
   methods: {
@@ -225,12 +221,12 @@ export default {
       const { directionsForSorting, selectedDate } = this
       const { idDate } = selectedDate
       return function sortCount(a, b) {
-        if (!b.counts[jbr][idDate]) {
-          b.counts[jbr][idDate] = 0
-        }
-        if (!a.counts[jbr][idDate]) {
-          a.counts[jbr][idDate] = 0
-        }
+        // if (!b.counts[jbr][idDate]) {
+        //   b.counts[jbr][idDate] = 0
+        // }
+        // if (!a.counts[jbr][idDate]) {
+        //   a.counts[jbr][idDate] = 0
+        // }
         return directionsForSorting === 'DESC'
           ? a.counts[jbr][idDate] - b.counts[jbr][idDate]
           : b.counts[jbr][idDate] - a.counts[jbr][idDate]
@@ -263,26 +259,28 @@ export default {
           )
         }
       }
-      tool.isFav = !tool.isFav
+
+      const currentTool = this.tools.find(item => item.idTool === tool.idTool)
+      currentTool.isFav = !currentTool.isFav
     },
-    addToStudiedTools(tool) {
-      if (tool.isStudied) {
-        const f = localStorage
-          .getItem('studiedTools')
-          .split(' ')
-          .filter(t => +t !== tool.idTool)
-          .join(' ')
-        localStorage.setItem('studiedTools', f)
-      } else {
-        const studiedTools = localStorage.getItem('studiedTools')
-        if (studiedTools === null) {
-          localStorage.setItem('studiedTools', `${tool.idTool}`)
-        } else {
-          localStorage.setItem('studiedTools', `${studiedTools} ${tool.idTool}`)
-        }
-      }
-      tool.isStudied = !tool.isStudied
-    },
+    // addToStudiedTools(tool) {
+    //   if (tool.isStudied) {
+    //     const f = localStorage
+    //       .getItem('studiedTools')
+    //       .split(' ')
+    //       .filter(t => +t !== tool.idTool)
+    //       .join(' ')
+    //     localStorage.setItem('studiedTools', f)
+    //   } else {
+    //     const studiedTools = localStorage.getItem('studiedTools')
+    //     if (studiedTools === null) {
+    //       localStorage.setItem('studiedTools', `${tool.idTool}`)
+    //     } else {
+    //       localStorage.setItem('studiedTools', `${studiedTools} ${tool.idTool}`)
+    //     }
+    //   }
+    //   tool.isStudied = !tool.isStudied
+    // },
   },
 }
 </script>

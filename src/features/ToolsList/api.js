@@ -10,6 +10,7 @@ class API {
       return c.data
     } catch (error) {
       useSharedStore().errorHandler(error, `url "/getTools" does not work`)
+      return 'wtf'
     }
   }
 
@@ -19,6 +20,7 @@ class API {
       return tools.data
     } catch (error) {
       useSharedStore().errorHandler(error, 'url /getTools does not work')
+      return []
     }
   }
 
@@ -28,6 +30,7 @@ class API {
       return categories.data
     } catch (error) {
       useSharedStore().errorHandler(error, 'url /getCategories does not work')
+      return []
     }
   }
 
@@ -37,6 +40,7 @@ class API {
       return dates.data
     } catch (error) {
       useSharedStore().errorHandler(error, 'url /getDates does not work')
+      return []
     }
   }
 
@@ -52,6 +56,7 @@ class API {
         error,
         'url /getCountOfCurrentItem does not work'
       )
+      return {}
     }
   }
 
@@ -64,6 +69,7 @@ class API {
         error,
         'url /getJobBoardsRegions does not work'
       )
+      return []
     }
   }
 
@@ -79,6 +85,7 @@ class API {
         'url /getLastCountOfAllItems does not work'
       )
     }
+    return 'wtf'
   }
 }
 

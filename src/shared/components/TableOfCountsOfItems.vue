@@ -47,8 +47,8 @@ export default {
       rows.sort((a, b) => {
         let aValue = a.cells[columnIndex].textContent.trim()
         let bValue = b.cells[columnIndex].textContent.trim()
-        aValue = parseInt(aValue.replaceAll(/\s/g, ''), 10)
-        bValue = parseInt(bValue.replaceAll(/\s/g, ''), 10)
+        aValue = Number.parseInt(aValue.replaceAll(/\s/g, ''), 10)
+        bValue = Number.parseInt(bValue.replaceAll(/\s/g, ''), 10)
         return this.sortDirection * (aValue - bValue)
       })
       for (const row of rows) row.remove()
@@ -82,9 +82,6 @@ export default {
   font-size: var(--text-extra-small);
   cursor: pointer;
 }
-.compare__table-tr {
-  /* border: 1px solid var(--color_cod-gray-base); */
-}
 .compare__table-tr:nth-child(2n) {
   background: var(--color-border);
 }
@@ -100,10 +97,6 @@ export default {
 }
 .compare__table-tr:nth-child(2n) .compare__table-tool-name {
   background: var(--color-border) !important;
-}
-.compare__table-count {
-}
-.compare__table-count:nth-child(2n) {
 }
 .compare__table-count:hover {
   background: var(--color-link);

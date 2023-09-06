@@ -50,8 +50,9 @@
 <script>
 import zoomPlugin from 'chartjs-plugin-zoom'
 import autocolors from 'chartjs-plugin-autocolors'
+// import { CategoryScale } from 'chart.js'
 import { Line as LineChart } from 'vue-chartjs'
-import { api, useStore } from '@/features/ToolsList'
+import { useStore } from '@/features/ToolsList'
 import { formateDate } from '@/shared/helpers.js'
 import { colors } from '@/shared/consts.js'
 
@@ -128,7 +129,7 @@ export default {
     },
     config() {
       console.log('computed config change')
-      const { dates, isCanScroll, isShowLegend } = this
+      // const { dates, isCanScroll, isShowLegend } = this
 
       return {
         hover: { mode: 'nearest', intersect: false },
@@ -139,74 +140,74 @@ export default {
           point: { radius: 0, hoverRadius: 10 },
           line: { tension: 0.4 },
         },
-        scales: {
-          x: {
-            ticks: {
-              //   maxTicksLimit: 3,
-              // align: 'start',
-              //   autoSkip: true,
-              //   autoSkipPadding: true,
-              maxRotation: 0,
-              //   includeBounds: true,
-            },
-            border: { display: false },
-          },
-          y: {
-            grid: { display: false },
-            border: { display: false },
-            grace: '10%',
-            // ticks: { precision: 0, beginAtZero: true, min: 0 },
-          },
-        },
-        plugins: {
-          legend: { display: isShowLegend },
-          // autocolors: !isUsingContrastColor,
-          // colors: { enabled: isUsingContrastColor },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-              // label: context => {
-              //   const { dataIndex, dataset } = context
-              //   console.log(dataset)
-              //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
-              //     const jobBoardRegion = this.currentJobBoardsRegions[i]
-              //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
-              //     const a = useStore().jobBoardsRegions.find(
-              //       i => +i.id === +jobBoardRegion
-              //     )
-              //     const tool = this.currentTools2.find(
-              //       item =>
-              //         dataset.label ===
-              //         `${item.nameTool}(${a.jobBoard}-${a.region})`
-              //     )
-              //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
-              //     let event2 = null
-              //     if (tool) {
-              //       for (const event of tool.events) {
-              //         if (event.idDate === dates[dataIndex].idDate) {
-              //           event2 = event
-              //           break
-              //         }
-              //       }
-              //     }
-              //     // if (dataset.pointRadius[dataIndex]) {
-              //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
-              //     // }
-              //   }
-              // },
-            },
-          },
-          zoom: {
-            limits: { x: { min: 0, minRange: 10 } },
-            pan: { enabled: false, mode: 'x' },
-            zoom: {
-              wheel: { enabled: isCanScroll },
-              pinch: { enabled: false },
-              mode: 'x',
-            },
-          },
-        },
+        // scales: {
+        //   x: {
+        //     ticks: {
+        //       //   maxTicksLimit: 3,
+        //       // align: 'start',
+        //       //   autoSkip: true,
+        //       //   autoSkipPadding: true,
+        //       maxRotation: 0,
+        //       //   includeBounds: true,
+        //     },
+        //     border: { display: false },
+        //   },
+        //   y: {
+        //     grid: { display: false },
+        //     border: { display: false },
+        //     grace: '10%',
+        //     // ticks: { precision: 0, beginAtZero: true, min: 0 },
+        //   },
+        // },
+        // plugins: {
+        //   legend: { display: isShowLegend },
+        //   // autocolors: !isUsingContrastColor,
+        //   // colors: { enabled: isUsingContrastColor },
+        //   tooltip: {
+        //     mode: 'index',
+        //     intersect: false,
+        //     callbacks: {
+        //       // label: context => {
+        //       //   const { dataIndex, dataset } = context
+        //       //   console.log(dataset)
+        //       //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
+        //       //     const jobBoardRegion = this.currentJobBoardsRegions[i]
+        //       //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
+        //       //     const a = useStore().jobBoardsRegions.find(
+        //       //       i => +i.id === +jobBoardRegion
+        //       //     )
+        //       //     const tool = this.currentTools2.find(
+        //       //       item =>
+        //       //         dataset.label ===
+        //       //         `${item.nameTool}(${a.jobBoard}-${a.region})`
+        //       //     )
+        //       //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
+        //       //     let event2 = null
+        //       //     if (tool) {
+        //       //       for (const event of tool.events) {
+        //       //         if (event.idDate === dates[dataIndex].idDate) {
+        //       //           event2 = event
+        //       //           break
+        //       //         }
+        //       //       }
+        //       //     }
+        //       //     // if (dataset.pointRadius[dataIndex]) {
+        //       //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
+        //       //     // }
+        //       //   }
+        //       // },
+        //     },
+        //   },
+        //   zoom: {
+        //     limits: { x: { min: 0, minRange: 10 } },
+        //     pan: { enabled: false, mode: 'x' },
+        //     zoom: {
+        //       wheel: { enabled: isCanScroll },
+        //       pinch: { enabled: false },
+        //       mode: 'x',
+        //     },
+        //   },
+        // },
       }
     },
     currentJobBoardsRegions() {
@@ -225,9 +226,9 @@ export default {
     await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
       module => (this.ChartModule = module.default)
     )
-    this.currentTools2 = JSON.parse(JSON.stringify(this.currentTools))
     this.ChartModule.register(autocolors)
     this.ChartModule.register(zoomPlugin)
+    // this.ChartModule.register(CategoryScale)
   },
   methods: {
     sortedDate(dates) {
@@ -249,33 +250,36 @@ export default {
       }
       return 1 + Math.ceil((firstThursday - target) / 604_800_000) // 604800000 = 7 * 24 * 3600 * 1000
     },
-    groupweek(value, byweek) {
-      const d = new Date(value.dateOfCompletion)
-      const weekKey = `${d.getFullYear()}-${this.getWeekNumber(d)}`
-      if (!byweek[weekKey]) byweek[weekKey] = []
-      byweek[weekKey].push(value.idDate)
+    groupweek(dates) {
+      const byweek = {}
+      for (const sortedDate of dates) {
+        const d = new Date(sortedDate.dateOfCompletion)
+        const weekKey = `${d.getFullYear()}-${this.getWeekNumber(d)}`
+        if (!byweek[weekKey]) byweek[weekKey] = []
+        byweek[weekKey].push(sortedDate.idDate)
+      }
+      return byweek
     },
     // !!!
     async createChar() {
-      const { dates, currentTools, isShowJbr } = this
+      const { dates, currentTools, isShowJbr, currentJobBoardsRegions } = this
       this.isLoaded = false
       const datasets = []
-      const byweek = {}
       const sortedDates = this.sortedDate(dates)
-      for (const sortedDate of sortedDates.values()) {
-        this.groupweek(sortedDate, byweek)
-      }
+      const byweek = this.groupweek(sortedDates)
 
       let i = -1
       for (const item of currentTools) {
-        for (const jbr of this.currentJobBoardsRegions) {
+        for (const jbr of currentJobBoardsRegions) {
           if (!item.counts[jbr]) return
           const counts2 = Object.values(item.counts[jbr])
           item.counts[jbr] = {}
-          for (let i = 0; i < counts2.length; i++) {
-            item.counts[jbr][this.dates[i]?.idDate] = counts2[i]
+          for (const [index, element] of counts2.entries()) {
+            item.counts[jbr][dates[index]?.idDate] = element
           }
-          const a = useStore().jobBoardsRegions.find(i => +i.id === +jbr)
+          const a = useStore().jobBoardsRegions.find(
+            jbrItem => +jbrItem.id === +jbr
+          )
           datasets.push({
             data: Object.values(item.counts[jbr]),
             label: isShowJbr
@@ -290,10 +294,9 @@ export default {
               item.countOfWeeks[jbr][i].push(item.counts[jbr][date2])
             }
             const l1 = item.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
-            const l2 = item.countOfWeeks[jbr][i].reduce(
-              (accumulator, item2) => (accumulator += item2),
-              0
-            )
+
+            let l2 = 0
+            for (const item2 of item.countOfWeeks[jbr][i]) l2 += item2
             item.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
           }
         }

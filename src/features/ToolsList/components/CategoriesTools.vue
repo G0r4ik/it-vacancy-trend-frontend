@@ -55,16 +55,9 @@ export default {
   methods: {
     getCSS() {
       const allCSS = [...document.styleSheets]
-        .map(styleSheet => {
-          try {
-            return [...styleSheet.cssRules].map(rule => rule.cssText).join('')
-          } catch {
-            console.log(
-              'Access to stylesheet %s is denied. Ignoring...',
-              styleSheet.href
-            )
-          }
-        })
+        .map(styleSheet =>
+          [...styleSheet.cssRules].map(rule => rule.cssText).join('')
+        )
         .filter(Boolean)
         .join('\n')
       return allCSS

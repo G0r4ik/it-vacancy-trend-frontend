@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { useStore, api } from '@/features/AuthUser'
+// import { useStore, api } from '@/features/AuthUser'
 
 export default {
   async mounted() {

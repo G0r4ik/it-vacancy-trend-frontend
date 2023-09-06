@@ -1,39 +1,20 @@
 <template>
-  <teleport to="body">
-    <div class="error-server">
-      <div v-for="error of errors" :key="error.id" class="error-server__item">
-        <div class="error-server__bg"></div>
-        <IconCross class="error-server__cross" @click="closeError(error.id)" />
-        <div class="error-server__inner">
-          <div class="error-server__text">
-            <strong class="error-server__title">
-              {{ error.title }}
-            </strong>
-            <span class="error-server__text">
-              {{ error.text }}
-            </span>
-          </div>
+  <div class="error-server">
+    <div v-for="error of errors" :key="error.id" class="error-server__item">
+      <div class="error-server__bg"></div>
+      <IconCross class="error-server__cross" @click="closeError(error.id)" />
+      <div class="error-server__inner">
+        <div class="error-server__text">
+          <strong class="error-server__title">
+            {{ error.title }}
+          </strong>
+          <span class="error-server__text">
+            {{ error.text }}
+          </span>
         </div>
       </div>
-      <!-- <div class="error-server__item">
-        <div class="error-server__bg"></div>
-        <IconCross class="error-server__cross" />
-        <div class="error-server__inner">
-          <div class="error-server__text">
-            <strong class="error-server__title">
-              Ошибка на стороне сервера Ошибка на стороне сервера Ошибка на
-              стороне сервера
-            </strong>
-            <span class="error-server__text">
-              Скорее всего программист опять что то сломал. Скорее всего
-              программист опять что то сломал. Скорее всего программист опять
-              что то сломал.
-            </span>
-          </div>
-        </div>
-      </div> -->
     </div>
-  </teleport>
+  </div>
 </template>
 
 <script>
@@ -108,24 +89,11 @@ export default {
 .error-server__text {
   max-height: 100px;
   overflow-y: auto;
+  font-size: var(--text-extra-small);
 }
 .error-server__title {
   display: block;
   font-size: var(--text-small);
   word-wrap: break-word;
 }
-.error-server__text {
-  font-size: var(--text-extra-small);
-}
-
-/*
-
-
-.error-server__bg {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-} */
 </style>

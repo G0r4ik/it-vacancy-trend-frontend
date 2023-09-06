@@ -78,7 +78,8 @@ export default {
     },
     currentJobBoardsRegions: {
       handler() {
-        this.urlToJs()
+        // console.log('ru')
+        // this.urlToJs()
       },
       deep: true,
     },
@@ -95,13 +96,15 @@ export default {
       const items = this.routeQ?.split(',') || []
 
       this.compareTools = []
+      const promises = []
       for (const tool of this.tools) {
         if (items.includes(tool.nameTool)) {
           this.compareTools.push(tool)
-          await useStore().loadFullOfCurrentItem(tool.idTool)
+          promises.push(useStore().loadFullOfCurrentItem(tool.idTool))
         }
       }
-      this.$refs.chart.createChar()
+      await Promise.all(promises)
+      await this.$refs.chart.createChar()
     },
     async addItemsOfPopularList(toolNames) {
       let query = ''

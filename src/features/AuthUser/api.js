@@ -31,6 +31,7 @@ class API {
       return await instance.get('refresh_token')
     } catch (error) {
       console.log(error)
+      return 'wtfFIXME'
     }
   }
 }
