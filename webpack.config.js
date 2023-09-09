@@ -9,13 +9,12 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { VueLoaderPlugin } from 'vue-loader'
 import { fileURLToPath } from 'node:url'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const config = {
   mode: isDevelopment ? 'development' : 'production',
@@ -24,8 +23,8 @@ const config = {
 
   output: {
     path: path.resolve(dirname, 'dist'),
-    filename: isDevelopment ? '[name].js' : '[name].[contenthash:10].js',
-    chunkFilename: isDevelopment ? '[name].js' : '[name].[contenthash:10].js',
+    filename: isDevelopment ? '[name].js' : '[name].[contenthash:5].js',
+    chunkFilename: isDevelopment ? '[name].js' : '[name].[contenthash:5].js',
     clean: true,
   },
 
@@ -53,18 +52,15 @@ const config = {
   },
 
   plugins: [
+    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 10 }),
     new webpack.ProgressPlugin(),
     new VueLoaderPlugin(),
     new Dotenv({ systemvars: true }),
-    new webpack.DefinePlugin({
-      __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: isDevelopment,
-    }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(dirname, 'src/config/index.html'),
     }),
-    new MiniCssExtractPlugin({ filename: '[name]-[chunkhash:7].css' }),
+    new MiniCssExtractPlugin({ filename: '[name]-[chunkhash:5].css' }),
     new CopyPlugin({
       patterns: [
         {
@@ -80,7 +76,7 @@ const config = {
   ].filter(Boolean),
 
   optimization: {
-    // usedExports: true,
+    usedExports: true,
     minimize: !isDevelopment,
     minimizer: [
       new CssMinimizerPlugin(),
@@ -92,24 +88,23 @@ const config = {
         },
         extractComments: false,
       }), // (548 KiB)
-      // `...`,
     ],
   },
 
   stats: {
-    // errors: true,
-    // warnings: true,
-    // timings: true,
-    // entrypoints: false, // ?
-    // children: false,
-    // chunks: false,
-    // outputPath: false,
-    // modules: false,
-    // publicPath: false,
-    // version: false,
-    // assets: false,
-    // hash: false,
-    // optimizationBailout: false,
+    errors: true,
+    warnings: true,
+    timings: true,
+    entrypoints: false,
+    children: false,
+    chunks: false,
+    outputPath: false,
+    modules: false,
+    publicPath: false,
+    version: false,
+    assets: false,
+    hash: false,
+    optimizationBailout: false,
   },
 
   module: {
@@ -159,25 +154,17 @@ const config = {
           },
         ],
       },
-      // {
-      //   test: /\.(png|jpe?g|gif|svg)$/i,
-      //   type: 'asset/resource',
-      //   generator: {
-      //     filename: './img/[name]_[hash][ext]',
-      //   },
-      // },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: './img/[name]_[hash][ext]',
+        },
+      },
       {
         test: /\.svg/,
         type: 'asset/resource',
       },
-      // {
-      //   test: /\.svg$/,
-      //   use: 'svg-sprite-loader',
-      // },
-      // {
-      //   test: /\.svg$/,
-      //   options: {},
-      // },
     ],
   },
 }

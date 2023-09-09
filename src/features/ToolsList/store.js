@@ -39,7 +39,6 @@ export const useStore = defineStore('store', {
           for (let i = 0; i < counts[jbr].counts.length; i++) {
             this.tools[i].diff[jbr] = {}
             this.tools[i].counts[jbr] = {}
-
             this.tools[i].counts[jbr][this.selectedDate.idDate] =
               counts[jbr].counts[i]
             this.tools[i].diff[jbr] = counts[jbr].diff[i]
