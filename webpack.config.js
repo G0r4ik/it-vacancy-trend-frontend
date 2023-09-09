@@ -81,7 +81,7 @@ const config = {
 
   optimization: {
     // usedExports: true,
-    minimize: isDevelopment,
+    minimize: !isDevelopment,
     minimizer: [
       new CssMinimizerPlugin(),
       new TerserPlugin({
