@@ -16,8 +16,14 @@
             aria-expanded="false"
             aria-controls="menu__list"
             @click="showMenuFunction">
-            <IconCross id="cross" class="menu__icon menu__icon-cross" />
-            <IconMenu id="menu" class="menu__icon menu__icon-menu" />
+            <Icon
+              iconName="IconCross"
+              id="cross"
+              custom-class="menu__icon menu__icon-cross" />
+            <Icon
+              iconName="IconMenu"
+              id="menu"
+              custom-class="menu__icon menu__icon-menu" />
           </button>
           <ul class="menu__list">
             <li
@@ -51,9 +57,26 @@
           <!-- <button
             class="header__user-button"
             @click="showUserAction = !showUserAction">
-            <IconUser v-if="user" />
-            <IconUserOff v-else />
           </button> -->
+          <!-- <Icon icon-name="IconUser" v-if="user" />
+          <Icon icon-name="IconUserOff" v-else /> -->
+          <!-- <svg><use :href="require('../../../public/icons.svg')" /></svg>
+          <svg>
+            <use
+              :href="`${require('../../../public/icons.svg')}#icons_icon1`" />
+          </svg>
+          <svg>
+            <use href=":#icons_icon1" />
+          </svg>
+          <svg><use xlink:href="#icons_icon1" /></svg>
+          <svg><use xlink:href="#icon1" /></svg>
+          <svg>
+            <use
+              :xlink:href="
+                require('../../../public/icons.svg') + `#icons_icon1`
+              "></use>
+          </svg> -->
+          <!-- <Icon icon-name="IconCheck" /> -->
         </div>
       </div>
     </div>
@@ -187,6 +210,7 @@ export default {
   .menu__button_open .menu__icon-cross {
     display: block;
   }
+  /* stylelint-disable-next-line no-descending-specificity */
   .menu__icon-cross,
   .menu__button_open .menu__icon-menu {
     display: none;

@@ -2,7 +2,10 @@
   <div class="error-server">
     <div v-for="error of errors" :key="error.id" class="error-server__item">
       <div class="error-server__bg"></div>
-      <IconCross class="error-server__cross" @click="closeError(error.id)" />
+      <Icon
+        iconName="IconCross"
+        custom-class="error-server__cross"
+        @click="closeError(error.id)" />
       <div class="error-server__inner">
         <div class="error-server__text">
           <strong class="error-server__title">
@@ -48,14 +51,15 @@ export default {
   margin-top: 5px;
   overflow: hidden;
   background: var(--color-background);
-  border-radius: 15px;
   border: 2px solid var(--color-border);
-  box-shadow: var(--color-border) 0px 2px 8px;
+  border-radius: 15px;
+  box-shadow: var(--color-border) 0 2px 8px;
 }
 .error-server__cross {
   position: absolute;
   top: var(--unit);
   right: var(--unit);
+  z-index: var(--z-index-overlay);
   width: var(--icon-size-large);
   height: var(--icon-size-large);
   padding: var(--unit);
@@ -63,7 +67,6 @@ export default {
   cursor: pointer;
   background-color: #f0f0ff;
   border-radius: 50%;
-  z-index: var(--z-index-overlay);
 }
 .error-server__inner {
   position: relative;

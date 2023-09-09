@@ -13,7 +13,7 @@
       class="check"
       tabindex="0"
       @keydown.enter="$event.target.previousSibling.click()">
-      <IconCheck />
+      <Icon iconName="IconCheck" />
     </div>
   </label>
 </template>

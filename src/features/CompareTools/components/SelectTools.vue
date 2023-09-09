@@ -34,7 +34,7 @@ export default {
         const lowerNameTool = tool.nameTool.toLowerCase()
         const lowerSearchInput = this.searchInput.toLowerCase()
         const cond1 = lowerNameTool.includes(lowerSearchInput)
-        const cond2 = !this.compareTools.includes(tool)
+        const cond2 = cond1 && !this.compareTools.includes(tool)
         return cond1 && cond2
       })
       return filteredTools.slice(0, 10)

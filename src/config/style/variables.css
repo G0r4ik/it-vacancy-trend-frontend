@@ -1,21 +1,21 @@
 :root {
-  --color_mine-shaft-base: #242424;
-  --color_white-base: #fff;
-  --color_chartreuse-base: #9bff00;
-  --color_turquoise-base: #5cdba6;
-  --color_picton-blue-base: #4ba5e4;
-  --color_cod-gray-base: #111;
+  --color-mine-shaft-base: #242424;
+  --color-white-base: #fff;
+  --color-chartreuse-base: #9bff00;
+  --color-turquoise-base: #5cdba6;
+  --color-picton-blue-base: #4ba5e4;
+  --color-cod-gray-base: #111;
   --color-gray: gray;
   /* COLOR */
-  --color-border: var(--color_mine-shaft-base);
-  --color-text: var(--color_white-base);
-  --color-primary: var(--color_chartreuse-base);
-  --color-primary2: var(--color_turquoise-base);
-  --color-primary3: var(--color_picton-blue-base);
-  --color-background: var(--color_cod-gray-base);
-  --color-link: var(--color_picton-blue-base);
-  --color-skeleton-bg: rgb(0 0 0 / 0.12);
-  --color-modal-bg: rgb(0 0 0 / 0.7);
+  --color-border: var(--color-mine-shaft-base);
+  --color-text: var(--color-white-base);
+  --color-primary: var(--color-chartreuse-base);
+  --color-primary2: var(--color-turquoise-base);
+  --color-primary3: var(--color-picton-blue-base);
+  --color-background: var(--color-cod-gray-base);
+  --color-link: var(--color-picton-blue-base);
+  --color-skeleton-bg: rgb(0 0 0 / 12%);
+  --color-modal-bg: rgb(0 0 0 / 70%);
   --color-star: #f6b87e;
   --color-danger: tomato;
   /* UNIT */
@@ -72,11 +72,11 @@
   --transition-skeleton: 1.5s;
 }
 :root.light-theme {
-  --color-background: var(--color_white-base);
-  --color-text: var(--color_cod-gray-base);
+  --color-background: var(--color-white-base);
+  --color-text: var(--color-cod-gray-base);
   --color-border: #e3e3e3;
 }
 :root.dark-theme {
-  --color-background: var(--color_cod-gray-base);
-  --color-text: var(--color_white-base);
+  --color-background: var(--color-cod-gray-base);
+  --color-text: var(--color-white-base);
 }

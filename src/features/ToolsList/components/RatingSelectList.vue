@@ -34,8 +34,6 @@ export default {
 </script>
 
 <style>
-.select-list {
-}
 .select-list__inner {
   margin-bottom: var(--unit);
 }

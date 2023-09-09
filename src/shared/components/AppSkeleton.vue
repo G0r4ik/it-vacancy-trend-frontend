@@ -51,9 +51,9 @@ export default {
   content: '';
   background-image: linear-gradient(
     90deg,
-    rgb(255 255 255 / 0),
-    rgb(255 255 255 / 0.3),
-    rgb(37 22 22 / 0)
+    rgb(255 255 255 / 0%),
+    rgb(255 255 255 / 3%),
+    rgb(37 22 22 / 0%)
   );
   transform: translateX(-100%);
   animation: shimmer var(--transition-skeleton) infinite;
@@ -61,9 +61,9 @@ export default {
 .light-theme .skeleton__wave {
   background-image: linear-gradient(
     90deg,
-    rgb(255 255 255 / 0),
-    rgb(255 255 255 / 0.7),
-    rgb(37 22 22 / 0)
+    rgb(255 255 255 / 0%),
+    rgb(255 255 255 / 7%),
+    rgb(37 22 22 / 0%)
   );
 }
 @keyframes shimmer {

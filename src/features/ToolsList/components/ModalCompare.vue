@@ -38,14 +38,18 @@
       <div
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'prev')">
-        <IconChevron class="technology-comparison__go-prev" />
+        <Icon
+          iconName="IconChevron"
+          custom-class="technology-comparison__go-prev" />
         prev
       </div>
       <div
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'next')">
         next
-        <IconChevron class="technology-comparison__go-next" />
+        <Icon
+          iconName="IconChevron"
+          custom-class="technology-comparison__go-next" />
       </div>
     </div>
     <!-- <strong>Этих фильтров нет:</strong>
@@ -158,14 +162,10 @@ export default {
 }
 .technology-comparison__search-query {
   margin-left: calc(var(--unit) * 2);
-  /* margin-top: 4px; */
-  font-weight: 700;
-  /* color: var(--color-border); */
   font-size: var(--text-extra-small);
+  font-weight: 700;
 }
 #myChart {
-  /* width: 100% !important; */
-  /* height: 100% !important; */
   background: var(--color-background);
 }
 .technology-comparison__button {
@@ -181,10 +181,6 @@ export default {
   .technology-comparison {
     padding: var(--unit);
     padding-top: calc(var(--unit) * 3);
-  }
-  .skeleton__chart {
-    /* display: none !important; */
-    /* height: 165px !important; */
   }
 }
 </style>

@@ -10,7 +10,7 @@
             @click="$emit('listSort', 'nameTool')"
             @keydown.enter="$emit('listSort', 'nameTool')">
             Name
-            <IconChevronUpDown />
+            <Icon iconName="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th rating-table__th_category">
             Category
@@ -24,7 +24,7 @@
             @click="$emit('listSort', +jbr.id)"
             @keydown.enter="$emit('listSort', +jbr.id)">
             {{ `${jbr.jobBoard}-${jbr.region}` }}
-            <IconChevronUpDown />
+            <Icon iconName="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th"></th>
         </tr>
@@ -91,9 +91,9 @@
                 v-if="
                   tool.diff[jbr.id] !== 0 && tool.diff[jbr.id] !== undefined
                 ">
-                <IconArrow
-                  class="rating-table__item-fixme"
-                  :class="`rating-table__item-fixme_${
+                <Icon
+                  iconName="IconArrow"
+                  :custom-class="`rating-table__item-fixme rating-table__item-fixme_${
                     tool.diff[jbr.id] > 0 ? 1 : -1
                   }`" />
                 <span class="rating-table__item-fixme-span">
@@ -104,7 +104,7 @@
           </td>
           <!-- <td class="rating-table__item">
             <button @click="$emit('addToStudiedTools', tool)">
-              <IconStar
+              <Icon iconName="IconStar"
                 :class="{
                   'rating-table__item-studied_acitve': tool.isStudied,
                 }" />
@@ -161,12 +161,7 @@ export default {
     isDataEmpty: Boolean,
   },
 
-  emits: [
-    'addToFavoriteTools',
-    'addToStudiedTools',
-    'listSort',
-    'clearFilters',
-  ],
+  emits: ['addToFavoriteTools', 'listSort', 'clearFilters'],
 
   data() {
     return {
@@ -250,10 +245,6 @@ export default {
   border-spacing: 0;
   border-collapse: collapse;
 }
-.rating-table__thead {
-}
-.rating-table__tbody {
-}
 .rating-table__th {
   padding: var(--unit);
   font-size: var(--text-small);
@@ -262,9 +253,6 @@ export default {
   white-space: nowrap;
   cursor: pointer;
   border-bottom: var(--border-width-small) solid var(--color-border);
-}
-.rating-table__th_number {
-  /* padding-right: var(--unit); */
 }
 .rating-table__th_name,
 .rating-table__th_category {
@@ -294,8 +282,6 @@ export default {
 }
 .rating-table__item-fixme-span {
   font-size: var(--text-extra-small);
-  /* color: var(--color-border); */
-  /* font-weight: 700; */
 }
 .rating-table__item-fixme {
   width: var(--icon-size);
@@ -304,16 +290,12 @@ export default {
   margin-left: var(--unit);
 }
 .rating-table__item-fixme_1 {
+  color: green;
   transform: rotate(0deg);
 }
 .rating-table__item-fixme_-1 {
+  color: red;
   transform: rotate(180deg);
-}
-.rating-table__item-fixme_-1 path {
-  stroke: red;
-}
-.rating-table__item-fixme_1 path {
-  stroke: green;
 }
 .rating-table__item_name {
   text-align: left;
@@ -343,14 +325,11 @@ export default {
 }
 .rating-table__item-inner_category {
   display: inline-flex;
-  /* display: flex; */
   align-items: center;
   justify-content: center;
-  /* max-width: var(--width-ratin-item-category); */
   max-width: 100%;
   height: var(--height-table-item);
   padding: 0 var(--unit);
-  /* margin: 0 auto; */
   margin: calc(var(--unit) / 2);
   font-size: var(--text-extra-small);
   border-radius: var(--border-radius-middle);

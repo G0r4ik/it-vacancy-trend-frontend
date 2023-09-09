@@ -58,7 +58,6 @@
       :is-data-loaded="isDataLoaded"
       :categories="categories"
       @add-to-favorite-tools="addToFavoriteTools"
-      @add-to-studied-tools="addToStudiedTools"
       @list-sort="listSort"
       @clear-filters="clearFilters" />
 

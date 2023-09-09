@@ -79,7 +79,8 @@ export const useStore = defineStore('store', {
       for (const jbr of this.currentJobBoardsRegions) {
         const tool = this.tools.find(tool_ => tool_.idTool === idTool)
         const cond1 = tool.counts[jbr]
-        const cond2 = Object.keys(tool.counts[jbr]).length === this.dates.length
+        const cond2 =
+          cond1 && Object.keys(tool.counts[jbr]).length === this.dates.length
 
         if (!cond1 || !cond2) {
           const byweek = this.groupweek(this.dates)

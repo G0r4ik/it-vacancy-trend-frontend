@@ -7,16 +7,11 @@
     "stylelint-config-recess-order"
   ],
   "rules": {
-    "selector-class-pattern": null,
-    "declaration-colon-newline-after": null,
-    "value-list-comma-newline-after": null,
-    "selector-id-pattern": null,
     "rule-empty-line-before": "never",
     "at-rule-empty-line-before": "never",
     "comment-empty-line-before": "never",
-    "block-no-empty": null,
-    "custom-property-pattern": null,
-    "alpha-value-notation": "number",
-    "color-function-notation": "modern"
+    "selector-class-pattern": null,
+    "selector-id-pattern": null,
+    "block-no-empty": null
   }
 }

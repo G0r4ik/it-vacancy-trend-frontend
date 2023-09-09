@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 module.exports = ({ env }) => ({
   plugins: env === 'production' && [
     require('doiuse')({

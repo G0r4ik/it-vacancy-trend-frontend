@@ -114,15 +114,13 @@ export default {
         //     )
         //   : Object.values(this.currentTools2[i].counts[`HeadHunter-Russia`])
       }
+      console.log('start')
 
       return copy
     },
     labels2() {
-      const byweek = []
       const sortedDates = this.sortedDate(this.dates)
-      for (const sortedDate of Object.values(sortedDates)) {
-        this.groupweek(sortedDate, byweek)
-      }
+      const byweek = this.groupweek(sortedDates)
       return this.isShowByWeek
         ? Object.keys(byweek)
         : this.dates.map(item => formateDate(item.dateOfCompletion))
