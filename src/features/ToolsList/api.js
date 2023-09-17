@@ -44,11 +44,11 @@ class API {
     }
   }
 
-  async getCountOfCurrentItem(idTool, idJobBoardsRegions, signal) {
+  async getCountOfCurrentItem(idTool, idJobBoardRegion, signal) {
     try {
       const dates = await instance.get('getCountOfCurrentItem', {
         signal,
-        params: { idTool, idJobBoardsRegions },
+        params: { idTool, idJobBoardRegion },
       })
       return dates.data
     } catch (error) {
@@ -73,10 +73,10 @@ class API {
     }
   }
 
-  async getLastCountOfAllItems(idDate, idJobBoardsRegions) {
+  async getLastCountOfAllItems(idDate, idJobBoardRegion) {
     try {
-      const response = await instance.get('getCountOfCurrentDate', {
-        params: { idDate, idJobBoardsRegions },
+      const response = await instance.get('getOneCountForAllTools', {
+        params: { idDate, idJobBoardRegion },
       })
       return response.data
     } catch (error) {
