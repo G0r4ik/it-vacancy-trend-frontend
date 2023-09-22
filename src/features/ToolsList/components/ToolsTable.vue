@@ -102,14 +102,6 @@
               </div>
             </div>
           </td>
-          <!-- <td class="rating-table__item">
-            <button @click="$emit('addToStudiedTools', tool)">
-              <Icon iconName="IconStar"
-                :class="{
-                  'rating-table__item-studied_acitve': tool.isStudied,
-                }" />
-            </button>
-          </td> -->
         </tr>
         <ModalWrapper
           v-if="isOpenCompareModal"
@@ -332,17 +324,13 @@ export default {
   padding: 0 var(--unit);
   margin: calc(var(--unit) / 2);
   font-size: var(--text-extra-small);
-  border-radius: var(--border-radius-middle);
+  border-radius: var(--border-radius-large);
 }
 .rating-table__item-studied {
   width: var(--icon-size);
   cursor: pointer;
   border-radius: 50%;
   fill: var(--color-text);
-}
-.rating-table__item-studied_acitve {
-  background: var(--color-primary2);
-  fill: var(--color-background);
 }
 .empty-list {
   display: flex;
@@ -362,13 +350,13 @@ export default {
   font-weight: 700;
   border: var(--border-width-small) solid var(--color-border);
   border-radius: var(--border-radius-middle);
-  transition: 0.3s;
+  transition: var(--transition-small);
 }
 .empty-list__button:hover {
   color: var(--color-text);
   border-color: var(--color-text);
   opacity: 0.8;
-  transition: 0.3s;
+  transition: var(--transition-small);
 }
 @media (width <= 760px) {
   .rating-table__inner {

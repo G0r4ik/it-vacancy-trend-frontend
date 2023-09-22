@@ -46,9 +46,9 @@ export default {
   cursor: pointer;
   background: none;
   border: var(--border-width) solid var(--color-border);
-  border-radius: var(--border-radius-small);
+  border-radius: var(--radius);
 }
 .select-list__button_active {
-  color: var(--color-primary3);
+  color: var(--color-primary);
 }
 </style>

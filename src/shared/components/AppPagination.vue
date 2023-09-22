@@ -208,11 +208,11 @@ export default {
   margin: 0 var(--unit);
   font-size: var(--text-small);
   color: var(--color-text);
-  border-radius: var(--border-radius-extra-small);
+  border-radius: var(--radius);
 }
 .pagination__button_current {
   font-weight: 600;
-  color: var(--color-primary3);
+  color: var(--color-primary);
   background: var(--color-border);
 }
 .pagination__button:disabled {

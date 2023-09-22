@@ -18,6 +18,6 @@ export default {
   padding: var(--unit);
   color: var(--color-background);
   background: var(--color-text);
-  border-radius: var(--border-radius-small);
+  border-radius: var(--radius);
 }
 </style>

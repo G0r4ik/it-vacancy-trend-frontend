@@ -77,9 +77,9 @@ export default {
 }
 .change-theme__toggle {
   position: absolute;
-  width: 25px;
-  height: 25px;
-  background-color: var(--color-primary2);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background-color: var(--color-primary);
   border-radius: 50%;
   transition: transform var(--transition-small) ease,
     background-color var(--transition-main) ease;

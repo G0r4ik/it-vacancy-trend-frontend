@@ -71,7 +71,7 @@ export default {
   padding: var(--unit);
   background: var(--color-background);
   border: var(--border-width-extra-small) solid var(--color-border);
-  border-radius: var(--border-radius-extra-small);
+  border-radius: var(--radius);
 }
 .user-dropdown__list {
   list-style-type: none;

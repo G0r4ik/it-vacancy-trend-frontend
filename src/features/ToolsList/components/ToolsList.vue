@@ -287,11 +287,11 @@ export default {
 <style>
 .list-title {
   display: inline-block;
-  max-width: 300px;
+  max-width: var(--max-width-title);
 }
 .list-count {
   margin-left: var(--unit);
   font-size: var(--text-large);
-  color: var(--color-primary3);
+  color: var(--color-primary);
 }
 </style>

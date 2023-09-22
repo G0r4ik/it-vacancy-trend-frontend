@@ -26,8 +26,8 @@ export default {
 
 <style>
 .icon {
-  width: 20px;
-  height: 20px;
+  width: var(--icon-size);
+  height: var(--icon-size);
   fill: currentColor;
 }
 </style>

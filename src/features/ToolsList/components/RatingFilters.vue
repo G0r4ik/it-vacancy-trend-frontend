@@ -2,10 +2,10 @@
   <div class="filters">
     <div class="filters__inner">
       <div class="filters__top">
-        <label for="select-date" class="select-container__label">
+        <!-- <label for="select-date" class="select-container__label">
           Date:
           <input id="select-date" class="select-date" />
-        </label>
+        </label> -->
         <button
           class="filters__top-all"
           @click="$emit('changeCategory', 'all')">
@@ -104,8 +104,6 @@ export default {
 .filters__inner {
   padding: var(--unit);
   margin-bottom: calc(var(--unit) * 2);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--border-radius-middle);
 }
 .filters__top {
   display: flex;
@@ -114,6 +112,7 @@ export default {
   margin-bottom: var(--unit);
 }
 .filters__top-all {
+  margin-left: auto;
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
 .select-date {
@@ -124,7 +123,7 @@ export default {
   text-align: center;
   background-color: transparent;
   border: var(--border-width-small) solid var(--color-border);
-  border-radius: var(--border-radius-extra-small);
+  border-radius: var(--radius);
   transition: all var(--transition-small);
 }
 .filters__search-input {

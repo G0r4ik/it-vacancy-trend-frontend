@@ -1,8 +1,6 @@
 import instance from '@/config/api.js'
 import { useSharedStore } from '@/shared/store.js'
 
-// const useSharedStore().errorHandler = useSharedStore().useSharedStore().errorHandler
-
 class API {
   async getLists() {
     try {

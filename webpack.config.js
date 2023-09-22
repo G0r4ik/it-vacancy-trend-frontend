@@ -87,7 +87,7 @@ const config = {
           compress: true,
         },
         extractComments: false,
-      }), // (548 KiB)
+      }),
     ],
   },
 

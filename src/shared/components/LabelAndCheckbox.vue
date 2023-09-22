@@ -48,7 +48,7 @@ export default {
   height: var(--icon-size);
   margin-left: var(--unit);
   border: var(--border-width-small) solid var(--color-border);
-  border-radius: var(--border-radius-extra-small);
+  border-radius: var(--radius);
 }
 .check svg {
   position: absolute;

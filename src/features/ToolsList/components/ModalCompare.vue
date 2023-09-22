@@ -175,7 +175,7 @@ export default {
   font-size: var(--text-extra-small);
   background: transparent;
   border: var(--border-width-extra-small) solid var(--color-border);
-  border-radius: var(--border-radius-extra-small);
+  border-radius: var(--radius);
 }
 @media (max-width: 770px) {
   .technology-comparison {

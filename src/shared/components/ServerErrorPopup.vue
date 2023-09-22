@@ -48,11 +48,11 @@ export default {
 .error-server__item {
   position: relative;
   padding: calc(var(--unit) * 3);
-  margin-top: 5px;
+  margin-top: var(--unit);
   overflow: hidden;
   background: var(--color-background);
-  border: 2px solid var(--color-border);
-  border-radius: 15px;
+  border: var(--border-width-small) solid var(--color-border);
+  border-radius: var(--border-radius-middle);
   box-shadow: var(--color-border) 0 2px 8px;
 }
 .error-server__cross {
@@ -60,8 +60,7 @@ export default {
   top: var(--unit);
   right: var(--unit);
   z-index: var(--z-index-overlay);
-  width: var(--icon-size-large);
-  height: var(--icon-size-large);
+
   padding: var(--unit);
   color: black;
   cursor: pointer;
@@ -85,9 +84,9 @@ export default {
   content: '';
   background: #fdeff8;
   background: #eb5b5b;
-  border: 15px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border: var(--border-radius-middle);
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
 }
 .error-server__text {
   max-height: 100px;

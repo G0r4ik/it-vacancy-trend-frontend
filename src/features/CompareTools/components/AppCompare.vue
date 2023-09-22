@@ -162,8 +162,7 @@ export default {
 .compare__chart {
   width: 100%;
   height: 70vh !important;
-  max-height: 1000px;
-  /* height: 50vh; */
+  max-height: var(--max-height-chart);
   margin-bottom: calc(var(--unit) * 4);
 }
 .compare__chart canvas {
@@ -188,11 +187,11 @@ export default {
   display: inline;
   color: var(--color-link);
   cursor: pointer;
-  border-bottom: 1px solid transparent;
-  transition: 0.1s all;
+  border-bottom: var(--border-width-extra-small) solid transparent;
+  transition: var(--transition-small) all;
 }
 .compare__variants-item:hover {
-  border-bottom: 1px solid var(--color-link);
-  transition: 0.2s all;
+  border-bottom: var(--border-width-extra-small) solid var(--color-link);
+  transition: var(--transition-small) all;
 }
 </style>

@@ -43,7 +43,7 @@ export default {
   background: var(--color-background);
   border: var(--border-width-small) solid var(--color-border);
   border-top: 0;
-  border-radius: var(--border-radius-extra-small);
+  border-radius: var(--radius);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -51,7 +51,7 @@ export default {
   padding: var(--unit);
 }
 .search-result__not-found {
-  padding: 10px;
+  padding: calc(var(--unit) * 2);
   font-size: var(--text-middle);
 }
 .search-result__item:hover {

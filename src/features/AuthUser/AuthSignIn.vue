@@ -75,7 +75,7 @@ export default {
   width: var(--width-auth);
   height: 100%;
   padding: calc(var(--unit) * 4);
-  border: 2px solid var(--color-border);
+  border: var(--border-width-small) solid var(--color-border);
   border-radius: var(--radius);
 }
 .sign-in__title {
@@ -92,7 +92,7 @@ export default {
   width: 100%;
   padding: var(--unit);
   font-size: var(--text-extra-small);
-  border: 1px solid var(--color-border);
+  border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--radius);
 }
 .sign-in__send {
@@ -104,14 +104,13 @@ export default {
   cursor: pointer;
   background-color: #007bff;
   border: none;
-  border-radius: 3px;
 }
 .sign-in__send:hover {
   background-color: #0069d9;
 }
 .sign-in__FIXME {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: calc(var(--unit) * 2);
+  font-size: var(--text-extra-small);
   color: #007bff;
   cursor: pointer;
   background-color: transparent;

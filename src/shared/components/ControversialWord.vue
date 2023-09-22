@@ -8,7 +8,7 @@
     </span>
     <AppPopup
       v-if="isVisibleFIXMEID"
-      style="left: 15px; white-space: nowrap"
+      class="popup-with-error"
       text="controversial word in this language" />
   </span>
 </template>
@@ -35,5 +35,9 @@ export default {
   font-weight: 700;
   color: red;
   cursor: help;
+}
+.popup-with-error {
+  left: calc(var(--unit) * 3);
+  white-space: nowrap;
 }
 </style>

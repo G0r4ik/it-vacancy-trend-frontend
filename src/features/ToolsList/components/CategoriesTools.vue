@@ -37,18 +37,9 @@ export default {
 
   computed: {
     filteredCategories() {
-      const temporary = [...this.categories].sort(
+      return [...this.categories].sort(
         (a, b) => a.nameCategory.length - b.nameCategory.length
       )
-      const res = []
-      for (let i = 0; i < temporary.length / 2 + 1; i++) {
-        if (temporary[i] === temporary.at(-i)) {
-          res.push(temporary[i])
-        } else {
-          res.push(temporary.at(-i), temporary[i])
-        }
-      }
-      return res
     },
   },
 

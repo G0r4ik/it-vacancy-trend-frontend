@@ -127,7 +127,7 @@ export default {
     },
     config() {
       console.log('computed config change')
-      // const { dates, isCanScroll, isShowLegend } = this
+      const { dates, isCanScroll, isShowLegend } = this
 
       return {
         hover: { mode: 'nearest', intersect: false },
@@ -157,55 +157,55 @@ export default {
         //     // ticks: { precision: 0, beginAtZero: true, min: 0 },
         //   },
         // },
-        // plugins: {
-        //   legend: { display: isShowLegend },
-        //   // autocolors: !isUsingContrastColor,
-        //   // colors: { enabled: isUsingContrastColor },
-        //   tooltip: {
-        //     mode: 'index',
-        //     intersect: false,
-        //     callbacks: {
-        //       // label: context => {
-        //       //   const { dataIndex, dataset } = context
-        //       //   console.log(dataset)
-        //       //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
-        //       //     const jobBoardRegion = this.currentJobBoardsRegions[i]
-        //       //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
-        //       //     const a = useStore().jobBoardsRegions.find(
-        //       //       i => +i.id === +jobBoardRegion
-        //       //     )
-        //       //     const tool = this.currentTools2.find(
-        //       //       item =>
-        //       //         dataset.label ===
-        //       //         `${item.nameTool}(${a.jobBoard}-${a.region})`
-        //       //     )
-        //       //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
-        //       //     let event2 = null
-        //       //     if (tool) {
-        //       //       for (const event of tool.events) {
-        //       //         if (event.idDate === dates[dataIndex].idDate) {
-        //       //           event2 = event
-        //       //           break
-        //       //         }
-        //       //       }
-        //       //     }
-        //       //     // if (dataset.pointRadius[dataIndex]) {
-        //       //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
-        //       //     // }
-        //       //   }
-        //       // },
-        //     },
-        //   },
-        //   zoom: {
-        //     limits: { x: { min: 0, minRange: 10 } },
-        //     pan: { enabled: false, mode: 'x' },
-        //     zoom: {
-        //       wheel: { enabled: isCanScroll },
-        //       pinch: { enabled: false },
-        //       mode: 'x',
-        //     },
-        //   },
-        // },
+        plugins: {
+          legend: { display: isShowLegend },
+          // autocolors: !isUsingContrastColor,
+          // colors: { enabled: isUsingContrastColor },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              // label: context => {
+              //   const { dataIndex, dataset } = context
+              //   console.log(dataset)
+              //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
+              //     const jobBoardRegion = this.currentJobBoardsRegions[i]
+              //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
+              //     const a = useStore().jobBoardsRegions.find(
+              //       i => +i.id === +jobBoardRegion
+              //     )
+              //     const tool = this.currentTools2.find(
+              //       item =>
+              //         dataset.label ===
+              //         `${item.nameTool}(${a.jobBoard}-${a.region})`
+              //     )
+              //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
+              //     let event2 = null
+              //     if (tool) {
+              //       for (const event of tool.events) {
+              //         if (event.idDate === dates[dataIndex].idDate) {
+              //           event2 = event
+              //           break
+              //         }
+              //       }
+              //     }
+              //     // if (dataset.pointRadius[dataIndex]) {
+              //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
+              //     // }
+              //   }
+              // },
+            },
+          },
+          zoom: {
+            limits: { x: { min: 0, minRange: 10 } },
+            pan: { enabled: false, mode: 'x' },
+            zoom: {
+              wheel: { enabled: isCanScroll },
+              pinch: { enabled: false },
+              mode: 'x',
+            },
+          },
+        },
       }
     },
     currentJobBoardsRegions() {
@@ -319,7 +319,7 @@ export default {
   padding: calc(var(--unit) * 3);
   margin: calc(var(--unit) * 2) 0;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: var(--radius);
 }
 .chart-settings-count__summary {
   position: relative;
@@ -338,7 +338,7 @@ export default {
   border-color: transparent transparent transparent var(--color-text);
   border-style: solid;
   border-width: var(--unit);
-  transition: 0.25s transform ease;
+  transition: var(--transition-small) transform ease;
   transform: translateY(-50%);
 }
 .chart-settings-count .chart-settings-count__summary .close {
