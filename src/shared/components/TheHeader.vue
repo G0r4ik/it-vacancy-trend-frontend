@@ -17,12 +17,12 @@
             aria-controls="menu__list"
             @click="showMenuFunction">
             <Icon
-              iconName="IconCross"
               id="cross"
+              icon-name="IconCross"
               custom-class="menu__icon menu__icon-cross" />
             <Icon
-              iconName="IconMenu"
               id="menu"
+              icon-name="IconMenu"
               custom-class="menu__icon menu__icon-menu" />
           </button>
           <ul class="menu__list">
@@ -40,6 +40,14 @@
               @keyup.enter="changePage('compare')">
               <router-link to="/compare" active-class="menu__item_active">
                 Compare
+              </router-link>
+            </li>
+            <li
+              class="menu__item"
+              @click="changePage('ranked_jb')"
+              @keyup.enter="changePage('ranked_jb')">
+              <router-link to="/ranked_jb/" active-class="menu__item_active">
+                Joboard ranked
               </router-link>
             </li>
             <li

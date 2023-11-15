@@ -10,7 +10,7 @@
             @click="$emit('listSort', 'nameTool')"
             @keydown.enter="$emit('listSort', 'nameTool')">
             Name
-            <Icon iconName="IconChevronUpDown" />
+            <Icon icon-name="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th rating-table__th_category">
             Category
@@ -24,7 +24,7 @@
             @click="$emit('listSort', +jbr.id)"
             @keydown.enter="$emit('listSort', +jbr.id)">
             {{ `${jbr.jobBoard}-${jbr.region}` }}
-            <Icon iconName="IconChevronUpDown" />
+            <Icon icon-name="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th"></th>
         </tr>
@@ -92,7 +92,7 @@
                   tool.diff[jbr.id] !== 0 && tool.diff[jbr.id] !== undefined
                 ">
                 <Icon
-                  iconName="IconArrow"
+                  icon-name="IconArrow"
                   :custom-class="`rating-table__item-fixme rating-table__item-fixme_${
                     tool.diff[jbr.id] > 0 ? 1 : -1
                   }`" />

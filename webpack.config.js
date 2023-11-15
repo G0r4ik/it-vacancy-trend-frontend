@@ -26,6 +26,7 @@ const config = {
     filename: isDevelopment ? '[name].js' : '[name].[contenthash:5].js',
     chunkFilename: isDevelopment ? '[name].js' : '[name].[contenthash:5].js',
     clean: true,
+    publicPath: '/',
   },
 
   entry: {

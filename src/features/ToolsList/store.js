@@ -89,7 +89,6 @@ export const useStore = defineStore('store', {
             jbr,
             controller.signal
           )
-          console.log(counts)
           tool.counts[jbr] = {}
           // tool.isLoadFull = true
           if (!counts) return

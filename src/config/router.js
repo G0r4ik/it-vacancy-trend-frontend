@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PageCompare from '@/pages/PageCompare.vue'
 import PageOther from '@/pages/PageOther.vue'
 import PageToolsList from '@/pages/PageToolsList.vue'
+import PageJobBoardRanked from '@/pages/PageJobBoardRanked.vue'
 import PageAuth from '@/pages/PageAuth.vue'
 import { SERVER_PROD } from '../shared/consts.js'
 
@@ -40,11 +41,31 @@ const routes = [
         'Compare the number of vacancies in which a certain technology is found. Data in the form of a graph',
     },
   },
+  {
+    path: '/ranked_jb',
+    component: PageJobBoardRanked,
+    meta: {
+      title: 'The most popular job boards in some countries',
+      description: 'The most popular job boards in some countries',
+    },
+    children: [
+      {
+        path: ':id',
+        component: PageJobBoardRanked,
+        meta: {
+          title: 'The most popular job boards in some countries',
+          description: 'The most popular job boards in some countries',
+        },
+      },
+    ],
+  },
 ]
 
 const router = createRouter({ history: createWebHistory(), routes })
 
 router.beforeEach((to, from, next) => {
+  // if (to.matched.length === 0) return router.push('/')
+
   document.title = to.meta.title
   const linkTag = document.querySelector('link[rel="canonical"]')
   if (linkTag) {

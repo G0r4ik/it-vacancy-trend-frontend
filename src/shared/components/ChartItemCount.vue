@@ -69,9 +69,9 @@ export default {
       ChartModule: null,
 
       isCanScroll: false,
-      isShowEvents: false,
+      isShowEvents: true,
       isShowByWeek: false,
-      isUsingContrastColor: false,
+      isUsingContrastColor: true,
 
       isLoaded: false,
       lastController: null,
@@ -85,7 +85,7 @@ export default {
       console.log('computed datasets change')
 
       const copy = JSON.parse(JSON.stringify(this.datasets))
-
+      console.log(this.datasets)
       for (let i = 0; i < this.datasets.length; i++) {
         const colorIndex = i % colors.length
         if (this.isUsingContrastColor) {
@@ -98,23 +98,41 @@ export default {
           delete copy[i].pointBackgroundColor
         }
 
-        // const points = this.dates.map(date => {
-        //   return this.currentTools2[i].events
-        //     .map(i => i.idDate)
-        //     .includes(date.idDate)
-        //     ? 10
-        //     : 0
-        // })
+        // currentTools: [{}, {}]
+        // datasets: [{}, {}]
 
-        // copy[i].pointRadius =
-        //   this.isShowEvents && !this.isShowByWeek ? points : []
+        console.log(this.currentJobBoardsRegions.length)
+        // for (let j = 0; j < this.currentJobBoardsRegions.length; j++) {
+        //   const [jobBoard, region] = this.datasets[i].label
+        //     .slice(0, -1)
+        //     .split('(')[1]
+        //     .split('-')
+        //   console.log(jobBoard, this.currentJobBoardsRegions[j].jobBoard)
+        //   if (
+        //     jobBoard !== this.currentJobBoardsRegions[j].jobBoard ||
+        //     region !== this.currentJobBoardsRegions[j].region
+        //   ) {
+        //     continue
+        //   }
+        // console.log(1)
+        const points = this.dates.map(date =>
+          this.currentTools[Math.floor(i / 2)].events
+            // % 2 == 0
+            .map(i2 => i2.idDate)
+            .includes(date.idDate)
+            ? 10
+            : 0
+        )
+        copy[i].pointRadius =
+          this.isShowEvents && !this.isShowByWeek ? points : []
+        // }
+
         // copy[i].data = this.isShowByWeek
         //   ? Object.values(
         //       this.currentTools2[i].countOfWeeks[`HeadHunter-Russia`]
         //     )
         //   : Object.values(this.currentTools2[i].counts[`HeadHunter-Russia`])
       }
-      console.log('start')
 
       return copy
     },
@@ -127,7 +145,7 @@ export default {
     },
     config() {
       console.log('computed config change')
-      const { dates, isCanScroll, isShowLegend } = this
+      const { dates, isCanScroll, isShowLegend, isUsingContrastColor } = this
 
       return {
         hover: { mode: 'nearest', intersect: false },
@@ -138,67 +156,71 @@ export default {
           point: { radius: 0, hoverRadius: 10 },
           line: { tension: 0.4 },
         },
-        // scales: {
-        //   x: {
-        //     ticks: {
-        //       //   maxTicksLimit: 3,
-        //       // align: 'start',
-        //       //   autoSkip: true,
-        //       //   autoSkipPadding: true,
-        //       maxRotation: 0,
-        //       //   includeBounds: true,
-        //     },
-        //     border: { display: false },
-        //   },
-        //   y: {
-        //     grid: { display: false },
-        //     border: { display: false },
-        //     grace: '10%',
-        //     // ticks: { precision: 0, beginAtZero: true, min: 0 },
-        //   },
-        // },
+        scales: {
+          x: {
+            ticks: {
+              maxTicksLimit: 3,
+              align: 'start',
+              autoSkip: true,
+              autoSkipPadding: true,
+              maxRotation: 0,
+              includeBounds: true,
+            },
+            border: { display: false },
+          },
+          y: {
+            grid: { display: false },
+            border: { display: false },
+            grace: '10%',
+            ticks: { precision: 0, beginAtZero: true, min: 0 },
+          },
+        },
         plugins: {
           legend: { display: isShowLegend },
-          // autocolors: !isUsingContrastColor,
-          // colors: { enabled: isUsingContrastColor },
+          autocolors: !isUsingContrastColor,
+          colors: { enabled: isUsingContrastColor },
           tooltip: {
             mode: 'index',
-            intersect: false,
+            interaction: {
+              mode: 'nearest',
+            },
             callbacks: {
-              // label: context => {
-              //   const { dataIndex, dataset } = context
-              //   console.log(dataset)
-              //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
-              //     const jobBoardRegion = this.currentJobBoardsRegions[i]
-              //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
-              //     const a = useStore().jobBoardsRegions.find(
-              //       i => +i.id === +jobBoardRegion
-              //     )
-              //     const tool = this.currentTools2.find(
-              //       item =>
-              //         dataset.label ===
-              //         `${item.nameTool}(${a.jobBoard}-${a.region})`
-              //     )
-              //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
-              //     let event2 = null
-              //     if (tool) {
-              //       for (const event of tool.events) {
-              //         if (event.idDate === dates[dataIndex].idDate) {
-              //           event2 = event
-              //           break
-              //         }
-              //       }
-              //     }
-              //     // if (dataset.pointRadius[dataIndex]) {
-              //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
-              //     // }
-              //   }
-              // },
+              label: context => {
+                const { dataIndex, dataset } = context
+                // console.log(dataset, dataIndex)
+
+                // for (let i = 0; i < this.currentTools.length; i++) {
+                // const jobBoardRegion = this.currentJobBoardsRegions[i]
+                //   // for (const jobBoardRegion of this.currentJobBoardsRegions) {
+                // const a = useStore().jobBoardsRegions.find(
+                //   i => +i.id === +jobBoardRegion
+                // )
+                // console.log(dataset.label.split('(')[0])
+                //   const tool = this.currentTools.find(
+                //     item => dataset.label.split('(')[0] === item.nameTool
+                //   )
+
+                //   let event2 = null
+                //   if (dataset.pointRadius[dataIndex] === 10) {
+                //     for (const event of tool.events) {
+                //       if (event.idDate === dates[dataIndex].idDate) {
+                //         event2 = event
+                //         console.log(event?.eventText)
+                //         break
+                //       }
+                //     }
+                //   }
+                //   console.log(event2?.eventText)
+                //   if (dataset.pointRadius[dataIndex] === 10) {
+                //     return `${dataset.label} ${context.formattedValue} \nEvent: ${event2?.eventText} `
+                //   }
+                // },
+              },
             },
           },
           zoom: {
             limits: { x: { min: 0, minRange: 10 } },
-            pan: { enabled: false, mode: 'x' },
+            pan: { enabled: true, mode: 'x' },
             zoom: {
               wheel: { enabled: isCanScroll },
               pinch: { enabled: false },
