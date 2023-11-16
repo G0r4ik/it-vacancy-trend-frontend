@@ -18,6 +18,7 @@
           @add-to-compare="addToCompare"
           @select-first-item="addToCompare" />
       </div>
+      <br />
       <div v-show="compareTools.length > 0" class="compare__chart">
         <div v-if="compareToolsIsLoad">
           <JobBoardsRegions />
@@ -133,65 +134,11 @@ export default {
 .compare {
   margin-bottom: calc(var(--unit) * 10);
 }
-.container {
-}
-.compare__inner {
-}
 .compare__items-title {
   margin-top: calc(var(--unit) * 3);
 }
-.title {
-}
-.compare__title {
-}
-.compare__search-input {
-  width: 100%;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.compare__search-result {
-}
-.search-result {
-}
-.search-result__item {
-}
-.compare__items {
-}
-.compare__item {
-}
 .compare__chart {
   width: 100%;
-  height: 70vh !important;
   max-height: var(--max-height-chart);
-  margin-bottom: calc(var(--unit) * 4);
-}
-.compare__chart canvas {
-  height: 100% !important;
-}
-.compare__another {
-}
-.compare__variants {
-  margin-bottom: calc(var(--unit) * 3);
-}
-.compare__variants-title {
-  display: inline-block;
-  margin-bottom: var(--unit);
-  font-size: var(--text-large);
-}
-.compare__variants-list {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.compare__variants-item {
-  display: inline;
-  color: var(--color-link);
-  cursor: pointer;
-  border-bottom: var(--border-width-extra-small) solid transparent;
-  transition: var(--transition-small) all;
-}
-.compare__variants-item:hover {
-  border-bottom: var(--border-width-extra-small) solid var(--color-link);
-  transition: var(--transition-small) all;
 }
 </style>

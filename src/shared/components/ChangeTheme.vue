@@ -14,7 +14,7 @@
       <span class="switch-theme__icon">☀️</span>
       <div
         :class="{ 'change-theme__toggle_checked': userTheme === 'dark-theme' }"
-        class="change-theme__toggle"></div>
+        class="icon change-theme__toggle"></div>
     </label>
   </div>
 </template>
@@ -68,7 +68,7 @@ export default {
   padding: var(--unit);
   cursor: pointer;
   background: var(--color-border);
-  border-radius: var(--border-radius-middle);
+  border-radius: var(--border-radius-large);
   transition: background var(--transition-main) ease;
 }
 .switch-theme__icon {
@@ -77,8 +77,6 @@ export default {
 }
 .change-theme__toggle {
   position: absolute;
-  width: var(--icon-size);
-  height: var(--icon-size);
   background-color: var(--color-primary);
   border-radius: 50%;
   transition: transform var(--transition-small) ease,

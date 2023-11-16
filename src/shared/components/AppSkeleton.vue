@@ -59,11 +59,11 @@ export default {
   animation: shimmer var(--transition-skeleton) infinite;
 }
 .light-theme .skeleton__wave {
-  background-image: linear-gradient(
-    90deg,
-    rgb(255 255 255 / 0%),
-    rgb(255 255 255 / 7%),
-    rgb(37 22 22 / 0%)
+  background: linear-gradient(
+    100deg,
+    rgba(255 255 255 / 0%) 40%,
+    rgba(255 255 255 / 50%) 50%,
+    rgba(255 255 255 / 0%) 60%
   );
 }
 @keyframes shimmer {

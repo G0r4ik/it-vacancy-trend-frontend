@@ -1,7 +1,7 @@
 <template>
   <div class="other">
     <div class="container">
-      <h1 class="other__title">Info of this website</h1>
+      <h1>Info of this website</h1>
       <div class="other__inner">
         <p class="other__p">
           The website does not aim to showcase current and in-demand
@@ -56,9 +56,6 @@
   align-items: center;
   justify-content: center;
 }
-.other__title {
-  margin-bottom: var(--unit);
-}
 .other__inner {
   margin: var(--unit);
   font-family: monospace;
@@ -70,7 +67,7 @@
 .other__link {
   color: var(--color-link);
 }
-@media (width < 760px) {
+@media (width < 768px) {
   .other__inner {
     margin: 0;
     margin-bottom: var(--unit);

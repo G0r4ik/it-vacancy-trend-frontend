@@ -1,21 +1,25 @@
 :root {
-  --color-mine-shaft-base: #242424;
-  --color-white-base: #fff;
-  --color-chartreuse-base: #9bff00;
-  --color-turquoise-base: #5cdba6;
   --color-picton-blue-base: #4ba5e4;
+  --color-soft-orange-base: #f6b87e;
+  --color-mine-shaft-base: #242424;
+  --color-chartreuse-base: #9bff00;
+  --color-light-gray-base: #e3e3e3;
+  --color-turquoise-base: #5cdba6;
+  --color-light-red-base: tomato;
   --color-cod-gray-base: #111;
-  --color-gray: gray;
+  --color-white-base: #fff;
+  --color-gray-base: gray;
   /* COLOR */
-  --color-border: var(--color-mine-shaft-base);
-  --color-text: var(--color-white-base);
   --color-primary: var(--color-picton-blue-base);
   --color-background: var(--color-cod-gray-base);
+  --color-border: var(--color-mine-shaft-base);
   --color-link: var(--color-picton-blue-base);
+  --color-danger: var(--color-light-red-base);
+  --color-star: var(--color-soft-orange-base);
   --color-skeleton-bg: rgb(0 0 0 / 12%);
+  --color-text: var(--color-white-base);
   --color-modal-bg: rgb(0 0 0 / 70%);
-  --color-star: #f6b87e;
-  --color-danger: tomato;
+  --color-error-popup: #eb5b5b;
   /* UNIT */
   --unit: 5px;
   /* z-index */
@@ -46,30 +50,40 @@
   --border-width-small: 2px;
   --border-width: 3px;
   /* Width */
+  --width-popup-error-bg: 50px;
+  --width-count-tools: 56px;
   --width-change-theme: 70px;
-  --width-header: 115px;
-  --width-ratin-item-category: 200px;
-  --width-auth: 400px;
-  --width-compare-tools: 800px;
+  --width-header-logo-mobile: 115px;
+  --width-select-date: 150px;
+  --width-popup-error: 300px;
+  --width-pagination-5: 306px;
   --max-width-title: 300px;
+  --width-auth: 400px;
   /* Height */
-  --height-header: 70px;
   --height-table-item: 25px;
-  --height-menu-list: 100px;
+  --height-count-tools: 27px;
   --height-logo-mobile: 30px;
+  --height-pagination: 36px;
+  --height-table-tr: 42px;
+  --height-header: 70px;
+  --height-menu-list: 100px;
+  --max-height-popup-error-text: 100px;
+  --height-filters: 120px;
   --height-compare-tools: 500px;
   --max-height-chart: 1000px;
+  --height-not-found: 50vh;
+  --height-chart: 60vh;
   /* Transition */
-  --transition-main: 0.5s;
   --transition-small: 0.3s;
+  --transition-main: 0.5s;
   --transition-skeleton: 1.5s;
 }
 :root.light-theme {
   --color-background: var(--color-white-base);
   --color-text: var(--color-cod-gray-base);
-  --color-border: #e3e3e3;
+  --color-border: var(--color-light-gray-base);
 }
-:root.dark-theme {
+:root.dark-theme-base {
   --color-background: var(--color-cod-gray-base);
   --color-text: var(--color-white-base);
 }

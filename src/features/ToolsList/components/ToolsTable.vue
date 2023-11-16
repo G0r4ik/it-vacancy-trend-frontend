@@ -10,7 +10,7 @@
             @click="$emit('listSort', 'nameTool')"
             @keydown.enter="$emit('listSort', 'nameTool')">
             Name
-            <Icon iconName="IconChevronUpDown" />
+            <Icon icon-name="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th rating-table__th_category">
             Category
@@ -24,7 +24,7 @@
             @click="$emit('listSort', +jbr.id)"
             @keydown.enter="$emit('listSort', +jbr.id)">
             {{ `${jbr.jobBoard}-${jbr.region}` }}
-            <Icon iconName="IconChevronUpDown" />
+            <Icon icon-name="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th"></th>
         </tr>
@@ -92,7 +92,7 @@
                   tool.diff[jbr.id] !== 0 && tool.diff[jbr.id] !== undefined
                 ">
                 <Icon
-                  iconName="IconArrow"
+                  icon-name="IconArrow"
                   :custom-class="`rating-table__item-fixme rating-table__item-fixme_${
                     tool.diff[jbr.id] > 0 ? 1 : -1
                   }`" />
@@ -121,7 +121,7 @@
     <AppSkeleton
       v-if="!isDataLoaded"
       width="100%"
-      height="42px"
+      height="var(--height-table-tr)"
       mt="var(--unit)"
       :count="25" />
     <div v-if="tools.length === 0 && isDataLoaded" class="empty-list">
@@ -227,7 +227,6 @@ export default {
 
 <style>
 .rating-table {
-  min-height: 50vh;
   margin-bottom: var(--unit);
   overflow: hidden;
   overflow-x: auto;
@@ -236,6 +235,9 @@ export default {
   width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
+}
+.rating-table__row {
+  height: var(--height-table-tr);
 }
 .rating-table__th {
   padding: var(--unit);
@@ -250,17 +252,9 @@ export default {
 .rating-table__th_category {
   text-align: left;
 }
-.rating-table__icon-change-sort {
-  display: flex;
-}
-.rating-table__icon-change-sort svg,
 .rating-table__th svg {
   display: inline-block;
-  width: var(--icon-size);
   vertical-align: middle;
-  /* width: var(--icon-width-extra-small);
-  fill: var(--color-gray);
-  */
 }
 .rating-table__item {
   padding: var(--unit) var(--unit);
@@ -276,8 +270,6 @@ export default {
   font-size: var(--text-extra-small);
 }
 .rating-table__item-fixme {
-  width: var(--icon-size);
-  height: var(--icon-size);
   margin-right: calc(var(--unit) / 2);
   margin-left: var(--unit);
 }
@@ -299,8 +291,6 @@ export default {
   overflow-x: auto;
 }
 .rating-table__item-logo {
-  width: var(--icon-size);
-  height: var(--icon-size);
   margin-right: var(--unit);
   vertical-align: middle;
 }
@@ -326,19 +316,18 @@ export default {
   font-size: var(--text-extra-small);
   border-radius: var(--border-radius-large);
 }
-.rating-table__item-studied {
-  width: var(--icon-size);
+/* .rating-table__item-studied {
   cursor: pointer;
   border-radius: 50%;
   fill: var(--color-text);
-}
+} */
 .empty-list {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 50vh;
+  height: var(--height-not-found);
   color: var(--color-border);
 }
 .empty-list__span {
@@ -358,7 +347,7 @@ export default {
   opacity: 0.8;
   transition: var(--transition-small);
 }
-@media (width <= 760px) {
+@media (width < 768px) {
   .rating-table__inner {
     font-size: var(--text-small);
   }

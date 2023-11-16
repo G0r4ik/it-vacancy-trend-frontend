@@ -66,7 +66,6 @@ export default {
   max-height: 95vh;
   overflow-y: auto;
   border-radius: var(--radius);
-  box-shadow: 0 0.1rem 1rem -0.5rem rgb(0 0 0 / 40%);
 }
 .modal-wrapper__cross {
   position: absolute;
@@ -76,6 +75,6 @@ export default {
   padding: calc(var(--unit) / 2) var(--unit);
   cursor: pointer;
   border: var(--border-width-small) solid var(--color-danger);
-  border-radius: var(--radius);
+  border-radius: var(--border-radius-middle);
 }
 </style>

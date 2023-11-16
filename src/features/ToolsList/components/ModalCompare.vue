@@ -39,7 +39,7 @@
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'prev')">
         <Icon
-          iconName="IconChevron"
+          icon-name="IconChevron"
           custom-class="technology-comparison__go-prev" />
         prev
       </div>
@@ -48,7 +48,7 @@
         @click="$emit('openNewItemInModal', 'next')">
         next
         <Icon
-          iconName="IconChevron"
+          icon-name="IconChevron"
           custom-class="technology-comparison__go-next" />
       </div>
     </div>
@@ -123,7 +123,6 @@ export default {
 }
 .technology-comparison-wrapper {
   width: 100%;
-  max-width: 900px;
   margin: calc(var(--unit) * 2);
 }
 .technology-comparison {
@@ -144,11 +143,6 @@ export default {
 .technology-comparison__chevrons_disabled .technology-comparison__chevron-item {
   cursor: default;
   opacity: 0.5;
-}
-.technology-comparison__go-prev,
-.technology-comparison__go-next {
-  width: var(--icon-size-large);
-  height: var(--icon-size-large);
 }
 .technology-comparison__go-prev {
   left: 0;
@@ -177,7 +171,7 @@ export default {
   border: var(--border-width-extra-small) solid var(--color-border);
   border-radius: var(--radius);
 }
-@media (max-width: 770px) {
+@media (width < 768px) {
   .technology-comparison {
     padding: var(--unit);
     padding-top: calc(var(--unit) * 3);

@@ -1,17 +1,12 @@
 <template>
   <div class="filters">
     <div class="filters__inner">
-      <div class="filters__top">
-        <!-- <label for="select-date" class="select-container__label">
+      <!-- <div class="filters__top">
+        <label for="select-date" class="select-container__label">
           Date:
           <input id="select-date" class="select-date" />
-        </label> -->
-        <button
-          class="filters__top-all"
-          @click="$emit('changeCategory', 'all')">
-          {{ changeCategoryAll }}
-        </button>
-      </div>
+        </label>
+      </div> -->
 
       <CategoriesTools
         v-if="categories.length > 0"
@@ -25,6 +20,9 @@
         placeholder="Введите технологию"
         :value="searchInput"
         @input="$emit('changeSearch', $event)" />
+      <button class="filters__top-all" @click="$emit('changeCategory', 'all')">
+        {{ changeCategoryAll }}
+      </button>
     </div>
   </div>
 </template>
@@ -51,7 +49,7 @@ export default {
   },
   computed: {
     changeCategoryAll() {
-      return this.currentCategories.length > 0 ? 'clear' : 'select all'
+      return this.currentCategories.length > 0 ? 'unselect all' : 'select all'
     },
     selectedDate() {
       return useStore().selectedDate
@@ -59,40 +57,38 @@ export default {
   },
 
   async mounted() {
-    // eslint-disable-next-line promise/catch-or-return
-    const module = await import(/* webpackChunkName: "flatpickr" */ 'flatpickr')
-    this.flatpickr = module.default
-    const availableDates = []
-    for (let i = 0; i < this.dates.length; i++) {
-      const { idDate, dateOfCompletion } = this.dates[i]
-      availableDates.push([idDate, dateOfCompletion])
-    }
-
-    const { dates, $emit, selectedDate } = this
-
+    //     // eslint-disable-next-line promise/catch-or-return
+    //     const module = await import(/* webpackChunkName: "flatpickr" */ 'flatpickr')
+    //     this.flatpickr = module.default
+    //     const availableDates = []
+    //     for (let i = 0; i < this.dates.length; i++) {
+    //       const { idDate, dateOfCompletion } = this.dates[i]
+    //       availableDates.push([idDate, dateOfCompletion])
+    //     }
+    //
+    //     const { dates, $emit, selectedDate } = this
     // eslint-disable-next-line unicorn/consistent-destructuring
-    const maxDate = this.dates.at(-1).dateOfCompletion
-    // eslint-disable-next-line unicorn/consistent-destructuring
-    const minDate = this.dates[0].dateOfCompletion
-    this.flatpickr('#select-date', {
-      minDate,
-      maxDate,
-      defaultDate: selectedDate.dateOfCompletion,
-      enable: availableDates.map(d => d[1]),
-      onChange(d) {
-        for (const date of dates) {
-          const fDate = new Date(date.dateOfCompletion)
-          const sDate = new Date(d)
-          const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
-          const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
-
-          if (firstDate === secondDate) {
-            $emit('changeSelectedDate', date)
-            break
-          }
-        }
-      },
-    })
+    // const maxDate = this.dates.at(-1).dateOfCompletion
+    // // eslint-disable-next-line unicorn/consistent-destructuring
+    // const minDate = this.dates[0].dateOfCompletion
+    // this.flatpickr('#select-date', {
+    //   minDate,
+    //   maxDate,
+    //   defaultDate: selectedDate.dateOfCompletion,
+    //   enable: availableDates.map(d => d[1]),
+    //   onChange(d) {
+    //     for (const date of dates) {
+    //       const fDate = new Date(date.dateOfCompletion)
+    //       const sDate = new Date(d)
+    //       const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
+    //       const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
+    //       if (firstDate === secondDate) {
+    //         $emit('changeSelectedDate', date)
+    //         break
+    //       }
+    //     }
+    //   },
+    // })
   },
 }
 </script>
@@ -101,8 +97,7 @@ export default {
 .flatpickr-weekdays {
   display: none;
 }
-.filters__inner {
-  padding: var(--unit);
+.filters {
   margin-bottom: calc(var(--unit) * 2);
 }
 .filters__top {
@@ -112,11 +107,11 @@ export default {
   margin-bottom: var(--unit);
 }
 .filters__top-all {
-  margin-left: auto;
+  margin-left: calc(var(--unit) * 3);
   border-bottom: var(--border-width-small) solid var(--color-border);
 }
 .select-date {
-  width: 150px;
+  width: var(--width-select-date);
   font-size: var(--text-middle);
   line-height: 1.5;
   color: var(--color-text);
@@ -129,7 +124,7 @@ export default {
 .filters__search-input {
   margin-top: var(--unit);
 }
-@media (width <= 760px) {
+@media (width < 768px) {
   .select-container__label {
     margin-bottom: var(--unit);
   }

@@ -3,8 +3,8 @@
     <details class="chart-settings-count">
       <summary class="chart-settings-count__summary">
         Нажмите, чтобы
-        <span class="open">показать</span>
-        <span class="close">скрыть</span>
+        <span class="chart-settings-open">показать</span>
+        <span class="chart-settings-close">скрыть</span>
         настройки
       </summary>
       <div class="chart-settings-count__labels">
@@ -34,11 +34,11 @@
     <AppSkeleton
       v-if="!isLoaded"
       width="100%"
-      :height="`30vh`"
+      :height="`var(--height-chart)`"
       :my-class="'skeleton__chart'"
       display="block"
       br="0" />
-    <div v-if="isLoaded" class="technology-comparison__chart">
+    <div v-if="isLoaded" class="chart-wrapper">
       <LineChart
         id="my-chart-id"
         :options="config"
@@ -313,7 +313,7 @@ export default {
   flex-direction: column;
 }
 .chart-settings-count__label {
-  margin-top: calc(var(--unit) * 2);
+  margin-top: var(--unit);
 }
 .chart-settings-count {
   padding: calc(var(--unit) * 3);
@@ -341,23 +341,22 @@ export default {
   transition: var(--transition-small) transform ease;
   transform: translateY(-50%);
 }
-.chart-settings-count .chart-settings-count__summary .close {
+.chart-settings-close {
   display: none;
 }
-.chart-settings-count[open] .chart-settings-count__summary .open {
+.chart-settings-count[open] .chart-settings-open {
   display: none;
 }
-.chart-settings-count[open] .chart-settings-count__summary .close {
+.chart-settings-count[open] .chart-settings-close {
   display: inline;
 }
 .chart-settings-count[open] > .chart-settings-count__summary::before {
   transform: rotate(90deg);
 }
-.chart-settings-count .chart-settings-count__summary::-webkit-details-marker {
+.chart-settings-count__summary::-webkit-details-marker {
   display: none;
 }
-.technology-comparison__chart {
-  height: 30vh;
+.chart-wrapper {
+  height: var(--height-chart);
 }
 </style>
-<!-- 414 -->

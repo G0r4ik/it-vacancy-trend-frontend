@@ -33,7 +33,7 @@ export default {
 }
 .controversial-mark__mark {
   font-weight: 700;
-  color: red;
+  color: var(--color-danger);
   cursor: help;
 }
 .popup-with-error {

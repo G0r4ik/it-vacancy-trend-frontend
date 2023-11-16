@@ -4,25 +4,25 @@
       <button
         :id="`go-to-first-page-${uniqId}`"
         :aria-label="`go-to-first-page-${uniqId}`"
-        class="pagination__button"
+        class="icon pagination__button"
         :disabled="isFirstPage"
         @click="changeCurrentPage(1)">
-        <Icon iconName="IconChevronDouble" style="transform: rotate(180deg)" />
+        <Icon icon-name="IconChevronDouble" style="transform: rotate(180deg)" />
       </button>
       <button
         :id="`go-to-prev-page-${uniqId}`"
         :aria-label="`go-to-prev-page-${uniqId}`"
-        class="pagination__button"
+        class="icon pagination__button"
         :disabled="isFirstPage"
         @click="changeCurrentPage(currentPage - 1)">
-        <Icon iconName="IconChevron" style="transform: rotate(180deg)" />
+        <Icon icon-name="IconChevron" style="transform: rotate(180deg)" />
       </button>
       <button
         v-for="page of paginationItems"
         :id="`go-to-${page}-page-${uniqId}`"
         :key="page"
         :aria-label="`go-to-${page}-page-${uniqId}`"
-        class="pagination__button"
+        class="icon pagination__button"
         :class="{ pagination__button_current: currentPage === page }"
         @click="changeCurrentPage(page)">
         {{ page }}
@@ -30,18 +30,18 @@
       <button
         :id="`go-to-next-page-${uniqId}`"
         :aria-label="`go-to-next-page-${uniqId}`"
-        class="pagination__button"
+        class="icon pagination__button"
         :disabled="isLastPage"
         @click="changeCurrentPage(currentPage + 1)">
-        <Icon iconName="IconChevron" />
+        <Icon icon-name="IconChevron" />
       </button>
       <button
         :id="`go-to-last-page-${uniqId}`"
         :aria-label="`go-to-last-page-${uniqId}`"
-        class="pagination__button"
+        class="icon pagination__button"
         :disabled="isLastPage"
         @click="changeCurrentPage(countOfPages)">
-        <Icon iconName="IconChevronDouble" />
+        <Icon icon-name="IconChevronDouble" />
       </button>
     </div>
     <label class="pagination__change" :for="`listing-per-pages-${uniqId}`">
@@ -158,7 +158,7 @@ export default {
   },
 
   mounted() {
-    this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+    this.visibleButtons = window.innerWidth > 768 ? 5 : 3
     window.addEventListener('resize', this.changeFIXME)
   },
 
@@ -168,7 +168,7 @@ export default {
 
   methods: {
     changeFIXME() {
-      this.visibleButtons = window.innerWidth > 760 ? 5 : 3
+      this.visibleButtons = window.innerWidth > 768 ? 5 : 3
       this.changeCurrentPage(this.currentPage)
     },
     changePerPage(value = 50, currentPage = 1) {
@@ -203,8 +203,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--icon-size);
-  height: var(--icon-size);
   margin: 0 var(--unit);
   font-size: var(--text-small);
   color: var(--color-text);
@@ -225,16 +223,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: var(--unit);
   margin-left: auto;
   font-size: var(--text-small);
 }
 .pagination__change select {
   padding-top: var(--unit);
-  text-align: center;
-  text-align-last: center;
-}
-.pagination__change option {
   text-align: center;
   text-align-last: center;
 }

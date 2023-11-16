@@ -57,6 +57,4 @@ export default {
 .search-result__item:hover {
   background: var(--color-border);
 }
-.search-result {
-}
 </style>

@@ -1,9 +1,8 @@
 <template>
   <div class="error-server">
     <div v-for="error of errors" :key="error.id" class="error-server__item">
-      <div class="error-server__bg"></div>
       <Icon
-        iconName="IconCross"
+        icon-name="IconCross"
         custom-class="error-server__cross"
         @click="closeError(error.id)" />
       <div class="error-server__inner">
@@ -60,36 +59,32 @@ export default {
   top: var(--unit);
   right: var(--unit);
   z-index: var(--z-index-overlay);
-
   padding: var(--unit);
   color: black;
   cursor: pointer;
-  background-color: #f0f0ff;
+  background-color: var(--color-light-gray-base);
   border-radius: 50%;
 }
 .error-server__inner {
   position: relative;
-  max-width: 300px;
-  padding-right: calc(var(--unit) * 7);
+  max-width: var(--width-popup-error);
+  padding-right: calc(var(--unit) * 5);
   padding-left: calc(var(--unit) * 10);
-  /* overflow: hidden; */
 }
 .error-server__item::before {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50px;
+  width: var(--width-popup-error-bg);
   height: 100%;
   aspect-ratio: 1;
   content: '';
-  background: #fdeff8;
-  background: #eb5b5b;
-  border: var(--border-radius-middle);
+  background: var(--color-error-popup);
   border-top-right-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
 }
 .error-server__text {
-  max-height: 100px;
+  max-height: var(--max-height-popup-error-text);
   overflow-y: auto;
   font-size: var(--text-extra-small);
 }

@@ -50,3 +50,30 @@ export default {
   },
 }
 </script>
+
+<style>
+.compare__variants {
+  margin-bottom: calc(var(--unit) * 3);
+}
+.compare__variants-title {
+  display: inline-block;
+  margin-bottom: var(--unit);
+  font-size: var(--text-large);
+}
+.compare__variants-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.compare__variants-item {
+  display: inline;
+  color: var(--color-link);
+  cursor: pointer;
+  border-bottom: var(--border-width-extra-small) solid transparent;
+  transition: var(--transition-small) all;
+}
+.compare__variants-item:hover {
+  border-bottom: var(--border-width-extra-small) solid var(--color-link);
+  transition: var(--transition-small) all;
+}
+</style>

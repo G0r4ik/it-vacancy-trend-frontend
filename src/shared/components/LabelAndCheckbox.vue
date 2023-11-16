@@ -10,10 +10,10 @@
       :name="id"
       @input="$emit('update:modelValue', $event.target.checked)" />
     <div
-      class="check"
+      class="icon check"
       tabindex="0"
       @keydown.enter="$event.target.previousSibling.click()">
-      <Icon iconName="IconCheck" />
+      <Icon icon-name="IconCheck" />
     </div>
   </label>
 </template>
@@ -43,9 +43,6 @@ export default {
 }
 .check {
   position: relative;
-  width: var(--icon-size);
-  min-width: var(--icon-size);
-  height: var(--icon-size);
   margin-left: var(--unit);
   border: var(--border-width-small) solid var(--color-border);
   border-radius: var(--radius);

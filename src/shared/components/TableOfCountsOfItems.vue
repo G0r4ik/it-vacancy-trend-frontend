@@ -28,7 +28,7 @@
     </table>
   </div>
 </template>
-<!-- fix6 -->
+
 <script>
 export default {
   props: {
@@ -96,7 +96,7 @@ export default {
   background: var(--color-background);
 }
 .compare__table-tr:nth-child(2n) .compare__table-tool-name {
-  background: var(--color-border) !important;
+  background: var(--color-border);
 }
 .compare__table-count:hover {
   background: var(--color-link);

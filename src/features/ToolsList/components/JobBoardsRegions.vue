@@ -11,7 +11,6 @@
 </template>
 
 <script>
-// import { storeToRefs } from 'pinia'
 import { useStore } from '../store'
 
 export default {

@@ -4,8 +4,8 @@
       <span>IT Technology in vacancies</span>
       <AppSkeleton
         v-if="tools.length === 0"
-        width="56px"
-        height="27px"
+        width="var(--width-count-tools)"
+        height="var(--height-count-tools)"
         display="inline-block"
         ml="var(--unit)" />
       <span v-else class="list-count">({{ filteredList.length }})</span>
@@ -19,7 +19,7 @@
         !selectedDate.idDate
       "
       width="100%"
-      height="181px"
+      height="var(--height-filters)"
       mb="calc(var(--unit) * 2)"
       br="var(--radius)" />
 
@@ -32,14 +32,23 @@
       @change-category="changeCategory"
       @change-search="changeSearch"
       @change-selected-date="changeSelectedDate" />
+    <AppSkeleton
+      v-if="tools.length === 0"
+      :count="2"
+      width="25%"
+      height="24px"
+      display="inline-block"
+      mb="var(--unit)"
+      mr="var(--unit)" />
     <JobBoardsRegions v-if="tools.length > 0" />
+
     <RatingSelectList
       :list="currentList"
       @change-current-list="changeCurrentList" />
     <AppSkeleton
       v-if="tools.length === 0"
-      width="300px"
-      height="36px"
+      width="var(--width-pagination-5)"
+      height="var(--height-pagination)"
       mb="var(--unit)" />
     <div ref="invisibleStartTable"></div>
     <AppPagination

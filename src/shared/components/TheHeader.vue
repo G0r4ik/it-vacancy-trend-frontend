@@ -10,19 +10,19 @@
         </div>
         <nav class="header__menu menu">
           <button
-            class="menu__button"
+            class="menu__burger"
             type="button"
             aria-label="menu__list"
             aria-expanded="false"
             aria-controls="menu__list"
             @click="showMenuFunction">
             <Icon
-              iconName="IconCross"
               id="cross"
+              icon-name="IconCross"
               custom-class="menu__icon menu__icon-cross" />
             <Icon
-              iconName="IconMenu"
               id="menu"
+              icon-name="IconMenu"
               custom-class="menu__icon menu__icon-menu" />
           </button>
           <ul class="menu__list">
@@ -30,7 +30,10 @@
               class="menu__item"
               @click="changePage('rating')"
               @keyup.enter="changePage('rating')">
-              <router-link to="/" active-class="menu__item_active">
+              <router-link
+                to="/"
+                class="menu__item-link"
+                active-class="menu__item_active">
                 Rating
               </router-link>
             </li>
@@ -38,7 +41,10 @@
               class="menu__item"
               @click="changePage('compare')"
               @keyup.enter="changePage('compare')">
-              <router-link to="/compare" active-class="menu__item_active">
+              <router-link
+                to="/compare"
+                class="menu__item-link"
+                active-class="menu__item_active">
                 Compare
               </router-link>
             </li>
@@ -46,7 +52,10 @@
               class="menu__item"
               @click="changePage('other')"
               @keyup.enter="changePage('other')">
-              <router-link to="/other" active-class="menu__item_active">
+              <router-link
+                to="/other"
+                class="menu__item-link"
+                active-class="menu__item_active">
                 Other
               </router-link>
             </li>
@@ -55,7 +64,7 @@
         <div class="header__other">
           <ChangeTheme />
           <!-- <button
-            class="header__user-button"
+            class="icon header__user-button"
             @click="showUserAction = !showUserAction">
           </button> -->
           <!-- <Icon icon-name="IconUser" v-if="user" />
@@ -107,11 +116,11 @@ export default {
   methods: {
     showMenuFunction() {
       this.showUserAction = false
-      const menuButton = document.querySelector('.menu__button')
+      const menuButton = document.querySelector('.menu__burger')
       const menuList = document.querySelector('.menu__list')
       const expanded = menuButton.getAttribute('aria-expanded') === 'true'
       menuButton.setAttribute('aria-expanded', !expanded)
-      menuButton.classList.toggle('menu__button_open')
+      menuButton.classList.toggle('menu__burger_open')
       menuList.classList.toggle('menu__list_open')
     },
     changePage(page) {
@@ -132,16 +141,16 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: var(--unit) 0;
-  border-bottom: var(--radius) solid var(--color-border);
+  border-bottom: var(--border-width) solid var(--color-border);
 }
 .header__logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--width-header);
+  width: var(--width-header-logo-mobile);
   padding: var(--unit);
-  border: calc(var(--radius) / 2) solid var(--color-primary);
-  border-radius: var(--radius);
+  border: calc(var(--border-width-small)) solid var(--color-primary);
+  border-radius: var(--border-radius-middle);
 }
 .header__logo_mobile {
   display: none;
@@ -155,27 +164,19 @@ export default {
 .menu__item {
   padding-bottom: var(--unit);
   margin: 0 calc(var(--unit) * 4);
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
 }
 .menu__item_active {
   padding-bottom: var(--unit);
   border-bottom: var(--border-width-small) solid var(--color-primary);
-  border-radius: var(--border-width-small);
 }
 .header__other {
   display: flex;
   align-items: center;
 }
-.header__user-button {
-  width: var(--icon-size);
-  height: var(--icon-size);
-}
-.menu__button {
+.menu__burger {
   display: none;
 }
-@media (width < 760px) {
+@media (width < 768px) {
   .header__inner {
     padding: var(--unit) 0;
     margin: 0;
@@ -190,16 +191,9 @@ export default {
   .header__menu {
     grid-row: 1;
   }
-  .menu {
-    display: grid;
-  }
-  .menu__button {
+  .menu__burger {
     z-index: var(--z-index-modal);
     display: block;
-  }
-  .menu__icon {
-    display: block;
-    stroke: var(--color-text);
   }
   .menu__icon-cross,
   .menu__icon-menu {
@@ -209,13 +203,14 @@ export default {
   .menu__icon:hover {
     stroke: var(--color-primary);
   }
+  .menu__icon-cross {
+    display: none;
+  }
   .menu__icon-menu,
-  .menu__button_open .menu__icon-cross {
+  .menu__burger_open .menu__icon-cross {
     display: block;
   }
-  /* stylelint-disable-next-line no-descending-specificity */
-  .menu__icon-cross,
-  .menu__button_open .menu__icon-menu {
+  .menu__burger_open .menu__icon-menu {
     display: none;
   }
   .menu__list {
