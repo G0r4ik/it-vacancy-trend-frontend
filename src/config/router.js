@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PageCompare from '@/pages/PageCompare.vue'
 import PageOther from '@/pages/PageOther.vue'
 import PageToolsList from '@/pages/PageToolsList.vue'
-import PageAuth from '@/pages/PageAuth.vue'
+// import PageAuth from '@/pages/PageAuth.vue'
 import { SERVER_PROD } from '../shared/consts.js'
 
 const routes = [
@@ -23,14 +23,14 @@ const routes = [
       description: 'Information about this site',
     },
   },
-  {
-    path: '/auth',
-    component: PageAuth,
-    meta: {
-      title: 'Auth',
-      description: 'Login or registration',
-    },
-  },
+  // {
+  //   path: '/auth',
+  //   component: PageAuth,
+  //   meta: {
+  //     title: 'Auth',
+  //     description: 'Login or registration',
+  //   },
+  // },
   {
     path: '/compare',
     component: PageCompare,

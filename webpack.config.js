@@ -55,6 +55,10 @@ const config = {
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 10 }),
     new webpack.ProgressPlugin(),
     new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: isDevelopment,
+    }),
     new Dotenv({ systemvars: true }),
     new CaseSensitivePathsPlugin(),
     new HtmlWebpackPlugin({

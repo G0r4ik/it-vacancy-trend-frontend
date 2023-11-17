@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <TheHeader />
   <AuthSignIn
     v-if="component === 'login'"
@@ -23,4 +23,4 @@ export default {
     },
   },
 }
-</script>
+</script> -->

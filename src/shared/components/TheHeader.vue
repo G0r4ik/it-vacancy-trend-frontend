@@ -90,14 +90,14 @@
       </div>
     </div>
   </header>
-  <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" />
+  <!-- <UserDropdown v-if="showUserAction" :show-user-action="showUserAction" /> -->
 </template>
 
 <script>
-import { UserDropdown, useStore } from '@/features/AuthUser'
+// import { UserDropdown, useStore } from '@/features/AuthUser'
 
 export default {
-  components: { UserDropdown },
+  // components: { UserDropdown },
 
   emits: ['changePage'],
 
@@ -107,11 +107,11 @@ export default {
     }
   },
 
-  computed: {
-    user() {
-      return useStore().user
-    },
-  },
+  // computed: {
+  //   user() {
+  //     return useStore().user
+  // },
+  // },
 
   methods: {
     showMenuFunction() {
