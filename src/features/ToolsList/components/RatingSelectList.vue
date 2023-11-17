@@ -19,7 +19,7 @@
         @click="$emit('changeCurrentList', 'studiedTools')">
         Studied
       </button> -->
-      <!-- <button class="select-list__button">Настроить</button> -->
+      <!-- <button class="select-list__button">To configure</button> -->
     </div>
   </div>
 </template>

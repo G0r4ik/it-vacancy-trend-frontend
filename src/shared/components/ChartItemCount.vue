@@ -2,33 +2,33 @@
   <div>
     <details class="chart-settings-count">
       <summary class="chart-settings-count__summary">
-        Нажмите, чтобы
-        <span class="chart-settings-open">показать</span>
-        <span class="chart-settings-close">скрыть</span>
-        настройки
+        Click to
+        <span class="chart-settings-open">show</span>
+        <span class="chart-settings-close">hide</span>
+        the settings
       </summary>
       <div class="chart-settings-count__labels">
         <labelAndCheckbox
           id="is-can-scroll"
           v-model="isCanScroll"
           class-label="chart-settings-count__label"
-          text=" разрешить скролл" />
+          text="allow scrolling of the graph" />
         <labelAndCheckbox
           id="is-using-contrast-color"
           v-model="isUsingContrastColor"
           class-label="chart-settings-count__label"
-          text="использовать контрасные цвета вместо уникальных блеклых?" />
+          text="use contrasting colors instead of unique faded ones" />
         <labelAndCheckbox
           id="is-show-by-week"
           v-model="isShowByWeek"
           class-label="chart-settings-count__label"
-          text="показывать по неделям а не по дням" />
+          text="show by week, not by day" />
         <labelAndCheckbox
           v-show="!isShowByWeek"
           id="is-show-event"
           v-model="isShowEvents"
           class-label="chart-settings-count__label"
-          text="показать события" />
+          text="show events" />
       </div>
     </details>
     <AppSkeleton

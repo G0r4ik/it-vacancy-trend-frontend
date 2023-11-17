@@ -4,46 +4,41 @@
       <h1>Info of this website</h1>
       <div class="other__inner">
         <p class="other__p">
-          The website does not aim to showcase current and in-demand
-          technologies. The number of job vacancies often correlates with the
-          frequency of technology usage.
+          The site is still in its early stage and is being regularly updated
+          with new data, job boards, technologies, and features. (and bugs)
         </p>
         <p class="other__p">
-          Certain technologies with commonly used words in everyday life (e.g.,
-          Go, Tree) or those that are too short (R language) might be
-          incorrectly counted. Such technologies are marked with a special
-          symbol.
+          The concept of the website is not to showcase the latest and in-demand
+          technological products, but the number of available job vacancies
+          often correlates with the level of technology usage. Specific
+          technologies like Go or Tree, or those with short names, such as the R
+          language, might be incorrectly found on job boards. These technologies
+          are marked with a special symbol. Vacancy announcement boards are
+          analyzed daily at 12 PM Greenwich Mean Time.
         </p>
-        <p class="other__p">The job boards are parsed daily at 12 PM GMT.</p>
-        <!-- <p class="other__p">
-          Ваши списки сохраняются только в браузере на котором была открыта эта
-          страница, на других устройствах или в других браузерах ничего не
-          сохранится. Хотите чтобы ваши списки сохранялись? Создайте аккаунт
-        </p> -->
-        <!-- <p class="other__p">
-          На данный момент на сайте есть два варианта. Российский рынок
-          (HeadHunter) и мировой (Indeed).
-        </p> -->
         <p class="other__p">
-          Currently, only the Russian job market (HeadHunter) is available on
-          the website.
+          Lists of favorites are saved only in the browser in which this page
+          was opened. They won't appear on other devices or in different
+          browsers.
         </p>
-        <!-- <p class="other__p">
-          В вашей стране есть локальный агрегатор вакансий и вы хотите чтобы
-          этот сайт отслеживал количество вакансий в нем и/или вы хотите чтобы
-          на условном Indeed отображались не все вакансии, а только вашей страны
-          (а может и города?), то пишите на почту.
-        </p> -->
         <p class="other__p">
-          Incorrect category? Missing any technology? Inaccurate numbers?
-          Suggestions for project development? Found any bugs? In the near
-          future, some other solution is planned, but for now, please write an
-          email.
+          Currently, we provide statistics for two job markets: Russia
+          (HeadHunter) and the USA (LinkedIn).
+        </p>
+
+        <p class="other__p">
+          If you notice categorization errors, absence of specific technologies,
+          inaccuracies in numbers, or if you have suggestions for project
+          improvement, please write to us at the specified email address or via
+          Telegram. We plan to add a forum in the future, but for now, we would
+          appreciate your comments and feedback sent via email or Telegram.
         </p>
         <p class="other__p">
           <a class="other__link" href="mailto:eforfora@gmail.com">
             eforfora@gmail.com
           </a>
+          |
+          <a class="other__link" :href="'https://t.me/lllEGOR'"> @lllEGOR </a>
         </p>
       </div>
     </div>

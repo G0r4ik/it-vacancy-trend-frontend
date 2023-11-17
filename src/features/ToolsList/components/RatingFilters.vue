@@ -17,7 +17,7 @@
       <input
         type="search"
         class="filters__search-input"
-        placeholder="Введите технологию"
+        placeholder="enter the technology "
         :value="searchInput"
         @input="$emit('changeSearch', $event)" />
       <button class="filters__top-all" @click="$emit('changeCategory', 'all')">

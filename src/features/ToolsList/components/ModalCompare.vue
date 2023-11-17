@@ -52,7 +52,7 @@
           custom-class="technology-comparison__go-next" />
       </div>
     </div>
-    <!-- <strong>Этих фильтров нет:</strong>
+    <!-- <strong>There are no such filters:</strong>
     <button
       v-for="category of categories"
       :key="category.idCategory"
