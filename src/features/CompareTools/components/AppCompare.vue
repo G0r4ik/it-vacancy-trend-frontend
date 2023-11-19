@@ -2,10 +2,6 @@
   <div class="compare">
     <div class="container">
       <div class="compare__inner">
-        <!-- <h1
-          v-if="namesOfCompareTools.length > 0"
-          class="compare__items-title"
-          v-html="namesOfCompareTools"></h1> -->
         <h1>Compare tools</h1>
         <ComparePopularSearches
           v-if="compareToolsIsLoad && compareTools.length === 0"

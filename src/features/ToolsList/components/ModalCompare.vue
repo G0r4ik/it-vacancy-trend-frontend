@@ -38,7 +38,7 @@
       <div
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'prev')">
-        <Icon
+        <IconSvg
           icon-name="IconChevron"
           custom-class="technology-comparison__go-prev" />
         prev
@@ -47,7 +47,7 @@
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'next')">
         next
-        <Icon
+        <IconSvg
           icon-name="IconChevron"
           custom-class="technology-comparison__go-next" />
       </div>

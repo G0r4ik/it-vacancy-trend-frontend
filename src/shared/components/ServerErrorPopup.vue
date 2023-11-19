@@ -1,7 +1,7 @@
 <template>
   <div class="error-server">
     <div v-for="error of errors" :key="error.id" class="error-server__item">
-      <Icon
+      <IconSvg
         icon-name="IconCross"
         custom-class="error-server__cross"
         @click="closeError(error.id)" />

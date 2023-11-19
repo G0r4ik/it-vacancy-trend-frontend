@@ -7,7 +7,9 @@
         class="icon pagination__button"
         :disabled="isFirstPage"
         @click="changeCurrentPage(1)">
-        <Icon icon-name="IconChevronDouble" style="transform: rotate(180deg)" />
+        <IconSvg
+          icon-name="IconChevronDouble"
+          style="transform: rotate(180deg)" />
       </button>
       <button
         :id="`go-to-prev-page-${uniqId}`"
@@ -15,7 +17,7 @@
         class="icon pagination__button"
         :disabled="isFirstPage"
         @click="changeCurrentPage(currentPage - 1)">
-        <Icon icon-name="IconChevron" style="transform: rotate(180deg)" />
+        <IconSvg icon-name="IconChevron" style="transform: rotate(180deg)" />
       </button>
       <button
         v-for="page of paginationItems"
@@ -33,7 +35,7 @@
         class="icon pagination__button"
         :disabled="isLastPage"
         @click="changeCurrentPage(currentPage + 1)">
-        <Icon icon-name="IconChevron" />
+        <IconSvg icon-name="IconChevron" />
       </button>
       <button
         :id="`go-to-last-page-${uniqId}`"
@@ -41,7 +43,7 @@
         class="icon pagination__button"
         :disabled="isLastPage"
         @click="changeCurrentPage(countOfPages)">
-        <Icon icon-name="IconChevronDouble" />
+        <IconSvg icon-name="IconChevronDouble" />
       </button>
     </div>
     <label class="pagination__change" :for="`listing-per-pages-${uniqId}`">

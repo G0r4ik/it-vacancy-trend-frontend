@@ -16,11 +16,11 @@
             aria-expanded="false"
             aria-controls="menu__list"
             @click="showMenuFunction">
-            <Icon
+            <IconSvg
               id="cross"
               icon-name="IconCross"
               custom-class="menu__icon menu__icon-cross" />
-            <Icon
+            <IconSvg
               id="menu"
               icon-name="IconMenu"
               custom-class="menu__icon menu__icon-menu" />
@@ -67,8 +67,8 @@
             class="icon header__user-button"
             @click="showUserAction = !showUserAction">
           </button> -->
-          <!-- <Icon icon-name="IconUser" v-if="user" />
-          <Icon icon-name="IconUserOff" v-else /> -->
+          <!-- <IconSvg icon-name="IconUser" v-if="user" />
+          <IconSvg icon-name="IconUserOff" v-else /> -->
           <!-- <svg><use :href="require('../../../public/icons.svg')" /></svg>
           <svg>
             <use
@@ -85,7 +85,7 @@
                 require('../../../public/icons.svg') + `#icons_icon1`
               "></use>
           </svg> -->
-          <!-- <Icon icon-name="IconCheck" /> -->
+          <!-- <IconSvg icon-name="IconCheck" /> -->
         </div>
       </div>
     </div>

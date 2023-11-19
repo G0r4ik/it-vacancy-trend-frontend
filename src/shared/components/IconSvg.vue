@@ -1,6 +1,7 @@
 <template>
   <svg :class="['icon', customClass]" aria-hidden="true">
-    <use :href="`${require('./icons/' + iconName + '.svg')}#${iconName}`" />
+    <use
+      :href="`${require('/public/icons/' + iconName + '.svg')}#${iconName}`" />
   </svg>
 </template>
 

@@ -127,7 +127,7 @@ export default {
     },
     config() {
       console.log('computed config change')
-      const { dates, isCanScroll, isShowLegend } = this
+      const { isCanScroll, isShowLegend } = this
 
       return {
         hover: { mode: 'nearest', intersect: false },

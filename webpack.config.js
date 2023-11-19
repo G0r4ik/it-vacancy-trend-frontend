@@ -1,4 +1,3 @@
-/* eslint-disable n/no-unpublished-import */
 import path from 'node:path'
 import webpack from 'webpack'
 import Dotenv from 'dotenv-webpack'

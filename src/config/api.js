@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import axios from 'axios'
 import { SERVER_LOCAL, isProduction } from '@/shared/consts.js'
 import { SERVER_API_PROD } from '../shared/consts.js'
@@ -13,7 +12,6 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-  // eslint-disable-next-line no-param-reassign
   config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
   return config
 })

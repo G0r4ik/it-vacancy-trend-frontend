@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "scripts": {
     "serve": "cross-env NODE_ENV=development webpack-dev-server --hot",
@@ -21,6 +21,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "dotenv-vault": "^1.25.0",
+    "eslint-config-standard": "^17.1.0",
     "flatpickr": "^4.6.13",
     "focus-trap": "^7.4.0",
     "focus-trap-vue": "^4.0.2",
@@ -30,8 +31,9 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
     "@eslint/js": "^8.37.0",
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "@swc/cli": "^0.1.62",
@@ -44,11 +46,8 @@
     "css-minimizer-webpack-plugin": "^5.0.0",
     "doiuse": "^4.4.1",
     "dotenv-webpack": "^8.0.1",
-    "eslint": "^8.37.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint": "^8.54.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-config-standard": "^17.0.0",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
@@ -63,6 +62,7 @@
     "postcss-preset-env": "^8.3.0",
     "postcss-reporter": "^7.0.5",
     "prettier": "^2.8.7",
+    "standard": "^17.1.0",
     "style-loader": "^3.3.2",
     "stylelint": "^15.4.0",
     "stylelint-config-recess-order": "^4.0.0",

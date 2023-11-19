@@ -11,7 +11,6 @@ app.use(pinia)
 app.use(router)
 app.mount('#app')
 
-// eslint-disable-next-line unicorn/prefer-module, no-undef
 const requireComponent = require.context('../shared/components', true, /\.vue$/)
 for (const fileName of requireComponent.keys()) {
   const componentConfig = requireComponent(fileName)

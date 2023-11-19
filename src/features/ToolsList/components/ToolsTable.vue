@@ -10,7 +10,7 @@
             @click="$emit('listSort', 'nameTool')"
             @keydown.enter="$emit('listSort', 'nameTool')">
             Name
-            <Icon icon-name="IconChevronUpDown" />
+            <IconSvg icon-name="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th rating-table__th_category">
             Category
@@ -24,7 +24,7 @@
             @click="$emit('listSort', +jbr.id)"
             @keydown.enter="$emit('listSort', +jbr.id)">
             {{ `${jbr.jobBoard}-${jbr.region}` }}
-            <Icon icon-name="IconChevronUpDown" />
+            <IconSvg icon-name="IconChevronUpDown" />
           </th>
           <th tabindex="0" class="rating-table__th"></th>
         </tr>
@@ -91,7 +91,7 @@
                 v-if="
                   tool.diff[jbr.id] !== 0 && tool.diff[jbr.id] !== undefined
                 ">
-                <Icon
+                <IconSvg
                   icon-name="IconArrow"
                   :custom-class="`rating-table__item-fixme rating-table__item-fixme_${
                     tool.diff[jbr.id] > 0 ? 1 : -1
@@ -316,11 +316,6 @@ export default {
   font-size: var(--text-extra-small);
   border-radius: var(--border-radius-large);
 }
-/* .rating-table__item-studied {
-  cursor: pointer;
-  border-radius: 50%;
-  fill: var(--color-text);
-} */
 .empty-list {
   display: flex;
   flex-direction: column;

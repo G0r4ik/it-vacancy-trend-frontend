@@ -12,7 +12,7 @@ const routes = [
     meta: {
       title: 'IT Vacancy Trend — IT Tech Frequency in Vacancies',
       description:
-        'A list of technologies sorted by the number of occurrences in vacancies on the HeadHunter website',
+        'Comparison of the popularity of various IT technologies on various job boards. More than 250 technologies, more than 15 categories.',
     },
   },
   {
