@@ -53,6 +53,7 @@ export default {
         .join('\n')
       return allCSS
     },
+    // FIXME
     hasClass(categoryId) {
       if (!this.getCSS().includes(`categories__item_${categoryId}`)) {
         const style = document.createElement('style')

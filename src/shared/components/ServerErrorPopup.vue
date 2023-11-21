@@ -30,8 +30,8 @@ export default {
   },
   methods: {
     closeError(idError) {
-      console.log(idError)
-      console.log(this.errors.indexOf(idError))
+      // console.log(idError)
+      // console.log(this.errors.indexOf(idError))
       const index = this.errors.map(i => i.id).indexOf(idError)
       useSharedStore().errors.splice(index, 1)
     },

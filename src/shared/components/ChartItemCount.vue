@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     datasets2() {
-      console.log('computed datasets change')
+      // console.log('computed datasets change')
 
       const copy = JSON.parse(JSON.stringify(this.datasets))
 
@@ -114,7 +114,7 @@ export default {
         //     )
         //   : Object.values(this.currentTools2[i].counts[`HeadHunter-Russia`])
       }
-      console.log('start')
+      // console.log('start')
 
       return copy
     },
@@ -126,7 +126,7 @@ export default {
         : this.dates.map(item => formateDate(item.dateOfCompletion))
     },
     config() {
-      console.log('computed config change')
+      // console.log('computed config change')
       const { isCanScroll, isShowLegend } = this
 
       return {

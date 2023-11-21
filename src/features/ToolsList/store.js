@@ -47,6 +47,7 @@ export const useStore = defineStore('store', {
       }
     },
 
+    // FIXME: скопировал у чата и не понимаю работу...
     getWeekNumber(date) {
       const target = new Date(date.valueOf())
       const dayNr = (date.getDay() + 6) % 7
@@ -89,7 +90,6 @@ export const useStore = defineStore('store', {
             jbr,
             controller.signal
           )
-          console.log(counts)
           tool.counts[jbr] = {}
           // tool.isLoadFull = true
           if (!counts) return

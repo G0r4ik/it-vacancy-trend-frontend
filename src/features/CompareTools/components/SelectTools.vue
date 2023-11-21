@@ -14,6 +14,8 @@
 <script>
 import CompareSearchResults from './CompareSearchResults.vue'
 
+const MAX_COUNT_OF_RESULT = 10
+
 export default {
   components: { CompareSearchResults },
   props: {
@@ -37,7 +39,7 @@ export default {
         const cond2 = cond1 && !this.compareTools.includes(tool)
         return cond1 && cond2
       })
-      return filteredTools.slice(0, 10)
+      return filteredTools.slice(0, MAX_COUNT_OF_RESULT)
     },
   },
 

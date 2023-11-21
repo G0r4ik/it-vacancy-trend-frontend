@@ -6,7 +6,6 @@ export const useSharedStore = defineStore('useSharedStore', {
   }),
   actions: {
     errorHandler(error_, message) {
-      // console.log(error_)
       this.errors.push({
         id: Math.random(),
         title: 'Server error',

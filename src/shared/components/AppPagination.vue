@@ -62,6 +62,7 @@
 </template>
 
 <script>
+const TABLET_BREAKPOINT = 768
 export default {
   props: {
     itemsLength: { type: Number, required: true },
@@ -160,7 +161,7 @@ export default {
   },
 
   mounted() {
-    this.visibleButtons = window.innerWidth > 768 ? 5 : 3
+    this.visibleButtons = window.innerWidth > TABLET_BREAKPOINT ? 5 : 3
     window.addEventListener('resize', this.changeFIXME)
   },
 
@@ -170,7 +171,7 @@ export default {
 
   methods: {
     changeFIXME() {
-      this.visibleButtons = window.innerWidth > 768 ? 5 : 3
+      this.visibleButtons = window.innerWidth > TABLET_BREAKPOINT ? 5 : 3
       this.changeCurrentPage(this.currentPage)
     },
     changePerPage(value = 50, currentPage = 1) {
