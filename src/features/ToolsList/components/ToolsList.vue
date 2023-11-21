@@ -84,6 +84,7 @@ import RatingSelectList from './RatingSelectList.vue'
 import JobBoardsRegions from './JobBoardsRegions.vue'
 import ToolsTable from './ToolsTable.vue'
 import api from '../api.js'
+import { inFieldOfViewY } from '@/shared/helpers.js'
 import { useStore } from '../store.js'
 
 export default {
@@ -173,7 +174,9 @@ export default {
 
   methods: {
     changePagination(page) {
-      this.$refs.invisibleStartTable.scrollIntoView({ behavior: 'smooth' })
+      if (!inFieldOfViewY(this.$refs.invisibleStartTable)) {
+        window.scrollTo(0, 0)
+      }
       this.pagination = page
     },
     clearFilters() {

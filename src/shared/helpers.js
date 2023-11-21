@@ -11,3 +11,20 @@ const formatter = new Intl.DateTimeFormat(getLocale(), {
 })
 
 export const formateDate = date => formatter.format(new Date(date))
+
+export function inFieldOfViewY(target) {
+  const targetPosition = {
+    top: window.scrollY + target.getBoundingClientRect().top,
+    bottom: window.scrollY + target.getBoundingClientRect().bottom,
+  }
+
+  const windowPosition = {
+    top: window.scrollY,
+    bottom: window.scrollY + document.documentElement.clientHeight,
+  }
+
+  return (
+    targetPosition.bottom > windowPosition.top &&
+    targetPosition.top < windowPosition.bottom
+  )
+}
