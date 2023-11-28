@@ -1,12 +1,12 @@
 <template>
   <div class="filters">
     <div class="filters__inner">
-      <!-- <div class="filters__top">
+      <div class="filters__top">
         <label for="select-date" class="select-container__label">
           Date:
           <input id="select-date" class="select-date" />
         </label>
-      </div> -->
+      </div>
 
       <CategoriesTools
         v-if="categories.length > 0"
@@ -57,38 +57,37 @@ export default {
   },
 
   async mounted() {
-    //     // eslint-disable-next-line promise/catch-or-return
-    //     const module = await import(/* webpackChunkName: "flatpickr" */ 'flatpickr')
-    //     this.flatpickr = module.default
-    //     const availableDates = []
-    //     for (let i = 0; i < this.dates.length; i++) {
-    //       const { idDate, dateOfCompletion } = this.dates[i]
-    //       availableDates.push([idDate, dateOfCompletion])
-    //     }
-    //
-    //     const { dates, $emit, selectedDate } = this
-    // eslint-disable-next-line unicorn/consistent-destructuring
-    // const maxDate = this.dates.at(-1).dateOfCompletion
-    // // eslint-disable-next-line unicorn/consistent-destructuring
-    // const minDate = this.dates[0].dateOfCompletion
-    // this.flatpickr('#select-date', {
-    //   minDate,
-    //   maxDate,
-    //   defaultDate: selectedDate.dateOfCompletion,
-    //   enable: availableDates.map(d => d[1]),
-    //   onChange(d) {
-    //     for (const date of dates) {
-    //       const fDate = new Date(date.dateOfCompletion)
-    //       const sDate = new Date(d)
-    //       const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
-    //       const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
-    //       if (firstDate === secondDate) {
-    //         $emit('changeSelectedDate', date)
-    //         break
-    //       }
-    //     }
-    //   },
-    // })
+    const module = await import(/* webpackChunkName: "flatpickr" */ 'flatpickr')
+    this.flatpickr = module.default
+    const availableDates = []
+    for (let i = 0; i < this.dates.length; i++) {
+      const { dateOfCompletion } = this.dates[i]
+      availableDates.push(dateOfCompletion)
+    }
+
+    const { dates, $emit, selectedDate } = this
+    const maxDate = this.dates.at(-1).dateOfCompletion
+    const minDate = this.dates[0].dateOfCompletion
+    const options = {
+      minDate,
+      maxDate,
+      defaultDate: selectedDate.dateOfCompletion,
+      onChange(d) {
+        for (const date of dates) {
+          const fDate = new Date(date.dateOfCompletion)
+          const sDate = new Date(d)
+          const firstDate = `${fDate.getFullYear()}_${fDate.getMonth()}_${fDate.getDate()}`
+          const secondDate = `${sDate.getFullYear()}_${sDate.getMonth()}_${sDate.getDate()}`
+          if (firstDate === secondDate) {
+            $emit('changeSelectedDate', date)
+            break
+          }
+        }
+      },
+    }
+    const calendar = this.flatpickr('#select-date', options)
+    calendar.config.enable = availableDates
+    calendar.redraw()
   },
 }
 </script>

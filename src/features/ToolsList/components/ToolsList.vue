@@ -149,13 +149,6 @@ export default {
       return list
     },
   },
-  // WHY BOTTOM
-  watch: {
-    dates(newValue) {
-      useStore().selectedDate = newValue.at(-1)
-    },
-  },
-  // WHY TOP
   async mounted() {
     api
       .getCategories()
@@ -188,10 +181,11 @@ export default {
       this.dates = await useStore().dates
     },
     async getLast() {
-      useStore().selectedDate = await this.dates
+      useStore().selectedDate = this.dates
     },
     async changeSelectedDate(selectDate) {
       useStore().selectedDate = selectDate
+      console.log(selectDate)
       await useStore().loadOneCounts(selectDate.idDate)
     },
     changeCurrentList(list) {

@@ -31,18 +31,16 @@ export const useStore = defineStore('store', {
 
     async loadOneCounts() {
       for (const jbr of this.currentJobBoardsRegions) {
-        if (!this.tools[0].counts[jbr]) {
-          const counts = await api.getLastCountOfAllItems(
-            this.selectedDate.idDate,
-            jbr
-          )
-          for (let i = 0; i < counts[jbr].counts.length; i++) {
-            this.tools[i].diff[jbr] = {}
-            this.tools[i].counts[jbr] = {}
-            this.tools[i].counts[jbr][this.selectedDate.idDate] =
-              counts[jbr].counts[i]
-            this.tools[i].diff[jbr] = counts[jbr].diff[i]
-          }
+        const counts = await api.getLastCountOfAllItems(
+          this.selectedDate.idDate,
+          jbr
+        )
+        for (let i = 0; i < counts[jbr].counts.length; i++) {
+          this.tools[i].diff[jbr] = {}
+          this.tools[i].counts[jbr] = {}
+          this.tools[i].counts[jbr][this.selectedDate.idDate] =
+            counts[jbr].counts[i]
+          this.tools[i].diff[jbr] = counts[jbr].diff[i]
         }
       }
     },

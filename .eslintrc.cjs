@@ -27,7 +27,8 @@ module.exports = {
     'n/no-unpublished-require': 'off',
     'unicorn/no-keyword-prefix': 'off',
     'import/prefer-default-export': 'off',
-    'import/no-extraneous-dependencies': 'off', //!
+    'import/no-extraneous-dependencies': 'off', // !
+    'unicorn/consistent-destructuring': 'off', // !
     'import/no-dynamic-require': 'off', // !
     'class-methods-use-this': 'off', // !
     'unicorn/prefer-module': 'off', // !
