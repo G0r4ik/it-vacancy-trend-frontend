@@ -1,5 +1,5 @@
 <template>
-  <div class="compare">
+  <section class="compare">
     <div class="container">
       <div class="compare__inner">
         <h1>Compare tools</h1>
@@ -37,7 +37,7 @@
         :compare-tools="compareTools"
         :dates="dates" />
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

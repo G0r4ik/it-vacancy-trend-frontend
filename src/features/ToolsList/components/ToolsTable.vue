@@ -26,7 +26,7 @@
             {{ `${jbr.jobBoard}-${jbr.region}` }}
             <IconSvg icon-name="IconChevronUpDown" />
           </th>
-          <th tabindex="0" class="rating-table__th"></th>
+          <!-- <th tabindex="0" class="rating-table__th"></th> -->
         </tr>
       </thead>
 
@@ -34,7 +34,7 @@
         <tr
           v-for="(tool, idx) of paginationTools"
           :key="tool.idTool"
-          class="rating-table__row">
+          class="rating-table__row rating-table__row_tbody">
           <td class="rating-table__item">
             {{ idx + (page - 1) * itemsPerPage }}.
           </td>
@@ -228,7 +228,7 @@ export default {
 <style>
 .rating-table {
   margin-bottom: var(--unit);
-  overflow: hidden;
+  /* overflow: hidden; */
   overflow-x: auto;
 }
 .rating-table__inner {
@@ -238,6 +238,14 @@ export default {
 }
 .rating-table__row {
   height: var(--height-table-tr);
+  transition: var(--transition-small);
+}
+.rating-table__row:nth-child(2n) {
+  background: rgba(0, 0, 0, 0.05);
+}
+.rating-table__row_tbody:hover {
+  background: rgba(0, 0, 0, 0.15);
+  transition: var(--transition-small);
 }
 .rating-table__th {
   padding: var(--unit);

@@ -136,8 +136,7 @@ export default {
   height: var(--height-header);
 }
 .header__inner {
-  display: grid;
-  grid-template-columns: max-content max-content max-content;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--unit) 0;
@@ -189,7 +188,7 @@ export default {
     display: none;
   }
   .header__menu {
-    grid-row: 1;
+    order: -1;
   }
   .menu__burger {
     z-index: var(--z-index-modal);

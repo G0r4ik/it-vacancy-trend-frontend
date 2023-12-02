@@ -1,5 +1,5 @@
 <template>
-  <div class="other">
+  <section class="other">
     <div class="container">
       <h1>Info of this website</h1>
       <div class="other__inner">
@@ -42,7 +42,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style>
