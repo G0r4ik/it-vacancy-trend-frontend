@@ -40,7 +40,7 @@
           </td>
 
           <td class="rating-table__item rating-table__item_name">
-            <ControversialWord v-if="tool.is_controversial_word" />
+            <!-- <ControversialWord v-if="tool.is_controversial_word" /> -->
             <!-- <img
               class="rating-table__item-logo"
               :src="

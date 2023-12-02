@@ -1,25 +1,22 @@
 <template>
   <div class="filters">
     <div class="filters__inner">
-      <div class="filters__top">
-        <label for="select-date" class="select-container__label">
-          Date:
-          <input id="select-date" class="select-date" />
-        </label>
-      </div>
+      <div class="filters__top"></div>
 
       <CategoriesTools
         v-if="categories.length > 0"
         :categories="categories"
         :current-categories="currentCategories"
         @change-category="$emit('changeCategory', $event)" />
-
       <input
         type="search"
         class="filters__search-input"
         placeholder="enter the technology "
         :value="searchInput"
         @input="$emit('changeSearch', $event)" />
+      <label for="select-date" class="select-container__label">
+        <input id="select-date" class="select-date" />
+      </label>
       <button class="filters__top-all" @click="$emit('changeCategory', 'all')">
         {{ changeCategoryAll }}
       </button>
@@ -111,6 +108,7 @@ export default {
 }
 .select-date {
   width: var(--width-select-date);
+  margin-left: var(--unit);
   font-size: var(--text-middle);
   line-height: 1.5;
   color: var(--color-text);
@@ -122,6 +120,12 @@ export default {
 }
 .filters__search-input {
   margin-top: var(--unit);
+  font-size: var(--text-middle);
+  /* line-height: 1.5; */
+  background-color: transparent;
+  border: var(--border-width-small) solid var(--color-border);
+  border-radius: var(--radius);
+  transition: all var(--transition-small);
 }
 @media (width < 768px) {
   .select-container__label {

@@ -1,81 +1,84 @@
 <template>
-  <div class="container">
-    <h1 class="list-title">
-      <span>IT Technology in vacancies</span>
+  <section class="rating-page">
+    <div class="container">
+      <h1 class="list-title">
+        <span>IT Technology in vacancies</span>
+        <AppSkeleton
+          v-if="tools.length === 0"
+          width="var(--width-count-tools)"
+          height="var(--height-count-tools)"
+          display="inline-block"
+          ml="var(--unit)" />
+        <span v-else class="list-count">({{ filteredList.length }})</span>
+      </h1>
+      <AppSkeleton
+        v-if="
+          categories.length === 0 ||
+          !currentCategories ||
+          dates.length < 0 ||
+          !selectedDate.idDate
+        "
+        width="100%"
+        height="var(--height-filters)"
+        mb="calc(var(--unit) * 2)"
+        br="var(--radius)" />
+
+      <RatingFilters
+        v-if="dates.length > 0 && selectedDate.idDate && currentCategories"
+        :categories="categories"
+        :current-categories="currentCategories"
+        :dates="dates"
+        :search-input="searchInput"
+        @change-category="changeCategory"
+        @change-search="changeSearch"
+        @change-selected-date="changeSelectedDate" />
       <AppSkeleton
         v-if="tools.length === 0"
-        width="var(--width-count-tools)"
-        height="var(--height-count-tools)"
+        :count="2"
+        width="25%"
+        height="24px"
         display="inline-block"
-        ml="var(--unit)" />
-      <span v-else class="list-count">({{ filteredList.length }})</span>
-    </h1>
+        mb="var(--unit)"
+        mr="var(--unit)" />
+      <JobBoardsRegions v-if="tools.length > 0" />
 
-    <AppSkeleton
-      v-if="
-        categories.length === 0 ||
-        !currentCategories ||
-        dates.length < 0 ||
-        !selectedDate.idDate
-      "
-      width="100%"
-      height="var(--height-filters)"
-      mb="calc(var(--unit) * 2)"
-      br="var(--radius)" />
+      <RatingSelectList
+        :list="currentList"
+        @change-current-list="changeCurrentList" />
 
-    <RatingFilters
-      v-if="dates.length > 0 && selectedDate.idDate && currentCategories"
-      :categories="categories"
-      :current-categories="currentCategories"
-      :dates="dates"
-      :search-input="searchInput"
-      @change-category="changeCategory"
-      @change-search="changeSearch"
-      @change-selected-date="changeSelectedDate" />
-    <AppSkeleton
-      v-if="tools.length === 0"
-      :count="2"
-      width="25%"
-      height="24px"
-      display="inline-block"
-      mb="var(--unit)"
-      mr="var(--unit)" />
-    <JobBoardsRegions v-if="tools.length > 0" />
+      <HintClickTitle />
+      <AppSkeleton
+        v-if="tools.length === 0"
+        width="var(--width-pagination-5)"
+        height="var(--height-pagination)"
+        mb="var(--unit)" />
+      <div ref="invisibleStartTable"></div>
+      <AppPagination
+        :uniq-id="1"
+        :items-length="filteredList.length"
+        :model-value="pagination"
+        @update:model-value="changePagination" />
 
-    <RatingSelectList
-      :list="currentList"
-      @change-current-list="changeCurrentList" />
-    <AppSkeleton
-      v-if="tools.length === 0"
-      width="var(--width-pagination-5)"
-      height="var(--height-pagination)"
-      mb="var(--unit)" />
-    <div ref="invisibleStartTable"></div>
-    <AppPagination
-      :uniq-id="1"
-      :items-length="filteredList.length"
-      :model-value="pagination"
-      @update:model-value="changePagination" />
+      <ToolsTable
+        :filtered-list="filteredList"
+        :page="pagination.page"
+        :items-per-page="pagination.itemsPerPage"
+        :pagination-tools="paginationTools"
+        :tools="paginationTools"
+        :dates="dates"
+        :is-data-loaded="isDataLoaded"
+        :categories="categories"
+        @add-to-favorite-tools="addToFavoriteTools"
+        @list-sort="listSort"
+        @clear-filters="clearFilters" />
 
-    <ToolsTable
-      :filtered-list="filteredList"
-      :page="pagination.page"
-      :items-per-page="pagination.itemsPerPage"
-      :pagination-tools="paginationTools"
-      :tools="paginationTools"
-      :dates="dates"
-      :is-data-loaded="isDataLoaded"
-      :categories="categories"
-      @add-to-favorite-tools="addToFavoriteTools"
-      @list-sort="listSort"
-      @clear-filters="clearFilters" />
-
-    <AppPagination
-      :uniq-id="2"
-      :items-length="filteredList.length"
-      :model-value="pagination"
-      @update:model-value="changePagination" />
-  </div>
+      <AppPagination
+        :uniq-id="2"
+        :items-length="filteredList.length"
+        :model-value="pagination"
+        @update:model-value="changePagination" />
+    </div>
+  </section>
 </template>
 
 <script>
@@ -86,9 +89,16 @@ import ToolsTable from './ToolsTable.vue'
 import api from '../api.js'
 import { inFieldOfViewY } from '@/shared/helpers.js'
 import { useStore } from '../store.js'
+import HintClickTitle from './HintClickTitle.vue'
 
 export default {
-  components: { ToolsTable, RatingFilters, RatingSelectList, JobBoardsRegions },
+  components: {
+    ToolsTable,
+    RatingFilters,
+    RatingSelectList,
+    JobBoardsRegions,
+    HintClickTitle,
+  },
 
   data() {
     return {

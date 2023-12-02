@@ -1,12 +1,12 @@
 <template>
   <div class="technology-comparison">
     <div class="technology-comparison__top">
-      <ControversialWord v-if="currentTool.is_controversial_word" />
+      <!-- <ControversialWord v-if="currentTool.is_controversial_word" /> -->
       <h2 class="technology-comparison__name-tool">
         {{ currentTool.nameTool }}
       </h2>
       <span class="technology-comparison__search-query">
-        ({{ currentTool.search_query }})
+        <!-- ({{ currentTool.search_query }}) -->
       </span>
     </div>
     <div class="buttons-fixmme">
@@ -43,6 +43,9 @@
           custom-class="technology-comparison__go-prev" />
         prev
       </div>
+      <span class="technology-comparison__chevron-placeholder hint">
+        You can press the arrows on the keyboard to change the technology
+      </span>
       <div
         class="technology-comparison__chevron-item"
         @click="$emit('openNewItemInModal', 'next')">
@@ -132,6 +135,7 @@ export default {
 }
 .technology-comparison__chevrons {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   margin-top: calc(var(--unit) * 5);
 }
@@ -143,6 +147,10 @@ export default {
 .technology-comparison__chevrons_disabled .technology-comparison__chevron-item {
   cursor: default;
   opacity: 0.5;
+}
+.technology-comparison__chevron-placeholder {
+  padding: 0 calc(var(--unit) * 3);
+  text-align: center;
 }
 .technology-comparison__go-prev {
   left: 0;
@@ -172,6 +180,9 @@ export default {
   border-radius: var(--radius);
 }
 @media (width < 768px) {
+  .technology-comparison__chevron-placeholder {
+    display: none;
+  }
   .technology-comparison {
     padding: var(--unit);
     padding-top: calc(var(--unit) * 3);
