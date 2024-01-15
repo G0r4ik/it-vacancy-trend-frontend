@@ -10,23 +10,23 @@
       <div class="chart-settings-count__labels">
         <labelAndCheckbox
           id="is-can-scroll"
-          v-model="isCanScroll"
+          v-model="chartOptions.isCanScroll"
           class-label="chart-settings-count__label"
           text="allow scrolling of the graph" />
         <labelAndCheckbox
           id="is-using-contrast-color"
-          v-model="isUsingContrastColor"
+          v-model="chartOptions.isUsingContrastColor"
           class-label="chart-settings-count__label"
           text="use contrasting colors instead of unique faded ones" />
         <labelAndCheckbox
           id="is-show-by-week"
-          v-model="isShowByWeek"
+          v-model="chartOptions.isShowByWeek"
           class-label="chart-settings-count__label"
           text="show by week, not by day" />
         <labelAndCheckbox
-          v-show="!isShowByWeek"
+          v-show="!chartOptions.isShowByWeek"
           id="is-show-event"
-          v-model="isShowEvents"
+          v-model="chartOptions.isShowEvents"
           class-label="chart-settings-count__label"
           text="show events" />
       </div>
@@ -67,11 +67,12 @@ export default {
   data() {
     return {
       ChartModule: null,
-
-      isCanScroll: false,
-      isShowEvents: false,
-      isShowByWeek: false,
-      isUsingContrastColor: false,
+      chartOptions: {
+        isCanScroll: false,
+        isShowEvents: false,
+        isShowByWeek: false,
+        isUsingContrastColor: false,
+      },
 
       isLoaded: false,
       lastController: null,
@@ -81,6 +82,9 @@ export default {
     }
   },
   computed: {
+    isUsingContrastColor() {
+      return this.chartOptions.isUsingContrastColor
+    },
     datasets2() {
       // console.log('computed datasets change')
 
@@ -88,7 +92,7 @@ export default {
 
       for (let i = 0; i < this.datasets.length; i++) {
         const colorIndex = i % colors.length
-        if (this.isUsingContrastColor) {
+        if (this.chartOptions.isUsingContrastColor) {
           copy[i].borderColor = colors[colorIndex]
           copy[i].backgroundColor = colors[colorIndex]
           copy[i].pointBackgroundColor = colors[colorIndex]
@@ -121,13 +125,13 @@ export default {
     labels2() {
       const sortedDates = this.sortedDate(this.dates)
       const byweek = this.groupweek(sortedDates)
-      return this.isShowByWeek
+      return this.chartOptions.isShowByWeek
         ? Object.keys(byweek)
         : this.dates.map(item => formateDate(item.dateOfCompletion))
     },
     config() {
-      // console.log('computed config change')
-      const { isCanScroll, isShowLegend } = this
+      const { isShowLegend } = this
+      const isCanScroll = this.chartOptions.isCanScroll
 
       return {
         hover: { mode: 'nearest', intersect: false },
@@ -138,25 +142,31 @@ export default {
           point: { radius: 0, hoverRadius: 10 },
           line: { tension: 0.4 },
         },
-        // scales: {
-        //   x: {
-        //     ticks: {
-        //       //   maxTicksLimit: 3,
-        //       // align: 'start',
-        //       //   autoSkip: true,
-        //       //   autoSkipPadding: true,
-        //       maxRotation: 0,
-        //       //   includeBounds: true,
-        //     },
-        //     border: { display: false },
-        //   },
-        //   y: {
-        //     grid: { display: false },
-        //     border: { display: false },
-        //     grace: '10%',
-        //     // ticks: { precision: 0, beginAtZero: true, min: 0 },
-        //   },
-        // },
+        scales: {
+          x: {
+            ticks: {
+              maxTicksLimit: 3,
+              align: 'start',
+              autoSkip: true,
+              autoSkipPadding: true,
+
+              maxRotation: 0,
+              includeBounds: true,
+            },
+            border: { display: false },
+          },
+          y: {
+            grid: { display: false },
+            border: { display: false },
+            grace: '10%',
+            ticks: {
+              precision: 0,
+              beginAtZero: true,
+              min: 0,
+              stepSize: 10_000,
+            },
+          },
+        },
         plugins: {
           legend: { display: isShowLegend },
           // autocolors: !isUsingContrastColor,
@@ -219,6 +229,7 @@ export default {
         setTimeout(() => (this.isLoaded = true), 0)
       }
     },
+    // cga
   },
   async mounted() {
     await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
@@ -226,7 +237,6 @@ export default {
     )
     this.ChartModule.register(autocolors)
     this.ChartModule.register(zoomPlugin)
-    // this.ChartModule.register(CategoryScale)
   },
   methods: {
     sortedDate(dates) {
@@ -311,9 +321,10 @@ export default {
 .chart-settings-count__labels {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 .chart-settings-count__label {
-  margin-top: var(--unit);
+  /* margin-top: var(--unit); */
 }
 .chart-settings-count {
   padding: calc(var(--unit) * 3);
@@ -357,6 +368,7 @@ export default {
   display: none;
 }
 .chart-wrapper {
-  height: var(--height-chart);
+  /* height: var(--height-chart); */
 }
+
 </style>

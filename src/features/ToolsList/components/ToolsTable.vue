@@ -241,10 +241,10 @@ export default {
   transition: var(--transition-small);
 }
 .rating-table__row:nth-child(2n) {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0 0 0 / 5%);
 }
 .rating-table__row_tbody:hover {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0 0 0 / 15%);
   transition: var(--transition-small);
 }
 .rating-table__th {

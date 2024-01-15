@@ -27,14 +27,17 @@
           :is-show-legend="true" />
       </div>
       <!-- <div class="compare__another"></div> -->
-      <!-- <LabelAndCheckbox
+      <LabelAndCheckbox
         v-if="compareTools.length > 0"
         id="show-table"
         v-model="isShowTable"
-        text="Show table" /> -->
+        text="Show table" />
+      <!--  -->
+
+      <!--  -->
       <TableOfCountsOfItems
         v-if="isShowTable"
-        :compare-tools="compareTools"
+        :tools="compareTools"
         :dates="dates" />
     </div>
   </section>

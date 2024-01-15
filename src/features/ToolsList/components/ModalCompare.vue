@@ -30,6 +30,16 @@
       compare with other technologies
     </button>
 
+    <br />
+    <hr />
+    <br />
+
+    <LabelAndCheckbox id="show-table" v-model="isShowTable" text="Show table" />
+    <TableOfCountsOfItems
+      v-if="isShowTable"
+      :tools="[currentTool]"
+      :dates="dates" />
+
     <div
       class="technology-comparison__chevrons"
       :class="{
@@ -79,6 +89,8 @@ export default {
   emits: ['closeModal', 'openNewItemInModal'],
   data() {
     return {
+      isShowTable: false,
+
       selectedTools: [],
     }
   },
@@ -160,6 +172,7 @@ export default {
   right: 0;
 }
 .technology-comparison__name-tool {
+  max-width: 260px;
   font-size: var(--text-extra-large);
 }
 .technology-comparison__search-query {
@@ -173,7 +186,8 @@ export default {
 .technology-comparison__button {
   padding: var(--unit) var(--unit);
   margin-top: var(--unit);
-  margin-left: auto;
+  /* margin-left: auto; */
+  margin-right: auto;
   font-size: var(--text-extra-small);
   background: transparent;
   border: var(--border-width-extra-small) solid var(--color-border);
