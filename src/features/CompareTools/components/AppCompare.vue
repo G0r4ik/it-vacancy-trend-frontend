@@ -13,32 +13,32 @@
           :compare-tools="compareTools"
           @add-to-compare="addToCompare"
           @select-first-item="addToCompare" />
-      </div>
-      <br />
-      <div v-show="compareTools.length > 0" class="compare__chart">
-        <div v-if="compareToolsIsLoad">
-          <JobBoardsRegions />
-        </div>
-        <ChartItemCount
-          ref="chart"
-          :current-tools="compareTools"
-          :change-value="changeValue"
-          :dates="dates"
-          :is-show-legend="true" />
-      </div>
-      <!-- <div class="compare__another"></div> -->
-      <LabelAndCheckbox
-        v-if="compareTools.length > 0"
-        id="show-table"
-        v-model="isShowTable"
-        text="Show table" />
-      <!--  -->
 
-      <!--  -->
-      <TableOfCountsOfItems
-        v-if="isShowTable"
-        :tools="compareTools"
-        :dates="dates" />
+        <br />
+        <div v-show="compareTools.length > 0" class="compare__chart">
+          <!-- <div v-if="compareToolsIsLoad"> -->
+          <JobBoardsRegions />
+          <!-- </div> -->
+          <ChartItemCount
+            v-show="currentJobBoardsRegions.length > 0"
+            ref="chart"
+            :current-tools="compareTools"
+            :change-value="changeValue"
+            :dates="dates"
+            :is-show-legend="true" />
+        </div>
+        <!-- <div class="compare__another"></div> -->
+        <LabelAndCheckbox
+          v-if="compareTools.length > 0 && currentJobBoardsRegions.length > 0"
+          id="show-table"
+          v-model="isShowTable"
+          text="Show table" />
+
+        <TableOfCountsOfItems
+          v-if="isShowTable && currentJobBoardsRegions.length > 0"
+          :tools="compareTools"
+          :dates="dates" />
+      </div>
     </div>
   </section>
 </template>
@@ -78,8 +78,8 @@ export default {
     },
     currentJobBoardsRegions: {
       handler() {
-        // console.log('ru')
-        // this.urlToJs()
+        // useStore().loadOneCounts()
+        this.urlToJs()
       },
       deep: true,
     },

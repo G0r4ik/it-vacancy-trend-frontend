@@ -31,6 +31,12 @@ export const useStore = defineStore('store', {
 
     async loadOneCounts() {
       for (const jbr of this.currentJobBoardsRegions) {
+        // console.log(Object.keys(this.tools[0].counts[jbr]));
+        // console.log(jbr)
+        if (
+          Number.isFinite(this.tools[0].counts[jbr]?.[this.selectedDate.idDate])
+        )
+          continue
         const counts = await api.getLastCountOfAllItems(
           this.selectedDate.idDate,
           jbr

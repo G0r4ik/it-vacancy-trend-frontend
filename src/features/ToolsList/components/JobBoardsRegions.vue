@@ -42,7 +42,7 @@ export default {
         }
         useStore().currentJobBoardsRegions = res
         localStorage.setItem('currentJobBoardsRegions', JSON.stringify(res))
-        useStore().loadOneCounts()
+        // useStore().loadOneCounts()
       },
       deep: true,
     },

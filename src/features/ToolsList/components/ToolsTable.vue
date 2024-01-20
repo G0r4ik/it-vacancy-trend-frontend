@@ -164,6 +164,9 @@ export default {
   },
 
   computed: {
+    currentJobBoardsRegions() {
+      return useStore().currentJobBoardsRegions
+    },
     toolsUseStore() {
       return useStore().tools
     },
@@ -181,6 +184,12 @@ export default {
       }
 
       return res
+    },
+  },
+  watch: {
+    currentJobBoardsRegions() {
+      // useStore().loadOneCounts()
+      useStore().loadOneCounts()
     },
   },
 

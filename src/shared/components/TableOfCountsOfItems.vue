@@ -129,7 +129,9 @@ export default {
 
       for (const tool of this.tools) {
         for (const jbr of this.currentJobBoardsRegions) {
-          if (Object.keys(tool.counts[jbr]).length !== this.dates.length) {
+          if (
+            Object.keys(tool.counts[jbr] || {}).length !== this.dates.length
+          ) {
             return await this.findFIXME()
           }
           for (let i = 0; i < Object.values(tool.counts[jbr]).length; i++) {
