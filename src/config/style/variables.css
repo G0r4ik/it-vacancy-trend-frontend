@@ -20,7 +20,6 @@
   --color-text: var(--color-white-base);
   --color-modal-bg: rgb(0 0 0 / 70%);
   --color-error-popup: #eb5b5b;
-
   /* UNIT */
   --unit: 5px;
   /* z-index */
@@ -84,9 +83,11 @@
   --color-text: var(--color-cod-gray-base);
   --color-border: var(--color-light-gray-base);
   --color-bg-checkbox: #e9e9eb;
+  --color-transparent-bg: rgba(0 0 0 / 0.5%);
 }
 :root.dark-theme {
   --color-background: var(--color-cod-gray-base);
   --color-text: var(--color-white-base);
   --color-bg-checkbox: #262629;
+  --color-transparent-bg: rgba(255 255 255 / 0.5%);
 }

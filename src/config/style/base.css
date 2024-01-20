@@ -135,6 +135,21 @@ input {
   background: rgb(98 44 57 / 2.5%);
   border: var(--border-width-small) solid #fb6f92 !important;
 }
+.categories__item_18 {
+  color: #bc52ee;
+  background: rgb(188 82 238 / 2.5%);
+  border: var(--border-width-small) solid #bc52ee !important;
+}
+.categories__item_19 {
+  color: #34a853;
+  background: rgb(52 168 83 / 2.5%);
+  border: var(--border-width-small) solid #34a853 !important;
+}
+.categories__item_20 {
+  color: #ff6f00;
+  background: rgb(255 111 0 / 2.5%);
+  border: var(--border-width-small) solid #ff6f00 !important;
+}
 .icon {
   width: var(--icon-size);
   height: var(--icon-size);

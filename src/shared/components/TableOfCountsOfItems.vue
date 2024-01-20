@@ -195,7 +195,7 @@ export default {
   cursor: pointer;
 }
 .compare__table-tr:nth-child(2n) {
-  background: var(--color-border);
+  background: var(--color-transparent-bg);
 }
 .compare__table_td {
   padding: var(--unit) calc(var(--unit) * 2);
@@ -230,10 +230,14 @@ export default {
   background: rgba(75 165 228 / 15%);
 }
 .compare__table-tr:nth-child(2n) .compare__table-tool-name {
-  background: var(--color-border);
+  background: var(--color-transparent-bg);
+}
+.compare__table-count {
+  transition: 0.2s;
 }
 .compare__table-count:hover {
-  background: var(--color-link);
+  background: var(--color-border);
+  transition: 0.2s;
 }
 @media (width < 768px) {
   .compare__table-tr {

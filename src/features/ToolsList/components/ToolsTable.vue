@@ -228,7 +228,6 @@ export default {
 <style>
 .rating-table {
   margin-bottom: var(--unit);
-  /* overflow: hidden; */
   overflow-x: auto;
 }
 .rating-table__inner {
@@ -241,10 +240,10 @@ export default {
   transition: var(--transition-small);
 }
 .rating-table__row:nth-child(2n) {
-  background: rgba(0 0 0 / 5%);
+  background: var(--color-transparent-bg);
 }
 .rating-table__row_tbody:hover {
-  background: rgba(0 0 0 / 15%);
+  background: rgba(0 0 0 / 5%);
   transition: var(--transition-small);
 }
 .rating-table__th {
