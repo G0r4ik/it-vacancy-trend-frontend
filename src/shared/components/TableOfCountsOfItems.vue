@@ -231,15 +231,12 @@ export default {
   content: '';
   background: rgba(75 165 228 / 15%);
 }
-.compare__table-tr:nth-child(2n) .compare__table-tool-name {
-  background: var(--color-transparent-bg);
-}
 .compare__table-count {
-  transition: 0.2s;
+  transition: 1s;
 }
 .compare__table-count:hover {
   background: var(--color-border);
-  transition: 0.2s;
+  transition: 0.1s;
 }
 @media (width < 768px) {
   .compare__table-tr {

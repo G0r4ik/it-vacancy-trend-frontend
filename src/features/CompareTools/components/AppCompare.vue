@@ -138,6 +138,6 @@ export default {
 }
 .compare__chart {
   width: 100%;
-  max-height: var(--max-height-chart);
+  /* max-height: var(--max-height-chart); */
 }
 </style>

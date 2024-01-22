@@ -29,6 +29,11 @@
           v-model="chartOptions.isShowEvents"
           class-label="chart-settings-count__label"
           text="show events" />
+        <labelAndCheckbox
+          id="is-using-moving-average"
+          v-model="chartOptions.isUsingMovingAverage"
+          class-label="chart-settings-count__label"
+          text="Use a moving average" />
       </div>
     </details>
     <AppSkeleton
@@ -42,16 +47,17 @@
       <LineChart
         id="my-chart-id"
         :options="config"
-        :data="{ datasets: datasets2, labels: labels2 }" />
+        :data="{ datasets: datasets2, labels }" />
     </div>
   </div>
 </template>
 
 <script>
+import '@/shared/hammer.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
 import autocolors from 'chartjs-plugin-autocolors'
-// import { CategoryScale } from 'chart.js'
 import { Line as LineChart } from 'vue-chartjs'
+
 import { useStore } from '@/features/ToolsList'
 import { formateDate } from '@/shared/helpers.js'
 import { colors } from '@/shared/consts.js'
@@ -59,7 +65,7 @@ import { colors } from '@/shared/consts.js'
 export default {
   components: { LineChart },
   props: {
-    currentTools: { type: Array, default: Array },
+    currentTools: { type: Array, default: () => [] },
     dates: { type: Array, default: () => [] },
     isShowLegend: { type: Boolean, default: true },
     isShowJbr: { type: Boolean, default: true },
@@ -72,84 +78,98 @@ export default {
         isShowEvents: false,
         isShowByWeek: false,
         isUsingContrastColor: false,
+        isUsingMovingAverage: true,
       },
 
       isLoaded: false,
-      lastController: null,
 
       datasets: {},
-      labels: {},
     }
   },
   computed: {
+    // Для watch
     isUsingContrastColor() {
       return this.chartOptions.isUsingContrastColor
     },
+    // !!!
     datasets2() {
-      // console.log('computed datasets change')
+      let copyDataset = JSON.parse(JSON.stringify(this.datasets))
 
-      const copy = JSON.parse(JSON.stringify(this.datasets))
-
-      for (let i = 0; i < this.datasets.length; i++) {
-        const colorIndex = i % colors.length
-        if (this.chartOptions.isUsingContrastColor) {
-          copy[i].borderColor = colors[colorIndex]
-          copy[i].backgroundColor = colors[colorIndex]
-          copy[i].pointBackgroundColor = colors[colorIndex]
-        } else {
-          delete copy[i].borderColor
-          delete copy[i].backgroundColor
-          delete copy[i].pointBackgroundColor
+      if (this.chartOptions.isUsingMovingAverage) {
+        const movingAverageDataset = []
+        for (const itemDataset of copyDataset) {
+          const averageData = []
+          for (let i = 0; i < this.dates.length; i++) {
+            const [c1, c2, c3] = itemDataset.data.slice(i - 1, i + 2)
+            const existCounts = [c1, c2, c3].filter(item =>
+              Number.isFinite(item)
+            ).length
+            const averageCount = Math.round((c1 + c2 + c3) / existCounts)
+            averageData.push(averageCount)
+          }
+          movingAverageDataset.push({
+            data: averageData,
+            label: itemDataset.label,
+          })
         }
-
-        // const points = this.dates.map(date => {
-        //   return this.currentTools2[i].events
-        //     .map(i => i.idDate)
-        //     .includes(date.idDate)
-        //     ? 10
-        //     : 0
-        // })
-
-        // copy[i].pointRadius =
-        //   this.isShowEvents && !this.isShowByWeek ? points : []
-        // copy[i].data = this.isShowByWeek
-        //   ? Object.values(
-        //       this.currentTools2[i].countOfWeeks[`HeadHunter-Russia`]
-        //     )
-        //   : Object.values(this.currentTools2[i].counts[`HeadHunter-Russia`])
+        copyDataset = movingAverageDataset
       }
-      // console.log('start')
 
-      return copy
+      // for (let i = 0; i < this.datasets.length; i++) {
+      //   const colorIndex = i % colors.length
+      //   if (this.chartOptions.isUsingContrastColor) {
+      //     copyDataset[i].borderColor = colors[colorIndex]
+      //     copyDataset[i].backgroundColor = colors[colorIndex]
+      //     copyDataset[i].pointBackgroundColor = colors[colorIndex]
+      //   } else {
+      //     delete copyDataset[i].borderColor
+      //     delete copyDataset[i].backgroundColor
+      //     delete copyDataset[i].pointBackgroundColor
+      //   }
+
+      // const points = this.dates.map(date => {
+      //   return this.currentTools2[i].events
+      //     .map(i => i.idDate)
+      //     .includes(date.idDate)
+      //     ? 10
+      //     : 0
+      // })
+
+      // copyDataset[i].pointRadius =
+      //   this.isShowEvents && !this.isShowByWeek ? points : []
+      // copyDataset[i].data = this.isShowByWeek
+      //   ? Object.values(
+      //       this.currentTools2[i].countOfWeeks[`HeadHunter-Russia`]
+      //     )
+      //   : Object.values(this.currentTools2[i].counts[`HeadHunter-Russia`])
+      // }
+
+      return copyDataset
     },
-    labels2() {
-      const sortedDates = this.sortedDate(this.dates)
-      const byweek = this.groupweek(sortedDates)
-      return this.chartOptions.isShowByWeek
-        ? Object.keys(byweek)
-        : this.dates.map(item => formateDate(item.dateOfCompletion))
+    labels() {
+      const byweek = this.groupweek(this.dates)
+      const days = this.dates.map(item => formateDate(item.dateOfCompletion))
+      return this.chartOptions.isShowByWeek ? Object.keys(byweek) : days
     },
+    // !!!
     config() {
-      const { isShowLegend } = this
+      // const { isShowLegend, isUsingContrastColor } = this
       const isCanScroll = this.chartOptions.isCanScroll
-
+      const maxValue = getMaxValueInAllDatasets()
       return {
-        hover: { mode: 'nearest', intersect: false },
-        animation: { duration: 0 },
+        hover: { mode: 'index', intersect: false },
+        animation: false,
         maintainAspectRatio: false,
-        responsive: true,
         elements: {
-          point: { radius: 0, hoverRadius: 10 },
+          point: { radius: 0, hoverRadius: 5 },
           line: { tension: 0.4 },
         },
         scales: {
           x: {
             ticks: {
               maxTicksLimit: 3,
-              align: 'start',
               autoSkip: true,
               autoSkipPadding: true,
-
               maxRotation: 0,
               includeBounds: true,
             },
@@ -157,62 +177,62 @@ export default {
           },
           y: {
             grid: { display: false },
-            border: { display: false },
-            grace: '10%',
             ticks: {
-              precision: 0,
               beginAtZero: true,
-              min: 0,
-              stepSize: 10_000,
+              precision: 0,
             },
           },
         },
         plugins: {
-          legend: { display: isShowLegend },
+          // legend: { display: isShowLegend },
           // autocolors: !isUsingContrastColor,
-          // colors: { enabled: isUsingContrastColor },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-              // label: context => {
-              //   const { dataIndex, dataset } = context
-              //   console.log(dataset)
-              //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
-              //     const jobBoardRegion = this.currentJobBoardsRegions[i]
-              //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
-              //     const a = useStore().jobBoardsRegions.find(
-              //       i => +i.id === +jobBoardRegion
-              //     )
-              //     const tool = this.currentTools2.find(
-              //       item =>
-              //         dataset.label ===
-              //         `${item.nameTool}(${a.jobBoard}-${a.region})`
-              //     )
-              //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
-              //     let event2 = null
-              //     if (tool) {
-              //       for (const event of tool.events) {
-              //         if (event.idDate === dates[dataIndex].idDate) {
-              //           event2 = event
-              //           break
-              //         }
-              //       }
-              //     }
-              //     // if (dataset.pointRadius[dataIndex]) {
-              //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
-              //     // }
-              //   }
-              // },
-            },
-          },
+          // colors: { enabled: !isUsingContrastColor },
+          // tooltip: {
+          //   mode: 'index',
+          //   intersect: false,
+          //   callbacks: {
+          //     // label: context => {
+          //     //   const { dataIndex, dataset } = context
+          //     //   console.log(dataset)
+          //     //   for (let i = 0; i < this.currentJobBoardsRegions.length; i++) {
+          //     //     const jobBoardRegion = this.currentJobBoardsRegions[i]
+          //     //     // for (const jobBoardRegion of this.currentJobBoardsRegions) {
+          //     //     const a = useStore().jobBoardsRegions.find(
+          //     //       i => +i.id === +jobBoardRegion
+          //     //     )
+          //     //     const tool = this.currentTools2.find(
+          //     //       item =>
+          //     //         dataset.label ===
+          //     //         `${item.nameTool}(${a.jobBoard}-${a.region})`
+          //     //     )
+          //     //     // console.log(`1c(${a.jobBoard}-${a.region})` === dataset.label)
+          //     //     let event2 = null
+          //     //     if (tool) {
+          //     //       for (const event of tool.events) {
+          //     //         if (event.idDate === dates[dataIndex].idDate) {
+          //     //           event2 = event
+          //     //           break
+          //     //         }
+          //     //       }
+          //     //     }
+          //     //     // if (dataset.pointRadius[dataIndex]) {
+          //     //     //   return `${dataset.label} ${context.formattedValue} \nEvent: ${event2.eventText} `
+          //     //     // }
+          //     //   }
+          //     // },
+          //   },
+          // },
           zoom: {
-            limits: { x: { min: 0, minRange: 10 } },
-            pan: { enabled: false, mode: 'x' },
+            limits: {
+              x: { min: 0, minRange: 25 },
+              y: { max: maxValue, min: 0, minRange: 0 },
+            },
+            pan: { enabled: true, mode: 'xy' },
             zoom: {
+              // overScaleMode: 'y',
               wheel: { enabled: isCanScroll },
               pinch: { enabled: false },
-              mode: 'x',
+              mode: 'xy',
             },
           },
         },
@@ -223,13 +243,13 @@ export default {
     },
   },
   watch: {
-    isUsingContrastColor(v) {
-      if (v === false) {
-        this.isLoaded = false
-        setTimeout(() => (this.isLoaded = true), 0)
-      }
-    },
-    // cga
+    // !!!
+    // isUsingContrastColor(v) {
+    //   if (!v) {
+    //     this.isLoaded = false
+    //     setTimeout(() => (this.isLoaded = true), 0)
+    //   }
+    // },
   },
   async mounted() {
     await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
@@ -239,13 +259,15 @@ export default {
     this.ChartModule.register(zoomPlugin)
   },
   methods: {
-    sortedDate(dates) {
-      const sortedDates = [...dates].sort((a, b) => {
-        const dateA = new Date(a.dateOfCompletion)
-        const dateB = new Date(b.dateOfCompletion)
-        return dateA - dateB
-      })
-      return sortedDates
+    getMaxValueInAllDatasets() {
+      const data = this.datasets2.map(i => i.data)
+      let maxValue = 0
+      for (const counts of data) {
+        for (const count of counts) {
+          if (Number.isNaN(count)) continue
+          maxValue = Math.max(maxValue, count ?? 0)
+        }
+      }
     },
     getWeekNumber(date) {
       const target = new Date(date.valueOf())
@@ -273,8 +295,7 @@ export default {
       const { dates, currentTools, isShowJbr, currentJobBoardsRegions } = this
       this.isLoaded = false
       const datasets = []
-      const sortedDates = this.sortedDate(dates)
-      const byweek = this.groupweek(sortedDates)
+      const byweek = this.groupweek(this.dates)
 
       let i = -1
       for (const item of currentTools) {
@@ -323,9 +344,6 @@ export default {
   flex-direction: column;
   align-items: flex-start;
 }
-.chart-settings-count__label {
-  /* margin-top: var(--unit); */
-}
 .chart-settings-count {
   padding: calc(var(--unit) * 3);
   margin: calc(var(--unit) * 2) 0;
@@ -368,7 +386,11 @@ export default {
   display: none;
 }
 .chart-wrapper {
-  /* height: var(--height-chart); */
+  height: var(--height-chart);
+  /* max-height: 1000px; */
+  /* height: 70vh !important; */
 }
-
+.compare__chart canvas {
+  height: 100% !important;
+}
 </style>
