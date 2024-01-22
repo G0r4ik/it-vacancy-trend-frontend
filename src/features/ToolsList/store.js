@@ -77,45 +77,49 @@ export const useStore = defineStore('store', {
 
     async loadFullOfCurrentItem(idTool) {
       await this.lastController?.abort()
-      const controller = new AbortController()
-      this.lastController = controller
+      this.lastController = new AbortController()
+      const controller = this.lastController
 
       for (const jbr of this.currentJobBoardsRegions) {
         const tool = this.tools.find(tool_ => tool_.idTool === idTool)
-        const cond1 = tool.counts[jbr]
         const cond2 =
-          cond1 && Object.keys(tool.counts[jbr]).length === this.dates.length
-
-        if (!cond1 || !cond2) {
-          const byweek = this.groupweek(this.dates)
-
+          tool.counts[jbr] &&
+          Object.keys(tool.counts[jbr]).length === this.dates.length
+        if (!cond2) {
           const counts = await api.getCountOfCurrentItem(
             tool.idTool,
             jbr,
             controller.signal
           )
+          // if (counts.length > 0) return
+          console.log(counts, tool.nameTool)
           tool.counts[jbr] = {}
           // tool.isLoadFull = true
           if (!counts) return
-          for (const [i, count] of counts.entries()) {
-            tool.counts[jbr][this.dates[i].idDate] = count
+          debugger
+          console.log(counts.entries())
+          for (const [i, count] of counts.entries() || []) {
+            console.log(count)
+            // tool.counts[jbr][this.dates[i].idDate] = count
           }
+          // const byweek = this.groupweek(this.dates)
 
-          let i = -1
-          tool.countOfWeeks = { [jbr]: {} }
-          for (const date of Object.values(byweek)) {
-            tool.countOfWeeks[jbr][++i] = []
-            for (const date2 of date) {
-              tool.countOfWeeks[jbr][i].push(tool.counts[jbr][date2])
-            }
-            const l1 = tool.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
-            let l2 = 0
-            for (const item2 of tool.countOfWeeks[jbr][i]) l2 += item2
+          // let i = -1
+          // tool.countOfWeeks = { [jbr]: {} }
+          // for (const date of Object.values(byweek)) {
+          //   tool.countOfWeeks[jbr][++i] = []
+          //   for (const date2 of date) {
+          //     tool.countOfWeeks[jbr][i].push(tool.counts[jbr][date2])
+          //   }
+          //   const l1 = tool.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
+          //   let l2 = 0
+          //   for (const item2 of tool.countOfWeeks[jbr][i]) l2 += item2
 
-            tool.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
-          }
+          //   tool.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
+          // }
         }
       }
+
       this.isLoaded = true
     },
 

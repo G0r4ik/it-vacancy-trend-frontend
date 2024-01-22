@@ -5,6 +5,14 @@
   scrollbar-width: thin;
   scrollbar-color: var(--color-border) var(--color-background);
 }
+/* h1 {
+  font-family: cursive;
+  font-size: 50px;
+  font-weight: 500;
+  color: var);
+  text-transform: uppercase;
+  -webkit-text-stroke: 5px red;
+} */
 body {
   font-family: Roboto, Arial, sans-serif;
   font-size: var(--text-middle);
