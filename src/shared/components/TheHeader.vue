@@ -188,6 +188,7 @@ export default {
     display: none;
   }
   .header__menu {
+    display: grid;
     order: -1;
   }
   .menu__burger {
@@ -225,17 +226,17 @@ export default {
     background-color: var(--color-background);
   }
   .menu__list_open::after {
-    position: absolute;
+    /* position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     height: var(--height-menu-list);
-    content: '';
-    background-image: linear-gradient(
+    content: ''; */
+    /* background-image: linear-gradient(
       to bottom,
       var(--color-background),
       transparent
-    );
+    ); */
   }
   .menu__list_open {
     display: flex;
