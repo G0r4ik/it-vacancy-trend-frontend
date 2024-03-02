@@ -98,6 +98,9 @@ export default {
     }
   },
   computed: {
+    jobBoardsRegions() {
+      return useStore().jobBoardsRegions
+    },
     // Для watch
     isUsingContrastColor() {
       return this.chartOptions.isUsingContrastColor
@@ -105,7 +108,6 @@ export default {
     // !!!
     datasets2() {
       let copyDataset = JSON.parse(JSON.stringify(this.datasets))
-
       if (this.chartOptions.isUsingMovingAverage) {
         copyDataset = this.createMoveingAverageDataset()
       }
@@ -307,7 +309,7 @@ export default {
       return byweek
     },
     // !!!
-    async createChar() {
+    createChar() {
       const { dates, currentTools, isShowJbr, currentJobBoardsRegions } = this
       this.isLoaded = false
       const datasets = []
@@ -349,6 +351,22 @@ export default {
 
       this.datasets = datasets
       this.isLoaded = true
+    },
+    clearChar(tool) {
+      this.datasets = []
+      this.datasets = []
+      this.isLoaded = false
+
+      console.log(this.jobBoardsRegions)
+      for (const jbr of this.currentJobBoardsRegions) {
+        const jbrC = this.jobBoardsRegions.find(
+          jbr_ => jbr_.idJobBoardRegions === jbr
+        )
+        this.datasets.push({
+          data: [],
+          label: `${tool.nameTool}(${jbrC.jobBoard}-${jbrC.region})`,
+        })
+      }
     },
   },
 }

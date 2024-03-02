@@ -169,9 +169,9 @@ export default {
       })
       .catch(error => console.log(error))
 
-    await useStore().loadJobBoardsRegions()
-    await useStore().loadDates()
-    await useStore().loadTools(this.selectedDate.idDate)
+    useStore().loadJobBoardsRegions()
+    useStore().loadDates()
+    await useStore().loadTools()
     await useStore().loadOneCounts()
   },
 

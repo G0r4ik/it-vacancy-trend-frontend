@@ -28,3 +28,31 @@ export function inFieldOfViewY(target) {
     targetPosition.top < windowPosition.bottom
   )
 }
+
+export function throttle(function_, ms) {
+  let isThrottled = false
+  let savedArguments
+  let savedThis
+
+  function wrapper() {
+    if (isThrottled) {
+      savedArguments = arguments
+      savedThis = this
+      return
+    }
+
+    Reflect.apply(function_, this, arguments)
+
+    isThrottled = true
+
+    setTimeout(function () {
+      isThrottled = false
+      if (savedArguments) {
+        wrapper.apply(savedThis, savedArguments)
+        savedArguments = savedThis = null
+      }
+    }, ms)
+  }
+
+  return wrapper
+}

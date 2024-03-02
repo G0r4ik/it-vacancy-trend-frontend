@@ -65,15 +65,6 @@
           custom-class="technology-comparison__go-next" />
       </div>
     </div>
-    <!-- <strong>There are no such filters:</strong>
-    <button
-      v-for="category of categories"
-      :key="category.idCategory"
-      @click="load(category.idCategory)"
-      class="categories__item"
-      :class="`categories__item_${category.idCategory}`">
-      {{ category.nameCategory }}
-    </button> -->
   </div>
 </template>
 
@@ -107,12 +98,6 @@ export default {
     FIXMEF(event) {
       if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
-    },
-    async load(idCategory) {
-      console.log(
-        `INSERT INTO  categories_tools (idTool, idCategory) VALUES(${this.currentTool.idTool}, ${idCategory});`
-      )
-      // await api.setCategory(this.currentTool.idTool, idCategory)
     },
     addCloseFunction(event) {
       if (event.key === 'Escape') {

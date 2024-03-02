@@ -5,7 +5,6 @@
         <h1>Compare tools</h1>
         <ComparePopularSearches
           v-if="compareToolsIsLoad && compareTools.length === 0"
-          :compare-tools-length="compareTools.length"
           @add-items-of-popular-list="addItemsOfPopularList" />
 
         <SelectTools
@@ -15,25 +14,21 @@
           @select-first-item="addToCompare" />
 
         <br />
+        <JobBoardsRegions />
         <div v-show="compareTools.length > 0" class="compare__chart">
-          <!-- <div v-if="compareToolsIsLoad"> -->
-          <JobBoardsRegions />
-          <!-- </div> -->
           <ChartItemCount
             v-show="currentJobBoardsRegions.length > 0"
             ref="chart"
             :current-tools="compareTools"
-            :change-value="changeValue"
             :dates="dates"
             :is-show-legend="true" />
         </div>
-        <!-- <div class="compare__another"></div> -->
+
         <LabelAndCheckbox
           v-if="compareTools.length > 0 && currentJobBoardsRegions.length > 0"
           id="show-table"
           v-model="isShowTable"
           text="Show table" />
-
         <TableOfCountsOfItems
           v-if="isShowTable && currentJobBoardsRegions.length > 0"
           :tools="compareTools"
@@ -55,7 +50,6 @@ export default {
       compareTools: [],
       isShowTable: false,
       compareToolsIsLoad: false,
-      changeValue: 0,
     }
   },
   computed: {
@@ -78,33 +72,28 @@ export default {
     },
     currentJobBoardsRegions: {
       handler() {
-        // useStore().loadOneCounts()
         this.urlToJs()
       },
       deep: true,
     },
   },
   async mounted() {
-    await useStore().loadDates()
-    await useStore().loadJobBoardsRegions()
-    await useStore().loadTools(this.dates.at(-1).idDate)
+    useStore().loadDates()
+    useStore().loadJobBoardsRegions()
+    await useStore().loadTools()
     this.urlToJs()
     this.compareToolsIsLoad = true
   },
   methods: {
     async urlToJs() {
       const items = this.routeQ?.split(',') || []
-
       this.compareTools = []
-      const promises = []
+
       for (const tool of this.tools) {
-        if (items.includes(tool.nameTool)) {
-          this.compareTools.push(tool)
-          promises.push(useStore().loadFullOfCurrentItem(tool.idTool))
-        }
+        if (items.includes(tool.nameTool)) this.compareTools.push(tool)
       }
-      await Promise.all(promises)
-      await this.$refs.chart.createChar()
+      await useStore().loadFullOfCurrentItems(this.compareTools)
+      this.$refs.chart.createChar()
     },
     async addItemsOfPopularList(toolNames) {
       let query = ''

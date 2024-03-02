@@ -136,6 +136,7 @@
 <script>
 import { useStore } from '../store.js'
 import ModalCompare from './ModalCompare.vue'
+import { throttle } from '@/shared/helpers.js'
 
 export default {
   components: { ModalCompare },
@@ -193,6 +194,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.openNewItemInModal = throttle(this.openNewItemInModal, 250)
+  },
+
   methods: {
     normalizeDiff(diff) {
       const n =
@@ -217,15 +222,16 @@ export default {
       )
 
       this.toolInModal = findTool
-      await useStore().loadFullOfCurrentItem(toolInModal.idTool)
-      await this.$refs.chart.$refs.chart1.createChar()
+      this.$refs.chart.$refs.chart1.clearChar(toolInModal)
+      await useStore().loadFullOfCurrentItems([toolInModal])
+      this.$refs.chart.$refs.chart1.createChar()
     },
     async isOpenCompareModalFunction(tool, index) {
       this.isOpenCompareModal = true
       this.toolInModal = tool
       this.indexOfTool = (this.page - 1) * this.itemsPerPage + index
-      await useStore().loadFullOfCurrentItem(tool.idTool)
-      await this.$refs.chart.$refs.chart1.createChar()
+      await useStore().loadFullOfCurrentItems([tool])
+      this.$refs.chart.$refs.chart1.createChar()
     },
     closeModal() {
       this.isOpenCompareModal = false

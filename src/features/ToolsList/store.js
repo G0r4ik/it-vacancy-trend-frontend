@@ -31,23 +31,23 @@ export const useStore = defineStore('store', {
 
     async loadOneCounts() {
       for (const jbr of this.currentJobBoardsRegions) {
-        // console.log(Object.keys(this.tools[0].counts[jbr]));
-        // console.log(jbr)
         if (
           Number.isFinite(this.tools[0].counts[jbr]?.[this.selectedDate.idDate])
         )
           continue
-        const counts = await api.getLastCountOfAllItems(
-          this.selectedDate.idDate,
-          jbr
-        )
-        for (let i = 0; i < counts[jbr].counts.length; i++) {
-          this.tools[i].diff[jbr] = {}
-          this.tools[i].counts[jbr] = {}
-          this.tools[i].counts[jbr][this.selectedDate.idDate] =
-            counts[jbr].counts[i]
-          this.tools[i].diff[jbr] = counts[jbr].diff[i]
-        }
+        api
+          .getLastCountOfAllItems(this.selectedDate.idDate, jbr)
+          .then(counts => {
+            for (let i = 0; i < counts[jbr].counts.length; i++) {
+              this.tools[i].diff[jbr] = {}
+              this.tools[i].counts[jbr] = {}
+              this.tools[i].counts[jbr][this.selectedDate.idDate] =
+                counts[jbr].counts[i]
+              this.tools[i].diff[jbr] = counts[jbr].diff[i]
+            }
+            return counts
+          })
+          .catch(error => console.log(error))
       }
     },
 
@@ -75,46 +75,40 @@ export const useStore = defineStore('store', {
       return byweek
     },
 
-    async loadFullOfCurrentItem(idTool) {
-      await this.lastController?.abort()
-      this.lastController = new AbortController()
-      const controller = this.lastController
-
-      for (const jbr of this.currentJobBoardsRegions) {
-        const tool = this.tools.find(tool_ => tool_.idTool === idTool)
-        const condition =
-          Object.keys(tool.counts[jbr] || {}).length === this.dates.length
-
-        if (!condition) {
-          const counts = await api.getCountOfCurrentItem(
-            tool.idTool,
-            jbr,
-            controller.signal
-          )
-          // if (counts.length > 0) return
-          tool.counts[jbr] = {}
-          // tool.isLoadFull = true
-          if (!counts || counts.length === 0) return
-          for (const [i, count] of counts.entries() || []) {
-            tool.counts[jbr][this.dates[i].idDate] = count
-          }
-          // const byweek = this.groupweek(this.dates)
-
-          // let i = -1
-          // tool.countOfWeeks = { [jbr]: {} }
-          // for (const date of Object.values(byweek)) {
-          //   tool.countOfWeeks[jbr][++i] = []
-          //   for (const date2 of date) {
-          //     tool.countOfWeeks[jbr][i].push(tool.counts[jbr][date2])
-          //   }
-          //   const l1 = tool.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
-          //   let l2 = 0
-          //   for (const item2 of tool.countOfWeeks[jbr][i]) l2 += item2
-
-          //   tool.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
-          // }
+    async loadFullOfCurrentItems(tools) {
+      const promises = []
+      for (const tool of tools) {
+        for (const jbr of this.currentJobBoardsRegions) {
+          promises.push(this.loadFullOfCurrentItem(tool, jbr))
         }
       }
+      await Promise.all(promises)
+    },
+
+    async loadFullOfCurrentItem(tool, jbr) {
+      const countOfCounts = Object.keys(tool.counts[jbr] || {}).length
+
+      if (countOfCounts === this.dates.length) return
+
+      const counts = await api.getCountOfCurrentItem(tool.idTool, jbr)
+      tool.counts[jbr] = {}
+      for (const [i, count] of counts.entries()) {
+        tool.counts[jbr][this.dates[i].idDate] = count
+      }
+      // const byweek = this.groupweek(this.dates)
+      // let i = -1
+      // tool.countOfWeeks = { [jbr]: {} }
+      // for (const date of Object.values(byweek)) {
+      //   tool.countOfWeeks[jbr][++i] = []
+      //   for (const date2 of date) {
+      //     tool.countOfWeeks[jbr][i].push(tool.counts[jbr][date2])
+      //   }
+      //   const l1 = tool.countOfWeeks[jbr][i].filter(i2 => i2 !== null)
+      //   let l2 = 0
+      //   for (const item2 of tool.countOfWeeks[jbr][i]) l2 += item2
+
+      //   tool.countOfWeeks[jbr][i] = Math.round(l2 / l1.length)
+      // }
 
       this.isLoaded = true
     },
