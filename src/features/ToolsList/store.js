@@ -82,21 +82,20 @@ export const useStore = defineStore('store', {
 
       for (const jbr of this.currentJobBoardsRegions) {
         const tool = this.tools.find(tool_ => tool_.idTool === idTool)
-        const cond2 =
+        const condition =
           Object.keys(tool.counts[jbr] || {}).length === this.dates.length
-        if (tool.counts[jbr] && !cond2) {
+
+        if (!condition) {
           const counts = await api.getCountOfCurrentItem(
             tool.idTool,
             jbr,
             controller.signal
           )
           // if (counts.length > 0) return
-          console.log(counts, tool.nameTool)
           tool.counts[jbr] = {}
           // tool.isLoadFull = true
-          if (!counts) return
+          if (!counts || counts.length === 0) return
           for (const [i, count] of counts.entries() || []) {
-            console.log(count)
             tool.counts[jbr][this.dates[i].idDate] = count
           }
           // const byweek = this.groupweek(this.dates)

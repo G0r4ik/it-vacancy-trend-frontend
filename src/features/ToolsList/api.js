@@ -1,5 +1,6 @@
 import instance from '@/config/api.js'
 import { useSharedStore } from '@/shared/store.js'
+import axios from 'axios'
 
 class API {
   async getLists() {
@@ -50,11 +51,11 @@ class API {
       })
       return dates.data
     } catch (error) {
-      useSharedStore().errorHandler(
-        error,
-        'url /getCountOfCurrentItem does not work'
-      )
-      return {}
+      // useSharedStore().errorHandler(
+      //   error,
+      //   'url /getCountOfCurrentItem does not work'
+      // )
+      // return {}
     }
   }
 

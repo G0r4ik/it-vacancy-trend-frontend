@@ -62,6 +62,17 @@ import { useStore } from '@/features/ToolsList'
 import { formateDate } from '@/shared/helpers.js'
 import { colors } from '@/shared/consts.js'
 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+
 export default {
   components: { LineChart },
   props: {
@@ -231,11 +242,17 @@ export default {
     // },
   },
   async mounted() {
-    await import(/* webpackChunkName: "chartjs" */ 'chart.js/auto').then(
-      module => (this.ChartModule = module.default)
+    ChartJS.register(
+      CategoryScale,
+      LinearScale,
+      PointElement,
+      LineElement,
+      Title,
+      Tooltip,
+      Legend
     )
-    // this.ChartModule.register(autocolors)
-    this.ChartModule.register(zoomPlugin)
+    ChartJS.register(zoomPlugin)
+    ChartJS.register(autocolors)
   },
   methods: {
     createMoveingAverageDataset() {
