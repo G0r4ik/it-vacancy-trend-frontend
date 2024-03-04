@@ -57,11 +57,9 @@ import '@/shared/hammer.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
 import autocolors from 'chartjs-plugin-autocolors'
 import { Line as LineChart } from 'vue-chartjs'
-
 import { useStore } from '@/features/ToolsList'
 import { formateDate } from '@/shared/helpers.js'
-import { colors } from '@/shared/consts.js'
-
+// import { colors } from '@/shared/consts.js'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -91,9 +89,7 @@ export default {
         isUsingContrastColor: false,
         isUsingMovingAverage: true,
       },
-
       isLoaded: false,
-
       datasets: {},
     }
   },
@@ -150,10 +146,13 @@ export default {
     },
     // !!!
     config() {
-      const { isShowLegend, isUsingContrastColor } = this
+      // const { isShowLegend, isUsingContrastColor } = this
       const isCanScroll = this.chartOptions.isCanScroll
       const maxValue = this.getMaxValueInAllDatasets()
       return {
+        // aspectRatio: 10,
+        // responsive: true,
+        // normalized: true,
         hover: { mode: 'index', intersect: false },
         animation: false,
         maintainAspectRatio: false,
@@ -175,6 +174,14 @@ export default {
           y: {
             grid: { display: false },
             ticks: { beginAtZero: true, precision: 0 },
+            //   //   border: { display: false },
+            //   //   grace: '10%',
+            //   ticks: {
+            //     //     precision: 0,
+            beginAtZero: true,
+            //     //     min: 0,
+            // stepSize: 5000000,
+            //   },
           },
         },
         plugins: {

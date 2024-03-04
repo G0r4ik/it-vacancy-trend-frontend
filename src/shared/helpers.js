@@ -37,6 +37,7 @@ export function throttle(function_, ms) {
   function wrapper() {
     if (isThrottled) {
       savedArguments = arguments
+      // eslint-disable-next-line unicorn/no-this-assignment
       savedThis = this
       return
     }

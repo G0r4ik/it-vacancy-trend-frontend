@@ -74,6 +74,7 @@
   --height-not-found: 50vh;
   --height-chart: 60vh;
   /* Transition */
+  --transition-extra-small: 0.1s;
   --transition-small: 0.3s;
   --transition-main: 0.5s;
   --transition-skeleton: 1.5s;

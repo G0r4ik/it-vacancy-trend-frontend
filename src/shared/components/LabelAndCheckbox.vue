@@ -77,7 +77,6 @@ export default {
   display: block;
   width: 100%;
 }
-/*  */
 .toggler-wrapper {
   position: relative;
   display: block;

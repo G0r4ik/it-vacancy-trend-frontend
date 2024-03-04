@@ -4,6 +4,7 @@
       <thead class="rating-table__thead">
         <tr class="rating-table__row">
           <th class="rating-table__th rating-table__th_number">№</th>
+          <th tabindex="0" class="rating-table__th rating-table__th_name"></th>
           <th
             tabindex="0"
             class="rating-table__th rating-table__th_name"
@@ -39,6 +40,17 @@
             {{ idx + (page - 1) * itemsPerPage }}.
           </td>
 
+          <td class="rating-table__item rating-table__item_start">
+            <button
+              tabindex="0"
+              class="rating-table__item-star"
+              :class="{
+                'rating-table__item-star_active': tool.isFav,
+              }"
+              @click="$emit('addToFavoriteTools', tool)">
+              &#9733;
+            </button>
+          </td>
           <td class="rating-table__item rating-table__item_name">
             <!-- <ControversialWord v-if="tool.is_controversial_word" /> -->
             <!-- <img
@@ -54,15 +66,6 @@
               @click="isOpenCompareModalFunction(tool, idx)">
               {{ tool.nameTool }}
             </span>
-            <button
-              tabindex="0"
-              class="rating-table__item-star"
-              :class="{
-                'rating-table__item-star_active': tool.isFav,
-              }"
-              @click="$emit('addToFavoriteTools', tool)">
-              &#9733;
-            </button>
           </td>
           <td class="rating-table__item">
             <div class="rating-table__item_category">
@@ -257,9 +260,12 @@ export default {
 .rating-table__row:nth-child(2n) {
   background: var(--color-transparent-bg);
 }
+.rating-table__row_tbody {
+  transition: var(--transition-extra-small);
+}
 .rating-table__row_tbody:hover {
   background: rgba(0 0 0 / 5%);
-  transition: var(--transition-small);
+  transition: var(--transition-extra-small);
 }
 .rating-table__th {
   padding: var(--unit);
@@ -322,6 +328,7 @@ export default {
 .rating-table__item-star {
   margin-left: var(--unit);
   font-size: var(--text-middle);
+  color: lightslategray;
   cursor: pointer;
 }
 .rating-table__item-star_active {
