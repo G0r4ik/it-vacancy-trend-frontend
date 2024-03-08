@@ -44,10 +44,8 @@
             <button
               tabindex="0"
               class="rating-table__item-star"
-              :class="{
-                'rating-table__item-star_active': tool.isFav,
-              }"
-              @click="$emit('addToFavoriteTools', tool)">
+              :class="[tool.isFav && 'rating-table__item-star_active']"
+              @click="addToFavoriteTools($event, tool)">
               &#9733;
             </button>
           </td>
@@ -83,12 +81,7 @@
             :key="jbr.id"
             class="rating-table__item rating-table__item_count">
             <div>
-              {{
-                normalizeCount(
-                  tool.counts[jbr.id]?.[selectedDate.idDate],
-                  tool.nameTool
-                )
-              }}
+              {{ normalizeCount(tool.counts[jbr.id]?.[selectedDate.idDate]) }}
 
               <div
                 v-if="
@@ -153,7 +146,6 @@ export default {
     paginationTools: { type: Array, default: () => [] },
     tools: { type: Array, default: () => [] },
     dates: { type: Array, default: () => [] },
-    isDataLoaded: Boolean,
     isDataEmpty: Boolean,
   },
 
@@ -168,6 +160,9 @@ export default {
   },
 
   computed: {
+    isDataLoaded() {
+      return useStore().isToolsLoaded
+    },
     currentJobBoardsRegions() {
       return useStore().currentJobBoardsRegions
     },
@@ -202,6 +197,11 @@ export default {
   },
 
   methods: {
+    addToFavoriteTools(event, tool) {
+      event.target.style.animation = tool.isFav ? '' : 'rotateIn 1s linear'
+
+      this.$emit('addToFavoriteTools', tool)
+    },
     normalizeDiff(diff) {
       const n =
         Math.abs(diff) > 999
@@ -255,16 +255,11 @@ export default {
 }
 .rating-table__row {
   height: var(--height-table-tr);
-  transition: var(--transition-small);
 }
 .rating-table__row:nth-child(2n) {
   background: var(--color-transparent-bg);
 }
 .rating-table__row_tbody {
-  transition: var(--transition-extra-small);
-}
-.rating-table__row_tbody:hover {
-  background: rgba(0 0 0 / 5%);
   transition: var(--transition-extra-small);
 }
 .rating-table__th {
@@ -326,10 +321,8 @@ export default {
   cursor: pointer;
 }
 .rating-table__item-star {
-  margin-left: var(--unit);
-  font-size: var(--text-middle);
+  font-size: var(--text-large);
   color: lightslategray;
-  cursor: pointer;
 }
 .rating-table__item-star_active {
   color: var(--color-star);

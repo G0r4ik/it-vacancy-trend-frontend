@@ -63,8 +63,8 @@ export default {
     }
 
     const { dates, $emit, selectedDate } = this
-    const maxDate = this.dates.at(-1).dateOfCompletion
-    const minDate = this.dates[0].dateOfCompletion
+    const maxDate = dates.at(-1).dateOfCompletion
+    const minDate = dates[0].dateOfCompletion
     const options = {
       minDate,
       maxDate,
@@ -108,7 +108,6 @@ export default {
 }
 .select-date {
   width: var(--width-select-date);
-  margin-left: var(--unit);
   font-size: var(--text-middle);
   line-height: 1.5;
   color: var(--color-text);
@@ -120,6 +119,8 @@ export default {
 }
 .filters__search-input {
   margin-top: var(--unit);
+  margin-right: calc(var(--unit) * 2);
+  margin-bottom: var(--unit);
   font-size: var(--text-middle);
   /* line-height: 1.5; */
   background-color: transparent;

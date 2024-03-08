@@ -5,7 +5,7 @@
       :id="`jobBoardRegion_${jobBoardRegion.id}`"
       :key="jobBoardRegion.id"
       v-model="jobBoardsRegions.find(i => i.id === jobBoardRegion.id).status"
-      class-label="jobboard__label"
+      class="jobboard__item"
       :text="`${jobBoardRegion.jobBoard} - ${jobBoardRegion.region}`" />
   </div>
 </template>
@@ -35,12 +35,10 @@ export default {
       handler() {
         const res = []
         for (const jbr in this.jobBoardsRegions) {
-          if (Object.hasOwn(this.jobBoardsRegions, jbr)) {
-            const element = this.jobBoardsRegions[jbr]
-            if (element.status) res.push(+element.id)
-          }
+          const element = this.jobBoardsRegions[jbr]
+          if (element.status) res.push(+element.id)
         }
-        useStore().currentJobBoardsRegions = res
+        useStore().changeCurrentJobBoardRegions(res)
         localStorage.setItem('currentJobBoardsRegions', JSON.stringify(res))
         // useStore().loadOneCounts()
       },
@@ -51,9 +49,11 @@ export default {
 </script>
 <style>
 .jobboard {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: calc(var(--unit) * 2);
 }
-.jobboard__label {
-  margin-right: calc(var(--unit) * 5);
+.jobboard__item {
+  margin-right: calc(var(--unit) * 8);
 }
 </style>

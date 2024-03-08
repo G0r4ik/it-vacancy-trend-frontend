@@ -315,6 +315,7 @@ export default {
       }
       return byweek
     },
+
     // !!!
     createChar() {
       const { dates, currentTools, isShowJbr, currentJobBoardsRegions } = this

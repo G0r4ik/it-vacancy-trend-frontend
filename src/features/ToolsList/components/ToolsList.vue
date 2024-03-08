@@ -9,15 +9,10 @@
           height="var(--height-count-tools)"
           display="inline-block"
           ml="var(--unit)" />
-        <span v-else class="list-count">({{ filteredList.length }})</span>
+        <span v-else class="list-count">({{ filteredListLength }})</span>
       </h1>
       <AppSkeleton
-        v-if="
-          categories.length === 0 ||
-          !currentCategories ||
-          dates.length < 0 ||
-          !selectedDate.idDate
-        "
+        v-if="categories.length === 0 || dates.length === 0"
         width="100%"
         height="var(--height-filters)"
         mb="calc(var(--unit) * 2)"
@@ -55,7 +50,7 @@
       <div ref="invisibleStartTable"></div>
       <AppPagination
         :uniq-id="1"
-        :items-length="filteredList.length"
+        :items-length="filteredListLength"
         :model-value="pagination"
         @update:model-value="changePagination" />
 
@@ -66,7 +61,6 @@
         :pagination-tools="paginationTools"
         :tools="paginationTools"
         :dates="dates"
-        :is-data-loaded="isDataLoaded"
         :categories="categories"
         @add-to-favorite-tools="addToFavoriteTools"
         @list-sort="listSort"
@@ -74,7 +68,7 @@
 
       <AppPagination
         :uniq-id="2"
-        :items-length="filteredList.length"
+        :items-length="filteredListLength"
         :model-value="pagination"
         @update:model-value="changePagination" />
     </div>
@@ -113,14 +107,14 @@ export default {
   },
 
   computed: {
+    filteredListLength() {
+      return this.filteredList.length
+    },
     tools() {
       return useStore().tools
     },
     dates() {
       return useStore().dates
-    },
-    isDataLoaded() {
-      return useStore().isToolsLoaded
     },
     paginationTools() {
       return this.filteredList.slice(
@@ -159,6 +153,7 @@ export default {
       return list
     },
   },
+
   async mounted() {
     api
       .getCategories()
@@ -174,7 +169,6 @@ export default {
     await useStore().loadTools()
     await useStore().loadOneCounts()
   },
-
   methods: {
     changePagination(page) {
       if (!inFieldOfViewY(this.$refs.invisibleStartTable)) {
@@ -187,15 +181,8 @@ export default {
       this.currentCategories = this.categories.map(item => item.idCategory)
       this.currentList = 'tools'
     },
-    async getDates() {
-      this.dates = await useStore().dates
-    },
-    async getLast() {
-      useStore().selectedDate = this.dates
-    },
     async changeSelectedDate(selectDate) {
-      useStore().selectedDate = selectDate
-      console.log(selectDate)
+      useStore().changeSelectedDate(selectDate)
       await useStore().loadOneCounts(selectDate.idDate)
     },
     changeCurrentList(list) {
