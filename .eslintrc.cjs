@@ -14,26 +14,10 @@ module.exports = {
   plugins: ['promise', 'unicorn', 'prettier', 'vue'],
 
   rules: {
-    'no-console': 'off',
-    'no-plusplus': 'off',
     'unicorn/no-null': 'off',
-    'no-return-assign': 'off',
-    'import/extensions': 'off',
     'n/no-missing-import': 'off',
-    'import/no-unresolved': 'off',
-    'no-restricted-syntax': 'off',
-    'unicorn/filename-case': 'off',
-    'n/no-unpublished-import': 'off',
-    'n/no-unpublished-require': 'off',
-    'unicorn/no-keyword-prefix': 'off',
-    'import/prefer-default-export': 'off',
-    'import/no-extraneous-dependencies': 'off', // !
-    'unicorn/consistent-destructuring': 'off', // !
-    'import/no-dynamic-require': 'off', // !
-    'class-methods-use-this': 'off', // !
-    'unicorn/prefer-module': 'off', // !
-    'global-require': 'off', // !
-    'no-undef': 'off', // !
+    'unicorn/filename-case': 'off', // Можно ли настроить более точно?
+    'unicorn/no-keyword-prefix': 'off', // Можно ли настроить более точно?
     'unicorn/prevent-abbreviations': [
       'error',
       {

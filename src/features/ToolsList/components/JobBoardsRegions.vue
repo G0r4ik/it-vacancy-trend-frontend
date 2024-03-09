@@ -14,13 +14,6 @@
 import { useStore } from '../store'
 
 export default {
-  data() {
-    return {
-      omgNiceHackFixMe: false,
-      b: {},
-    }
-  },
-
   computed: {
     jobBoardsRegions() {
       return useStore().jobBoardsRegions

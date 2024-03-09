@@ -89,10 +89,10 @@
                 ">
                 <IconSvg
                   icon-name="IconArrow"
-                  :custom-class="`rating-table__item-fixme rating-table__item-fixme_${
+                  :custom-class="`rating-table__item-change rating-table__item-change_${
                     tool.diff[jbr.id] > 0 ? 1 : -1
                   }`" />
-                <span class="rating-table__item-fixme-span">
+                <span class="rating-table__item-change-span">
                   {{ normalizeDiff(tool.diff[jbr.id]) }}
                 </span>
               </div>
@@ -289,18 +289,18 @@ export default {
   display: inline-flex;
   align-items: center;
 }
-.rating-table__item-fixme-span {
+.rating-table__item-change-span {
   font-size: var(--text-extra-small);
 }
-.rating-table__item-fixme {
+.rating-table__item-change {
   margin-right: calc(var(--unit) / 2);
   margin-left: var(--unit);
 }
-.rating-table__item-fixme_1 {
+.rating-table__item-change_1 {
   color: green;
   transform: rotate(0deg);
 }
-.rating-table__item-fixme_-1 {
+.rating-table__item-change_-1 {
   color: red;
   transform: rotate(180deg);
 }

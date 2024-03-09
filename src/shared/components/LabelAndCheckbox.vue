@@ -1,10 +1,10 @@
 <template>
-  <!-- <label class="c-checkbox-label" :class="classLabel" :for="id">
-    <span class="c-checkbox-span" :class="classText"> {{ text }} </span>
+  <!-- <label class="c-checkbox-label" :class="labelClass" :for="id">
+    <span class="c-checkbox-span" :class="textClass"> {{ text }} </span>
     <input
       :id="id"
       :checked="modelValue"
-      :class="classInput"
+      :class="inputClass"
       type="checkbox"
       class="c-checkbox-input"
       :name="id"
@@ -17,12 +17,12 @@
     </div>
   </label> -->
   <div style="display: flex; align-items: center">
-    <span class="c-checkbox-span" :class="classText"> {{ text }} </span>
-    <label class="toggler-wrapper" :class="classLabel" :for="id">
+    <span class="c-checkbox-span" :class="textClass"> {{ text }} </span>
+    <label class="toggler-wrapper" :class="labelClass" :for="id">
       <input
         :id="id"
         :checked="modelValue"
-        :class="classInput"
+        :class="inputClass"
         type="checkbox"
         class="c-checkbox-input"
         :name="id"
@@ -38,9 +38,9 @@
 export default {
   props: {
     id: { required: true, default: '', type: String },
-    classLabel: { default: '', type: String },
-    classText: { default: '', type: String },
-    classInput: { default: '', type: String },
+    labelClass: { default: '', type: String },
+    textClass: { default: '', type: String },
+    inputClass: { default: '', type: String },
     text: { required: true, default: 'Text for checkbox', type: String },
     modelValue: { type: Boolean, default: false },
   },

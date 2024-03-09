@@ -11,28 +11,28 @@
         <labelAndCheckbox
           id="is-can-scroll"
           v-model="chartOptions.isCanScroll"
-          class-label="chart-settings-count__label"
+          label-class="chart-settings-count__label"
           text="allow scrolling of the graph" />
         <labelAndCheckbox
           id="is-using-contrast-color"
           v-model="chartOptions.isUsingContrastColor"
-          class-label="chart-settings-count__label"
+          label-class="chart-settings-count__label"
           text="use contrasting colors instead of unique faded ones" />
         <labelAndCheckbox
           id="is-show-by-week"
           v-model="chartOptions.isShowByWeek"
-          class-label="chart-settings-count__label"
+          label-class="chart-settings-count__label"
           text="show by week, not by day" />
         <labelAndCheckbox
           v-show="!chartOptions.isShowByWeek"
           id="is-show-event"
           v-model="chartOptions.isShowEvents"
-          class-label="chart-settings-count__label"
+          label-class="chart-settings-count__label"
           text="show events" />
         <labelAndCheckbox
           id="is-using-moving-average"
           v-model="chartOptions.isUsingMovingAverage"
-          class-label="chart-settings-count__label"
+          label-class="chart-settings-count__label"
           text="Use a moving average" />
       </div>
     </details>
@@ -321,7 +321,7 @@ export default {
       const { dates, currentTools, isShowJbr, currentJobBoardsRegions } = this
       this.isLoaded = false
       const datasets = []
-      const byweek = this.groupweek(this.dates)
+      const byweek = this.groupweek(dates)
 
       let i = -1
       for (const item of currentTools) {

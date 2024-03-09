@@ -9,7 +9,7 @@
         <!-- ({{ currentTool.search_query }}) -->
       </span>
     </div>
-    <div class="buttons-fixmme">
+    <div class="categories">
       <button
         v-for="category of currentTool.categories"
         :key="category.idCategory"
@@ -87,15 +87,15 @@ export default {
   },
 
   mounted() {
-    document.addEventListener('keydown', this.FIXMEF)
+    document.addEventListener('keydown', this.changeTool)
     document.addEventListener('keydown', this.addCloseFunction)
   },
   unmounted() {
     document.removeEventListener('keydown', this.addCloseFunction)
-    document.removeEventListener('keydown', this.FIXMEF)
+    document.removeEventListener('keydown', this.changeTool)
   },
   methods: {
-    FIXMEF(event) {
+    changeTool(event) {
       if (event.code === 'ArrowLeft') this.$emit('openNewItemInModal', 'prev')
       if (event.code === 'ArrowRight') this.$emit('openNewItemInModal', 'next')
     },

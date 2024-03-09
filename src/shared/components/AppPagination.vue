@@ -63,6 +63,7 @@
 
 <script>
 const TABLET_BREAKPOINT = 768
+
 export default {
   props: {
     itemsLength: { type: Number, required: true },
@@ -162,15 +163,15 @@ export default {
 
   mounted() {
     this.visibleButtons = window.innerWidth > TABLET_BREAKPOINT ? 5 : 3
-    window.addEventListener('resize', this.changeFIXME)
+    window.addEventListener('resize', this.changePagination)
   },
 
   beforeUnmount() {
-    window.removeEventListener('resize', this.changeFIXME)
+    window.removeEventListener('resize', this.changePagination)
   },
 
   methods: {
-    changeFIXME() {
+    changePagination() {
       this.visibleButtons = window.innerWidth > TABLET_BREAKPOINT ? 5 : 3
       this.changeCurrentPage(this.currentPage)
     },

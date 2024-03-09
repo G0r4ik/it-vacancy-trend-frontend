@@ -103,16 +103,13 @@ export default {
         )
         query += `,${findTool.nameTool}`
       }
-      await this.$router.push({
-        path: '/compare',
-        query: { q: query.slice(1) },
-      })
+      this.$router.push({ path: '/compare', query: { q: query.slice(1) } })
     },
     async addToCompare(tool) {
       const qParameter = this.$route.query.q || ''
       const separator = qParameter ? ',' : ''
       const q = `${qParameter}${separator}${tool.nameTool}`
-      await this.$router.push({ path: '/compare', query: { q } })
+      this.$router.push({ path: '/compare', query: { q } })
     },
   },
 }

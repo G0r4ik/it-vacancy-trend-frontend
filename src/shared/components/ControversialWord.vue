@@ -2,12 +2,12 @@
   <span class="controversial-mark">
     <span
       class="controversial-mark__mark"
-      @mouseover="changeIsVisibleFIXMEID(true)"
-      @mouseleave="changeIsVisibleFIXMEID(null)">
+      @mouseover="changeVisiblePopup(true)"
+      @mouseleave="changeVisiblePopup(null)">
       !
     </span>
     <AppPopup
-      v-if="isVisibleFIXMEID"
+      v-if="isVisiblePopup"
       class="popup-with-error"
       text="controversial word in this language" />
   </span>
@@ -16,12 +16,12 @@
 export default {
   data() {
     return {
-      isVisibleFIXMEID: false,
+      isVisiblePopup: false,
     }
   },
   methods: {
-    changeIsVisibleFIXMEID(status) {
-      this.isVisibleFIXMEID = status
+    changeVisiblePopup(status) {
+      this.isVisiblePopup = status
     },
   },
 }

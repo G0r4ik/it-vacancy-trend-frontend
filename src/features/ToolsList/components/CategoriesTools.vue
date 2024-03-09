@@ -62,6 +62,7 @@ export default {
         document.querySelectorAll('head')[0].append(style)
       }
     },
+    // FIXME
     getImg(idCategory) {
       try {
         return require(`../assets/categories/${idCategory}.svg`)

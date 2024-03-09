@@ -3,7 +3,7 @@
     <labelAndCheckbox
       id="show-all-dates"
       v-model="showAllDates"
-      class-label="table-settings-count__label"
+      label-class="table-settings-count__label"
       text="Show from the first date(empty cells are possible)" />
   </div>
   <AppSkeleton
@@ -104,17 +104,17 @@ export default {
   },
   watch: {
     tools2() {
-      this.findFIXME()
+      this.createTable()
     },
     showAllDates() {
-      this.findFIXME()
+      this.createTable()
     },
   },
   mounted() {
-    this.findFIXME()
+    this.createTable()
   },
   methods: {
-    async findFIXME() {
+    async createTable() {
       this.isShowSkeleton = true
 
       if (this.showAllDates) {
@@ -125,15 +125,8 @@ export default {
       }
 
       let min = this.dates.length
-      await new Promise(resolve => setTimeout(resolve, 100))
-
       for (const tool of this.tools) {
         for (const jbr of this.currentJobBoardsRegions) {
-          if (
-            Object.keys(tool.counts[jbr] || {}).length !== this.dates.length
-          ) {
-            return await this.findFIXME()
-          }
           for (let i = 0; i < Object.values(tool.counts[jbr]).length; i++) {
             if (Object.values(tool.counts[jbr])[i] !== null) {
               min = Math.min(min, i)
